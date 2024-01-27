@@ -7,7 +7,11 @@ import lombok.Setter;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 8:56 PM
+ */
 @Getter
 @Setter
 public class PaginationResponse<T> extends AbstractBaseResponse {

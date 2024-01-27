@@ -10,7 +10,11 @@ import org.springframework.web.context.request.WebRequest;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 9:10 PM
+ */
 @Configuration
 public class CustomErrorAttributes extends DefaultErrorAttributes {
     @Override

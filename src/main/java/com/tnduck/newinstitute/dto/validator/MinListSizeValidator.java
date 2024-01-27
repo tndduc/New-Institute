@@ -5,7 +5,11 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 import java.util.List;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 9:56 PM
+ */
 public final class MinListSizeValidator implements ConstraintValidator<MinListSize, List<String>> {
     private long min;
 

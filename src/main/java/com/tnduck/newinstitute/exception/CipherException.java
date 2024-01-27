@@ -1,7 +1,11 @@
 package com.tnduck.newinstitute.exception;
 
 import java.io.Serial;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 9:42 PM
+ */
 public class CipherException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = 1L;

@@ -38,7 +38,11 @@ import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 00:25 AM
+ */
 @Tag("unit")
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Unit tests for AuthService")

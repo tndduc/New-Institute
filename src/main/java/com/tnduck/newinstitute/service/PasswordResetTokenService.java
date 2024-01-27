@@ -15,7 +15,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static com.tnduck.newinstitute.util.Constants.PASSWORD_RESET_TOKEN_LENGTH;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 26/01/2024 - 10:31 PM
+ */
 @Service
 public class PasswordResetTokenService {
     private final PasswordResetTokenRepository passwordResetTokenRepository;

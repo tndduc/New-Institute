@@ -17,7 +17,11 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 00:27 AM
+ */
 @Tag("unit")
 @DisplayName("Unit tests for CipherService")
 class CipherServiceTest {

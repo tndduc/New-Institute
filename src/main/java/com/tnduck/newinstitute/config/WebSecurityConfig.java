@@ -15,7 +15,11 @@ import org.springframework.security.config.annotation.web.configurers.HeadersCon
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 9:10 PM
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity

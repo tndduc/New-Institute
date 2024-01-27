@@ -4,7 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.stream.Stream;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 26/01/2024 - 10:55 PM
+ */
 public final class Constants {
     public static final String SECURITY_SCHEME_NAME = "bearerAuth";
 

@@ -5,7 +5,11 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 9:56 PM
+ */
 @Slf4j
 public final class FieldMatchValidator implements ConstraintValidator<FieldMatch, Object> {
     private String firstField;

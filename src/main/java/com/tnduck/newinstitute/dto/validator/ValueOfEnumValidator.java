@@ -6,7 +6,11 @@ import jakarta.validation.ConstraintValidatorContext;
 
 import java.util.List;
 import java.util.stream.Stream;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 9:56 PM
+ */
 public final class ValueOfEnumValidator implements ConstraintValidator<ValueOfEnum, CharSequence> {
     private List<String> acceptedValues;
 

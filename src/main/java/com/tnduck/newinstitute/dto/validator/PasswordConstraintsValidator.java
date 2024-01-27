@@ -13,7 +13,11 @@ import org.passay.WhitespaceRule;
 
 import java.util.Arrays;
 import java.util.List;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 9:56 PM
+ */
 public final class PasswordConstraintsValidator implements ConstraintValidator<Password, String> {
     private static final int MIN_LENGTH = 6;
 

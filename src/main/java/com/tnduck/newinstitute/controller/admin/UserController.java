@@ -45,7 +45,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.tnduck.newinstitute.util.Constants.SECURITY_SCHEME_NAME;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 9:20 PM
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/users")

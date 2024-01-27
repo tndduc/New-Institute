@@ -41,7 +41,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 26/01/2024 - 11:23 PM
+ */
 @Tag("unit")
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Unit tests for Admin - UserController")

@@ -16,7 +16,11 @@ import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 00:25 AM
+ */
 @Tag("unit")
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Unit tests for MessageSourceService")

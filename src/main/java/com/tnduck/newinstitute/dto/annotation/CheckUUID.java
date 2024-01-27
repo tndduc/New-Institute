@@ -13,7 +13,11 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 9:30 PM
+ */
 
 @Retention(RUNTIME)
 @Target({METHOD, FIELD, PARAMETER, ANNOTATION_TYPE})

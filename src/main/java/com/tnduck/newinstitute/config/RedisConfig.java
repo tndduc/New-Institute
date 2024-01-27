@@ -10,7 +10,11 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.time.Duration;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 9:10 PM
+ */
 @Configuration
 public class RedisConfig {
     @Value("${spring.data.redis.database}")

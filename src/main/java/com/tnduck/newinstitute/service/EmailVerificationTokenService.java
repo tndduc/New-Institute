@@ -15,7 +15,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static com.tnduck.newinstitute.util.Constants.EMAIL_VERIFICATION_TOKEN_LENGTH;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 26/01/2024 - 10:24 PM
+ */
 @Service
 public class EmailVerificationTokenService {
     private final EmailVerificationTokenRepository emailVerificationTokenRepository;

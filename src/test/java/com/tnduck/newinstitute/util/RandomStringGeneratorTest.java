@@ -8,7 +8,11 @@ import java.security.SecureRandom;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 00:23 AM
+ */
 @Tag("unit")
 @DisplayName("Unit tests for RandomStringGenerator")
 public class RandomStringGeneratorTest {

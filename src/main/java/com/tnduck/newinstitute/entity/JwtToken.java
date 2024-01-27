@@ -12,7 +12,11 @@ import org.springframework.data.redis.core.index.Indexed;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 26/01/2024 - 8:30 PM
+ */
 @Builder
 @Getter
 @Setter

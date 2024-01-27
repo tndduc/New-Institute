@@ -4,7 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 8:55 PM
+ */
 @Data
 @Builder
 @AllArgsConstructor

@@ -8,7 +8,11 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 9:10 PM
+ */
 @Configuration
 @Profile("!mvcIT")
 public class WebMvcConfig implements WebMvcConfigurer {

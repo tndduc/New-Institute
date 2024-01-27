@@ -4,7 +4,11 @@ import com.tnduck.newinstitute.exception.CipherException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 26/01/2024 - 10:23 PM
+ */
 @Service
 @Slf4j
 public class CipherService {

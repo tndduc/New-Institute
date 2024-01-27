@@ -5,7 +5,11 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 00:08 AM
+ */
 @Tag("unit")
 @DisplayName("Unit test for CipherException")
 public class CipherExceptionTest {

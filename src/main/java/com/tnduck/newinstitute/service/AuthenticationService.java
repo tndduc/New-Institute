@@ -9,7 +9,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 26/01/2024 - 10:23 PM
+ */
 @Service
 @Slf4j
 @RequiredArgsConstructor

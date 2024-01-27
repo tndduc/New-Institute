@@ -9,7 +9,11 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 9:30 PM
+ */
 @Documented
 @Constraint(validatedBy = MinListSizeValidator.class)
 @Target({ElementType.FIELD})

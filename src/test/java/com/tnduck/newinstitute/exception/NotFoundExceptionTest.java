@@ -9,7 +9,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 00:12 AM
+ */
 @Tag("unit")
 @DisplayName("Unit test for NotFoundException")
 class NotFoundExceptionTest {

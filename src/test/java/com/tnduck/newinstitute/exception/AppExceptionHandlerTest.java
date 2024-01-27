@@ -27,7 +27,11 @@ import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 00:08 AM
+ */
 @Tag("unit")
 @DisplayName("Unit tests for AppExceptionHandler")
 class AppExceptionHandlerTest {

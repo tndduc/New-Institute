@@ -15,7 +15,11 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.io.UnsupportedEncodingException;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 26/01/2024 - 10:33 PM
+ */
 @Service
 @Slf4j
 public class MailSenderService {

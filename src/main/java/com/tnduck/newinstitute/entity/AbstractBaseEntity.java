@@ -13,7 +13,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 26/01/2024 - 8:30 PM
+ */
 @Getter
 @Setter
 @MappedSuperclass

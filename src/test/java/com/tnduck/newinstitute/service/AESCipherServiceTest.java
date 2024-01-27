@@ -6,7 +6,11 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 00:25 AM
+ */
 @Tag("unit")
 @DisplayName("Unit tests for AESCipherService")
 class AESCipherServiceTest {

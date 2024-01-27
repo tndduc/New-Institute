@@ -31,7 +31,11 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import static com.tnduck.newinstitute.util.Constants.SECURITY_SCHEME_NAME;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 9:10 PM
+ */
 @Configuration
 public class AppConfig {
     /**

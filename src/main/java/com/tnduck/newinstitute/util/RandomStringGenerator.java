@@ -4,7 +4,11 @@ import java.security.SecureRandom;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 26/01/2024 - 10:59 PM
+ */
 public class RandomStringGenerator {
     private static final String UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 

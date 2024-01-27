@@ -8,7 +8,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 26/01/2024 - 10:11 PM
+ */
 @Service
 @RequiredArgsConstructor
 public class RoleService {

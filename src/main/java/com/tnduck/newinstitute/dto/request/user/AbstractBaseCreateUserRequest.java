@@ -10,7 +10,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 9:43 PM
+ */
 @Getter
 @Setter
 @NoArgsConstructor

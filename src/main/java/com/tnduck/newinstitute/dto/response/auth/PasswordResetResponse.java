@@ -10,7 +10,11 @@ import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 import java.util.Date;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 8:46 PM
+ */
 @Getter
 @Setter
 @SuperBuilder

@@ -1,5 +1,9 @@
 package com.tnduck.newinstitute.entity;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 26/01/2024 - 8:30 PM
+ */
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

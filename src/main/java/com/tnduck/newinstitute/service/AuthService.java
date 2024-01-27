@@ -20,7 +20,11 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 import static com.tnduck.newinstitute.util.Constants.TOKEN_HEADER;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 26/01/2024 - 10:23 PM
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j

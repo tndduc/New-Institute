@@ -25,7 +25,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 00:25 AM
+ */
 @Tag("unit")
 @DisplayName("Unit tests for EmailVerificationTokenService")
 class EmailVerificationTokenServiceTest {

@@ -4,7 +4,11 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 26/01/2024 - 10:55 PM
+ */
 public final class AESCipher {
     private static final String ALGORITHM = "AES";
 

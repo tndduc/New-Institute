@@ -16,7 +16,11 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 26/01/2024 - 10:10 PM
+ */
 @Component
 @RequiredArgsConstructor
 @Slf4j

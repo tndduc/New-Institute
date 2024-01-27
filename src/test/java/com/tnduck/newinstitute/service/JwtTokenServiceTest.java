@@ -20,7 +20,11 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 00:25 AM
+ */
 @Tag("unit")
 @DisplayName("Unit tests for JwtTokenService")
 class JwtTokenServiceTest {

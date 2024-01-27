@@ -23,7 +23,11 @@ import org.hibernate.annotations.NaturalId;
 
 import java.util.HashSet;
 import java.util.Set;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 26/01/2024 - 8:30 PM
+ */
 @Entity
 @Table(name = "roles", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"name"}, name = "uk_roles_name")

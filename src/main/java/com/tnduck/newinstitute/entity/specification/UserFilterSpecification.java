@@ -14,7 +14,11 @@ import org.springframework.lang.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 8:55 PM
+ */
 @RequiredArgsConstructor
 public final class UserFilterSpecification implements Specification<User> {
     private final UserCriteria criteria;

@@ -22,7 +22,11 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.util.Date;
 
 import static com.tnduck.newinstitute.util.Constants.EMAIL_VERIFICATION_TOKEN_LENGTH;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 26/01/2024 - 8:30 PM
+ */
 @Entity
 @Table(name = "email_verification_tokens", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"token"}, name = "uk_email_verification_tokens_token")

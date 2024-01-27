@@ -13,7 +13,11 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 9:46 PM
+ */
 @Getter
 @Setter
 @NoArgsConstructor

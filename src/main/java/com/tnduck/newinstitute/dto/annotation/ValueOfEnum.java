@@ -10,7 +10,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 27/01/2024 - 9:30 PM
+ */
 @Documented
 @Constraint(validatedBy = ValueOfEnumValidator.class)
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE,

@@ -22,7 +22,11 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.util.Date;
 
 import static com.tnduck.newinstitute.util.Constants.PASSWORD_RESET_TOKEN_LENGTH;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 26/01/2024 - 8:30 PM
+ */
 @Entity
 @Table(name = "password_reset_tokens", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"token"}, name = "uk_password_reset_tokens_token")

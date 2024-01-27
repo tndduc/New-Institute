@@ -26,7 +26,11 @@ import java.util.Date;
 
 import static com.tnduck.newinstitute.util.Constants.TOKEN_HEADER;
 import static com.tnduck.newinstitute.util.Constants.TOKEN_TYPE;
-
+/**
+ * @author ductn
+ * @project The new institute
+ * @created 26/01/2024 - 10:10 PM
+ */
 @Component
 @Slf4j
 public class JwtTokenProvider {
