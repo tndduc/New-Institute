@@ -4,18 +4,8 @@ package com.tnduck.newinstitute.entity;
  * @project The new institute
  * @created 26/01/2024 - 8:30 PM
  */
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ForeignKey;
-import jakarta.persistence.Index;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,6 +15,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users", uniqueConstraints = {
@@ -93,6 +84,9 @@ public class User extends AbstractBaseEntity {
 
     @Column(name = "blocked_at")
     private LocalDateTime blockedAt;
+    @JsonIgnore
+    @OneToMany(mappedBy="courseTeacher",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private Set<Course> reviews;
 
     /**
      * Get full name of user.
