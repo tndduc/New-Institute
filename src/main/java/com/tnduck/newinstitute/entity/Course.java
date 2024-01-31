@@ -1,7 +1,10 @@
 package com.tnduck.newinstitute.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -29,6 +32,8 @@ public class Course extends AbstractBaseEntity{
     private String image;
     @Column(name = "price")
     private BigDecimal price;
-    @JoinColumn(name="id_teacher", nullable=false,referencedColumnName="id")
-    private User courseTeacher;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "teacher_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private User user;
 }

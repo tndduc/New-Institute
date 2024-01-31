@@ -84,9 +84,7 @@ public class User extends AbstractBaseEntity {
 
     @Column(name = "blocked_at")
     private LocalDateTime blockedAt;
-    @JsonIgnore
-    @OneToMany(mappedBy="courseTeacher",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private Set<Course> reviews;
+
 
     /**
      * Get full name of user.
