@@ -2,6 +2,7 @@ package com.tnduck.newinstitute.service;
 
 import com.tnduck.newinstitute.dto.response.auth.TokenExpiresInResponse;
 import com.tnduck.newinstitute.dto.response.auth.TokenResponse;
+import com.tnduck.newinstitute.dto.response.user.UserResponse;
 import com.tnduck.newinstitute.entity.JwtToken;
 import com.tnduck.newinstitute.entity.User;
 import com.tnduck.newinstitute.exception.NotFoundException;
@@ -159,6 +160,8 @@ public class AuthService {
      * @return an object of TokenResponse
      */
     private TokenResponse generateTokens(final UUID id, final Boolean rememberMe) {
+        User user = userService.findById(id);
+        UserResponse userResponse = UserResponse.convert(user);
         String token = jwtTokenProvider.generateJwt(id.toString());
         String refreshToken = jwtTokenProvider.generateRefresh(id.toString());
         if (rememberMe) {
@@ -177,7 +180,7 @@ public class AuthService {
         log.info("Token generated for user: {}", id);
 
         return TokenResponse.builder()
-            .token(token)
+            .token(token).userResponse(userResponse)
             .refreshToken(refreshToken)
             .expiresIn(
                 TokenExpiresInResponse.builder()

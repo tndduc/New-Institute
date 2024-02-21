@@ -1,6 +1,7 @@
 package com.tnduck.newinstitute.dto.response.auth;
 
 import com.tnduck.newinstitute.dto.response.AbstractBaseResponse;
+import com.tnduck.newinstitute.dto.response.user.UserResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,6 +30,7 @@ public class TokenResponse extends AbstractBaseResponse {
         example = "eyJhbGciOiJIUzUxMiJ9..."
     )
     private String refreshToken;
+    private UserResponse userResponse;
 
     @Schema(
         name = "expiresIn",
