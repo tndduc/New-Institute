@@ -86,13 +86,13 @@ public class MailSenderService {
                 user.getEmailVerificationToken().getToken());
 
             final Context ctx = createContext();
-            ctx.setVariable(NAME, user.getName());
+            ctx.setVariable(NAME, user.getFirstName());
             ctx.setVariable(LAST_NAME, user.getLastName());
             ctx.setVariable("fullName", user.getFullName());
             ctx.setVariable(URL, url);
 
             String subject = messageSourceService.get("email_verification");
-            send(new InternetAddress(senderAddress, appName), new InternetAddress(user.getEmail(), user.getName()),
+            send(new InternetAddress(senderAddress, appName), new InternetAddress(user.getEmail(), user.getFirstName()),
                 subject, templateEngine.process("mail/user-email-verification", ctx));
 
             log.info(String.format("[EmailService] Sent verification e-mail: %s - %s",
@@ -116,13 +116,13 @@ public class MailSenderService {
                 user.getPasswordResetToken().getToken());
 
             final Context ctx = createContext();
-            ctx.setVariable(NAME, user.getName());
+            ctx.setVariable(NAME, user.getFirstName());
             ctx.setVariable(LAST_NAME, user.getLastName());
             ctx.setVariable("fullName", user.getFullName());
             ctx.setVariable(URL, url);
 
             String subject = messageSourceService.get("password_reset");
-            send(new InternetAddress(senderAddress, appName), new InternetAddress(user.getEmail(), user.getName()),
+            send(new InternetAddress(senderAddress, appName), new InternetAddress(user.getEmail(), user.getFirstName()),
                 subject, templateEngine.process("mail/user-reset-password", ctx));
 
             log.info(String.format("[EmailService] Sent reset password e-mail: %s - %s",

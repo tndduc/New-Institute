@@ -155,7 +155,7 @@ public class AuthController extends AbstractBaseController {
             .build());
     }
 
-    @GetMapping("/refresh")
+    @PostMapping("/refresh")
     @Operation(
         summary = "Refresh endpoint",
         responses = {
@@ -187,7 +187,7 @@ public class AuthController extends AbstractBaseController {
     )
     public ResponseEntity<TokenResponse> refresh(
         @Parameter(description = "Refresh token", required = true)
-        @RequestHeader("Authorization") @Validated final String refreshToken
+        @RequestBody @Validated final String refreshToken
     ) {
         return ResponseEntity.ok(authService.refreshFromBearerString(refreshToken));
     }
