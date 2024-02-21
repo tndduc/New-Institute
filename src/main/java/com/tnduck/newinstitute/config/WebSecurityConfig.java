@@ -58,7 +58,8 @@ public class WebSecurityConfig {
                     "/assets/**",
                     "/api-docs/**",
                     "/swagger-ui/**",
-                    "/webjars/**"
+                    "/webjars/**",
+                        "/cloudinary/**"
                 ).permitAll()
                 .requestMatchers("/admin/**").hasAuthority(Constants.RoleEnum.ADMIN.name())
                 .anyRequest().authenticated()
