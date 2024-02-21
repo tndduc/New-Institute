@@ -57,13 +57,13 @@ public abstract class AbstractBaseCreateUserRequest {
     @NotBlank(message = "{not_blank}")
     @Size(max = 50, message = "{max_length}")
     @Schema(
-        name = "name",
+        name = "firstName",
         description = "Name of the user",
         type = "String",
         requiredMode = Schema.RequiredMode.REQUIRED,
         example = "John"
     )
-    private String name;
+    private String firstName;
 
     @NotBlank(message = "{not_blank}")
     @Size(max = 50, message = "{max_length}")

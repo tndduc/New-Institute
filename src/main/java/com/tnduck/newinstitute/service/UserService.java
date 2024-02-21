@@ -246,7 +246,7 @@ public class UserService {
     public User update(UUID id, UpdateUserRequest request) throws BindException {
         User user = findById(id);
         user.setEmail(request.getEmail());
-        user.setName(request.getName());
+        user.setFirstName(request.getName());
         user.setLastName(request.getLastName());
 
         if (StringUtils.hasText(request.getPassword())) {
@@ -403,7 +403,7 @@ public class UserService {
         return User.builder()
             .email(request.getEmail())
             .password(passwordEncoder.encode(request.getPassword()))
-            .name(request.getName())
+            .firstName(request.getFirstName())
             .lastName(request.getLastName())
             .build();
     }
@@ -430,8 +430,8 @@ public class UserService {
             isRequiredEmailVerification = true;
         }
 
-        if (StringUtils.hasText(request.getName()) && !request.getName().equals(user.getName())) {
-            user.setName(request.getName());
+        if (StringUtils.hasText(request.getName()) && !request.getName().equals(user.getFirstName())) {
+            user.setFirstName(request.getName());
         }
 
         if (StringUtils.hasText(request.getLastName()) && !request.getLastName().equals(user.getLastName())) {

@@ -36,8 +36,8 @@ public class User extends AbstractBaseEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "name", nullable = false, length = 50)
-    private String name;
+    @Column(name = "first_name", nullable = false, length = 50)
+    private String firstName;
 
     @Column(name = "last_name", nullable = false, length = 50)
     private String lastName;
@@ -92,6 +92,6 @@ public class User extends AbstractBaseEntity {
      * @return String
      */
     public String getFullName() {
-        return this.lastName + " " + this.name;
+        return this.lastName + " " + this.firstName;
     }
 }

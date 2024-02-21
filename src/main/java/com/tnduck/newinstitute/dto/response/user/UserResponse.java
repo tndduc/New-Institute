@@ -99,7 +99,7 @@ public class UserResponse extends AbstractBaseResponse {
         return UserResponse.builder()
             .id(user.getId().toString())
             .email(user.getEmail())
-            .name(user.getName())
+            .name(user.getFirstName())
             .lastName(user.getLastName())
             .roles(user.getRoles().stream().map(role -> role.getName().name()).toList())
             .emailVerifiedAt(user.getEmailVerifiedAt())
