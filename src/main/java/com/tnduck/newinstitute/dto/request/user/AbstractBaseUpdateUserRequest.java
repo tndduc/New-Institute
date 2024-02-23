@@ -30,13 +30,13 @@ public abstract class AbstractBaseUpdateUserRequest {
 
     @Size(max = 50, message = "{max_length}")
     @Schema(
-        name = "name",
+        name = "firstName",
         description = "Name of the user",
         type = "String",
         requiredMode = Schema.RequiredMode.NOT_REQUIRED,
         example = "John"
     )
-    private String name;
+    private String firstName;
 
     @Size(max = 50, message = "{max_length}")
     @Schema(
