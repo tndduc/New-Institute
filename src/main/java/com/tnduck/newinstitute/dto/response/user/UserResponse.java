@@ -35,12 +35,12 @@ public class UserResponse extends AbstractBaseResponse {
     private String email;
 
     @Schema(
-        name = "name",
+        name = "first_name",
         description = "Name of the user",
         type = "String",
         example = "John"
     )
-    private String name;
+    private String firstName;
 
     @Schema(
         name = "lastName",
@@ -99,7 +99,7 @@ public class UserResponse extends AbstractBaseResponse {
         return UserResponse.builder()
             .id(user.getId().toString())
             .email(user.getEmail())
-            .name(user.getFirstName())
+            .firstName(user.getFirstName())
             .lastName(user.getLastName())
             .roles(user.getRoles().stream().map(role -> role.getName().name()).toList())
             .emailVerifiedAt(user.getEmailVerifiedAt())
