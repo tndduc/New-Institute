@@ -121,6 +121,37 @@ public class AuthController extends AbstractBaseController {
         return ResponseEntity.ok(SuccessResponse.builder().message(messageSourceService.get("registered_successfully"))
             .build());
     }
+    @PostMapping("/register-teacher")
+    @Operation(
+            summary = "Register Teacher endpoint",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful operation",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = SuccessResponse.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "422",
+                            description = "Validation failed",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = DetailedErrorResponse.class)
+                            )
+                    )
+            }
+    )
+    public ResponseEntity<SuccessResponse> registerTeacher(
+            @Parameter(description = "Request body to register", required = true)
+            @RequestBody @Valid RegisterRequest request
+    ) throws BindException {
+        userService.registerTeacher(request);
+
+        return ResponseEntity.ok(SuccessResponse.builder().message(messageSourceService.get("registered_successfully"))
+                .build());
+    }
 
     @GetMapping("/email-verification/{token}")
     @Operation(

@@ -26,14 +26,18 @@ import java.util.UUID;
 public class Course extends AbstractBaseEntity{
     @Column(name = "name", nullable = false, length = 50)
     private String name;
-    @Column(name = "description", nullable = false, length = 50)
+    @Column(name = "description", nullable = false, length = 500)
     private String description;
-    @Column(name ="image")
-    private String image;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "file_id",nullable = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private File file;
     @Column(name = "price")
     private BigDecimal price;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "teacher_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
+    @Column(name = "status", nullable = false, length = 50)
+    private String status;
 }

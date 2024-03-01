@@ -29,7 +29,7 @@ public class CreateUserRequest extends AbstractBaseCreateUserRequest {
         description = "Roles of the user",
         type = "List<String>",
         requiredMode = Schema.RequiredMode.REQUIRED,
-        allowableValues = {"ADMIN", "USER"},
+        allowableValues = {"ADMIN", "USER,","TEACHER"},
         example = "[\"USER\"]"
     )
     private List<@ValueOfEnum(enumClass = Constants.RoleEnum.class) String> roles;

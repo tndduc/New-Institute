@@ -55,13 +55,13 @@ public class WebSecurityConfig {
                     "/",
                     "/auth/**",
                     "/public/**",
-                    "/assets/**",
+                    "/assets/**", "/course/**",
                     "/api-docs/**",
                     "/swagger-ui/**",
                     "/webjars/**",
                         "/cloudinary/**"
                 ).permitAll()
-                .requestMatchers("/admin/**").hasAuthority(Constants.RoleEnum.ADMIN.name())
+                .requestMatchers("/admin/**").hasAuthority(Constants.RoleEnum.USER.name())
                 .anyRequest().authenticated()
             )
             .build();

@@ -207,7 +207,24 @@ public class UserService {
 
         return user;
     }
+    /**
+     * Register teacher.
+     *
+     * @param request RegisterRequest
+     * @return User
+     */
+    public User registerTeacher(final RegisterRequest request) throws BindException {
+        log.info("Registering user with email: {}", request.getEmail());
 
+        User user = createUser(request);
+        user.setRoles(List.of(roleService.findByName(Constants.RoleEnum.TEACHER)));
+        userRepository.save(user);
+
+        emailVerificationEventPublisher(user);
+        log.info("User registered with email: {}, {}", user.getEmail(), user.getId());
+
+        return user;
+    }
     /**
      * Create user.
      *

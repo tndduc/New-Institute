@@ -75,7 +75,7 @@ public final class UserFilterSpecification implements Specification<User> {
                 builder.or(
                     builder.like(builder.lower(root.get("id").as(String.class)), q),
                     builder.like(builder.lower(root.get("email")), q),
-                    builder.like(builder.lower(root.get("name")), q),
+                    builder.like(builder.lower(root.get("firstName")), q),
                     builder.like(builder.lower(root.get("lastName")), q)
                 )
             );

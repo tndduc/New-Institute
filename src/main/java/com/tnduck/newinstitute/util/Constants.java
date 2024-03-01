@@ -31,8 +31,8 @@ public final class Constants {
     @AllArgsConstructor
     public enum RoleEnum {
         ADMIN("ADMIN"),
-        USER("USER");
-
+        USER("USER"),
+        TEACHER("TEACHER");
         private final String value;
 
         public static RoleEnum get(final String name) {
