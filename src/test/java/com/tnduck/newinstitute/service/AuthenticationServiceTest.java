@@ -59,7 +59,7 @@ class AuthenticationServiceTest {
     @Nested
     @DisplayName("Test class for isAuthorized scenarios")
     class IsAuthorized {
-        final String[] roles = {"ADMIN", "USER"};
+        final String[] roles = {"ADMIN", "USER","TEACHER"};
 
         @Test
         @DisplayName("Should return true when user has required role")

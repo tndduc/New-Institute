@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author ductn
@@ -17,7 +18,12 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder
 public class CreateCourseRequest extends AbstractBaseCourseRequest {
-
+        @Schema(
+            name = "file",
+            description = "File of course",
+            type = "File"
+            )
+    private MultipartFile file;
     @Schema(
             name = "status",
             description = "Is the course have checked?",

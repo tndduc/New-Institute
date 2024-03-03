@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.configurers.HeadersCon
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 /**
  * @author ductn
  * @project The new institute
@@ -39,31 +40,32 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
         return http
-            .csrf(AbstractHttpConfigurer::disable)
-            .exceptionHandling(configurer -> configurer
-                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-            )
-            .sessionManagement(configurer -> configurer
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
-            .headers(configurer -> configurer
-                .frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)
-            )
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-            .authorizeHttpRequests(requests -> requests
-                .requestMatchers(
-                    "/",
-                    "/auth/**",
-                    "/public/**",
-                    "/assets/**", "/course/**",
-                    "/api-docs/**",
-                    "/swagger-ui/**",
-                    "/webjars/**",
-                        "/cloudinary/**"
-                ).permitAll()
-                .requestMatchers("/admin/**").hasAuthority(Constants.RoleEnum.USER.name())
-                .anyRequest().authenticated()
-            )
-            .build();
+                .csrf(AbstractHttpConfigurer::disable)
+                .exceptionHandling(configurer -> configurer
+                        .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                )
+                .sessionManagement(configurer -> configurer
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .headers(configurer -> configurer
+                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)
+                )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .authorizeHttpRequests(requests -> requests
+                        .requestMatchers(
+                                "/",
+                                "/auth/**",
+                                "/public/**",
+                                "/assets/**",
+                                "/course/**",
+                                "/api-docs/**",
+                                "/swagger-ui/**",
+                                "/webjars/**",
+                                "/cloudinary/**"
+                        ).permitAll()
+                        .requestMatchers("/admin/**").hasAuthority(Constants.RoleEnum.ADMIN.name())
+                        .anyRequest().authenticated()
+                )
+                .build();
     }
 }

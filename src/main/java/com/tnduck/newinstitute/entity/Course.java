@@ -28,13 +28,13 @@ public class Course extends AbstractBaseEntity{
     private String name;
     @Column(name = "description", nullable = false, length = 500)
     private String description;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "file_id",nullable = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private File file;
     @Column(name = "price")
     private BigDecimal price;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "teacher_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;

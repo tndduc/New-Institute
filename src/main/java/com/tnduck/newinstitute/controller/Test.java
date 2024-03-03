@@ -29,16 +29,19 @@ public class Test {
             path = "/upload",
             method = RequestMethod.POST,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> uploadImage(@Parameter(description = "Request body to login", required = true)
-                                         @ModelAttribute  @Validated final CreateCourseRequest request){
-        MultipartFile file = request.getFile();
-        System.out.println("File name : "+file.getName());
-        System.out.println("Type : " + file.getContentType());
-        System.out.println("Name : " + file.getOriginalFilename());
-        System.out.println("Size : " + file.getSize());
-        System.out.println(request.getName());
-        File data = this.fileService.createFile(file);
+    public ResponseEntity<?> uploadImage(@RequestParam(value = "file", required = false) MultipartFile file,@ModelAttribute CreateCourseRequest request){
 
+        if (file != null && !file.isEmpty()) {
+            System.out.println("File name : "+file.getName());
+            System.out.println("Type : " + file.getContentType());
+            System.out.println("Name : " + file.getOriginalFilename());
+            System.out.println("Size : " + file.getSize());
+
+            File data = this.fileService.createFile(file);
+            return new ResponseEntity<>(data, HttpStatus.OK);
+        }
+
+        String data = request.getName();
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 //    @RequestMapping(

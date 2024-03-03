@@ -41,12 +41,12 @@ public abstract class AbstractBaseCourseRequest {
             example = "Become a Web Development Pro with these valuable skills. Find the right instructor for you. Choose from many topics, skill levels, and languages. Download To Your Phone. Courses in 75 Languages. Stay Updated with AI. Learn ChatGPT. ChatGPT AI Course."
     )
     private String description;
-    @Schema(
-            name = "file",
-            description = "File of course",
-            type = "File"
-            )
-    private MultipartFile file;
+//    @Schema(
+//            name = "file",
+//            description = "File of course",
+//            type = "File"
+//            )
+//    private MultipartFile file;
     @Schema(
             name = "price",
             description = "Price of course",

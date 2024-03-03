@@ -12,6 +12,7 @@ import com.tnduck.newinstitute.dto.response.user.UsersPaginationResponse;
 import com.tnduck.newinstitute.entity.Course;
 import com.tnduck.newinstitute.entity.specification.criteria.CourseCriteria;
 import com.tnduck.newinstitute.entity.specification.criteria.PaginationCriteria;
+import com.tnduck.newinstitute.exception.BadRequestException;
 import com.tnduck.newinstitute.repository.CourseRepository;
 import com.tnduck.newinstitute.service.CourseService;
 import com.tnduck.newinstitute.service.MessageSourceService;
@@ -28,13 +29,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import static com.tnduck.newinstitute.util.Constants.SECURITY_SCHEME_NAME;
 
@@ -47,13 +52,14 @@ import static com.tnduck.newinstitute.util.Constants.SECURITY_SCHEME_NAME;
 @RequestMapping("/course")
 @RequiredArgsConstructor
 @Tag(name = "003. Course", description = "Course API")
-public class CourseController extends AbstractBaseController{
+public class CourseController extends AbstractBaseController {
     private final CourseService courseService;
     private final MessageSourceService messageSourceService;
     private final CourseRepository courseRepository;
-    private static final String[] SORT_COLUMNS = new String[]{"id",  "name", "price", "status",
+    private static final String[] SORT_COLUMNS = new String[]{"id", "name", "price", "status",
             "createdAt", "updatedAt"};
 
+    @PreAuthorize("hasAuthority('TEACHER')")
     @RequestMapping(
             path = "/create",
             method = RequestMethod.POST,
@@ -80,15 +86,16 @@ public class CourseController extends AbstractBaseController{
                     )
             }
     )
-    public ResponseEntity<?> createCourse(@Parameter(description = "Request body to login", required = true)
-                                         @ModelAttribute @Validated final CreateCourseRequest request) throws BindException {
+    public ResponseEntity<?> createCourse(@ModelAttribute @Validated final CreateCourseRequest request) throws BindException {
         CourseResponse course = courseService.create(request);
 
         return ResponseEntity.ok(course);
     }
+
+    @PreAuthorize("hasAuthority('TEACHER')")
     @RequestMapping(
             path = "/update",
-            method = RequestMethod.POST,
+            method = RequestMethod.PATCH,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(
             summary = "Create endpoint",
@@ -112,12 +119,23 @@ public class CourseController extends AbstractBaseController{
                     )
             }
     )
-    public ResponseEntity<?> updateCourse(@Parameter(description = "Request body to login", required = true)
-                                          @ModelAttribute @Validated final UpdateCourseRequest request) throws BindException {
-        CourseResponse courseResponse = courseService.update(request);
+    public ResponseEntity<?> updateCourse(
+            @Parameter(name = "id", description = "UUID", example = "1")
+            @RequestParam(defaultValue = "1", required = false) final String id,
+            @RequestParam(value = "file", required = false) MultipartFile file,
+            @Parameter(name = "name", description = "Name of course", example = "Spring boot ")
+            @RequestParam(required = false) final String name,
+            @Parameter(name = "description", description = "Description", example = "is dead")
+            @RequestParam(required = false) final String description,
+            @Parameter(name = "price", description = "Price", example = "0")
+            @RequestParam(required = false) final BigDecimal price
+
+    ) throws Exception {
+        CourseResponse courseResponse = courseService.updateByTeacher(id, file, name, description, price);
 
         return ResponseEntity.ok(courseResponse);
     }
+
     @GetMapping("/get-all")
     public ResponseEntity<CoursesPaginationResponse> list(
 
@@ -154,7 +172,7 @@ public class CourseController extends AbstractBaseController{
             @Parameter(name = "sort", description = "Sort direction", schema = @Schema(type = "string",
                     allowableValues = {"asc", "desc"}, defaultValue = "asc"))
             @RequestParam(defaultValue = "asc", required = false) @Pattern(regexp = "asc|desc") final String sort
-    ){
+    ) {
         sortColumnCheck(messageSourceService, SORT_COLUMNS, sortBy);
         Page<Course> courses = courseService.findAll(
                 CourseCriteria.builder()
@@ -178,8 +196,23 @@ public class CourseController extends AbstractBaseController{
                 .map(CourseResponse::convert)
                 .toList()));
     }
-    @GetMapping("/get")
-    public List<Course> getall(){
-        return courseRepository.findAll();
+
+    @GetMapping("/get-by-id")
+    public CourseResponse getById(@Parameter(name = "id", description = "Search keyword", example = "lorem")
+                                  @RequestParam(required = true) final String id) throws Exception {
+        UUID uuid = UUID.fromString(id);
+        Course course = courseRepository.findById(uuid)
+                .orElseThrow(() -> new BadRequestException(messageSourceService.get("id_course is not exists"))); // uuid not exists
+        CourseResponse courseResponse = CourseResponse.convert(course);
+        return courseResponse;
+
     }
+
+    @PreAuthorize("hasAuthority('TEACHER')")
+    @DeleteMapping("/delete-by-teacher")
+    public CourseResponse deleteByTeacher(@Parameter(name = "id", description = "Search keyword", example = "lorem")
+                                          @RequestParam(required = true) final String id) {
+        return courseService.deleteByTeacher(id);
+    }
+
 }
