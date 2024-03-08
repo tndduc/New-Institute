@@ -14,39 +14,41 @@ import java.util.Set;
  * @created 31/01/2024 - 10:33 PM
  */
 @Entity
-@Table(name = "tags")
+@Table(name = "categories")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TagCourse extends AbstractBaseEntity{
+public class CategoryCourse extends AbstractBaseEntity{
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Course course;
     @Column(name = "name", nullable = false, length = 500)
     private String name;
     @Column(name = "description")
     private String description;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinTable(name = "course_tags",
+    @JoinTable(name = "course_categories",
             joinColumns = @JoinColumn(
-                    name = "tag_id",
+                    name = "category_id",
                     foreignKey = @ForeignKey(
-                            name = "fk_course_tags_tag_id",
-                            foreignKeyDefinition = "FOREIGN KEY (tag_id) REFERENCES tags (id) ON DELETE CASCADE"
+                            name = "fk_course_categories_category_id",
+                            foreignKeyDefinition = "FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE CASCADE"
                     ),
                     nullable = false
             ),
             inverseJoinColumns = @JoinColumn(
                     name = "course_id",
                     foreignKey = @ForeignKey(
-                            name = "fk_course_tags_course_id",
+                            name = "fk_course_categories_course_id",
                             foreignKeyDefinition = "FOREIGN KEY (course_id) REFERENCES courses (id) ON DELETE CASCADE"
                     ),
                     nullable = false
             ),
             uniqueConstraints = {
                     @UniqueConstraint(
-                            columnNames = {"course_id", "tag_id"},
-                            name = "uk_course_tags_course_id_tag_id"
+                            columnNames = {"course_id", "category_id"},
+                            name = "uk_course_categories_course_id_category_id"
                     )
             }
     )

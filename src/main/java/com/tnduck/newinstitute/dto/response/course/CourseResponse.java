@@ -1,10 +1,11 @@
 package com.tnduck.newinstitute.dto.response.course;
 
 import com.tnduck.newinstitute.dto.response.AbstractBaseResponse;
+import com.tnduck.newinstitute.dto.response.course.category.CategoryResponse;
+import com.tnduck.newinstitute.dto.response.course.tag.TagResponse;
 import com.tnduck.newinstitute.dto.response.user.UserResponse;
-import com.tnduck.newinstitute.entity.Course;
-import com.tnduck.newinstitute.entity.File;
-import com.tnduck.newinstitute.entity.User;
+import com.tnduck.newinstitute.entity.*;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -95,6 +97,19 @@ public class CourseResponse  extends AbstractBaseResponse {
     )
     private LocalDateTime updatedAt;
 
+    @ArraySchema(
+            schema = @Schema(
+                    description = "List of tags"
+            )
+    )
+    private List<TagResponse> tags;
+    @ArraySchema(
+            schema = @Schema(
+                    description = "List of categories"
+            )
+    )
+    private List<CategoryResponse> categories;
+
     /**
      * Convert Course to UserResponse
      * @param course
@@ -102,6 +117,16 @@ public class CourseResponse  extends AbstractBaseResponse {
      */
     public static CourseResponse convert(Course course) {
         UserResponse userDTO = UserResponse.convert(course.getUser());
+        List<TagResponse> tagResponses = new ArrayList<>();
+        for (TagCourse tag : course.getTags()) {
+            TagResponse tagResponse = TagResponse.convert(tag) ;
+            tagResponses.add(tagResponse);
+        }
+        List<CategoryResponse> categoryResponses = new ArrayList<>();
+        for (CategoryCourse category : course.getCategories()) {
+            CategoryResponse categoryResponse =  CategoryResponse.convert(category);
+            categoryResponses.add(categoryResponse);
+        }
         return CourseResponse.builder()
                 .id(course.getId().toString())
                 .name(course.getName())
@@ -110,6 +135,8 @@ public class CourseResponse  extends AbstractBaseResponse {
                 .file(course.getFile())
                 .userResponse(userDTO)
                 .status(course.getStatus())
+                .tags(tagResponses)
+                .categories(categoryResponses)
                 .createdAt(course.getCreatedAt())
                 .updatedAt(course.getUpdatedAt())
                 .build();
