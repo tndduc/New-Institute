@@ -1,28 +1,46 @@
-This README file guides you through building a dynamic web selling platform using Spring Boot, the powerful Java framework for rapid web development. Get ready to create a scalable and modern online store equipped with cutting-edge features.
+# Spring Course Selling Platform 
+This project is a Spring-based application designed for selling courses online. It utilizes the Spring Boot framework along with various technologies such as PostgreSQL for database management, unit testing for ensuring code quality, and RESTful API for seamless communication between different components.
 
-What You'll Build
+## Features
+- Course Management: Allows administrators to create, update, and delete courses.
+- User Authentication: Provides secure authentication mechanisms for users.
+- Enrollment: Enables users to enroll in courses they are interested in.
+- Payment Integration: Integrates payment gateways for course purchases.
+- Search Functionality: Allows users to search for courses based on different criteria.
+- Unit Testing: Ensures code quality and reliability through comprehensive unit tests.
+- RESTful API: Facilitates communication between the frontend and backend components.
+## Technologies Used
+- Spring Boot: Framework for building enterprise-level applications.
+- PostgreSQL: Relational database management system for storing course and user data.
+- JUnit: Java testing framework for unit testing.
+- RESTful API: Communication protocol for seamless interaction between client and server.
+- Docker: Containerization platform for packaging applications and their dependencies.
+## Setup Instructions
+- Clone the Repository: git clone https://github.com/yourusername/spring-course-selling.git
+- Configure PostgreSQL: Set up a PostgreSQL database and update the application.properties file with your database credentials.
+- Build and Run: Use Maven or Gradle to build the project and run the Spring Boot application.
++ For Maven: mvn clean install && mvn spring-boot:run
++ For Gradle: ./gradlew build && ./gradlew bootRun
+Access the Application: Open your browser and navigate to http://localhost:8080 to access the application.
+API Documentation
+The API endpoints documentation can be found by accessing /swagger-ui.html when the application is running locally. It provides detailed information about the available endpoints and their usage.
+- Build Docker Image:
+```
 
-E-commerce Backend: Implement core functionalities like product catalog management, order processing, and payment integration using Spring Boot's robust features.
-RESTful API: Develop a secure and efficient API to handle data exchange between your front-end and back-end applications.
-Security: Integrate Spring Security to protect your web app from unauthorized access and ensure data integrity.
-Database Integration: Choose and connect to a suitable database (e.g., MySQL, PostgreSQL) to store your product and customer information.
-Customization: Learn to extend your Spring Boot application with additional features like user authentication, shopping cart functionality, and advanced search.
-Course Structure
+docker build -t java-spring-boot-newinstitute-network
+```
+Run Docker Container:
+```
+docker run -p 8080:8080 java-spring-boot-newinstitute-network
+```
+## Testing
+To run the unit tests, execute the following command:
 
-Spring Boot Essentials: Master the basics of Spring Boot, including dependency management, auto-configuration, and Spring MVC principles.
-Building the Backend: Create core components like product model, services, and controllers to manage your product catalog and orders.
-Designing the REST API: Develop RESTful endpoints for CRUD operations (Create, Read, Update, Delete) on your product data.
-Securing Your App: Implement authentication, authorization, and data encryption using Spring Security features.
-Connecting to a Database: Set up your chosen database and integrate it with your Spring Boot application for persistent data storage.
-Adding Advanced Features: Explore modules like Spring Data JPA, Thymeleaf templates, and Spring Security OAuth2 for user management and social login options.
-Getting Started
+- For Maven: mvn test
+- For Gradle: ./gradlew test
+Contributing
+Contributions are welcome! If you find any issues or have suggestions for improvements, feel free to open an issue or create a pull request.
 
-Prerequisites: Familiarity with Java and basic web development concepts is recommended.
-Tools and Technologies: We'll use Spring Boot, Maven/Gradle, a chosen database, and your preferred IDE (e.g., IntelliJ IDEA, Eclipse).
-Course Materials: Code samples, video lectures, hands-on projects, and quizzes will guide you through the development process.
-Beyond the Course
+License
+This project is licensed under the MIT License.
 
-Continuous Learning: Explore Spring Boot's extensive ecosystem of libraries and frameworks to further enhance your web app.
-Community Resources: Utilize online communities, forums, and documentation to troubleshoot issues and stay updated on the latest advancements.
-Deployment options: Consider deploying your Spring Boot application on cloud platforms like Heroku or AWS for scalability and performance.
-We're here to support you!
