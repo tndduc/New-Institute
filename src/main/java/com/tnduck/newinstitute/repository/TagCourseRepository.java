@@ -4,6 +4,7 @@ import com.tnduck.newinstitute.dto.request.course.tag.TagRequest;
 import com.tnduck.newinstitute.entity.TagCourse;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,4 +15,5 @@ import java.util.UUID;
  */
 public interface TagCourseRepository extends JpaRepository<TagCourse, UUID> {
     Optional<TagCourse> findByName(String tagName);
+    List<TagCourse> findByNameLike(String name);
 }
