@@ -12,7 +12,7 @@ target/
 .settings
 .springBeans
 .sts4-cache
-
+cred.json
 ### IntelliJ IDEA ###
 .idea
 *.iws
