@@ -265,20 +265,6 @@ public class CourseController extends AbstractBaseController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-    @GetMapping("/categories/{name}")
-    public ResponseEntity<List<CategoryResponse>> getCategoriesByName(@Parameter(name = "name", description = "Category name", required = true)
-                                                                          @PathVariable("name") final String name) {
-        try {
-            List<CategoryResponse> categoryResponses = new ArrayList<>();
-            List<CategoryCourse> categoriesFromRepository = categoryCourseRepository.findByNameLike(name);
-            for (CategoryCourse categoryCourse : categoriesFromRepository) {
-                categoryResponses.add(CategoryResponse.convert(categoryCourse));
-            }
-            return ResponseEntity.ok().body(categoryResponses);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
     @GetMapping("/tags/get-all")
     public ResponseEntity<List<TagResponse>> getAllTags() {
         try {
@@ -293,21 +279,7 @@ public class CourseController extends AbstractBaseController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-    @GetMapping("/tags/{name}")
-    public ResponseEntity<List<TagResponse>> getTagByName(@Parameter(name = "name", description = "Tag name", required = true)
-                                                    @PathVariable("name") final String name) {
-        try {
-            List<TagResponse> tagResponses = new ArrayList<>();
-            List<TagCourse> tagCourses = tagCourseRepository.findByNameLike("%"+name+"%");
-            for (TagCourse tagCourse : tagCourses) {
-                tagResponses.add(TagResponse.convert(tagCourse));
-            }
 
-            return ResponseEntity.ok().body(tagResponses);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
 
     @PreAuthorize("hasAuthority('TEACHER')")
     @DeleteMapping("/delete-by-teacher")
