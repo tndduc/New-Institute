@@ -1,4 +1,4 @@
-# Spring Course Selling Platform 
+# Spring Course Selling Platform [This project have been close // we gonna update it to Microservice]
 This project is a Spring-based application designed for selling courses online. It utilizes the Spring Boot framework along with various technologies such as PostgreSQL for database management, unit testing for ensuring code quality, and RESTful API for seamless communication between different components.
 
 ## Features
