@@ -21,7 +21,7 @@ import java.util.Set;
 @Table(name = "users", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"email"}, name = "uk_users_email")
 }, indexes = {
-    @Index(columnList = "name", name = "idx_users_name"),
+    @Index(columnList = "first_name", name = "idx_users_first_name"),
     @Index(columnList = "last_name", name = "idx_users_last_name")
 })
 @Getter

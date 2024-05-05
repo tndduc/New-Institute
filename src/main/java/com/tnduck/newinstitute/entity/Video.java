@@ -18,6 +18,10 @@ import org.hibernate.annotations.OnDeleteAction;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Video extends AbstractBaseEntity{
+    @Column(name = "title", nullable = true)
+    private String title;
+    @Column(name = "duration", nullable = true)
+    private String duration;
     @Column(name = "url", nullable = false)
     private String url;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

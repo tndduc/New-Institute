@@ -28,9 +28,4 @@ public class Lesson extends AbstractBaseEntity{
     @JoinColumn(name = "course_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Course course;
-
-
-
-
-
 }

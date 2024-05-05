@@ -17,7 +17,7 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @NoArgsConstructor
 @SuperBuilder
-public abstract class Lesson {
+public class LessonRequest {
     @NotBlank(message = "{not_blank}")
     @Size(max = 50, message = "{max_length}")
     @Schema(
@@ -36,6 +36,13 @@ public abstract class Lesson {
             example = "Become a Web Development Pro with these valuable skills. Find the right instructor for you. Choose from many topics, skill levels, and languages. Download To Your Phone. Courses in 75 Languages. Stay Updated with AI. Learn ChatGPT. ChatGPT AI Course."
     )
     private String content;
-
+    @Schema(
+            name = "idCourse",
+            description = "idCourse of course",
+            type = "String",
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            example = ""
+    )
+    private String idCourse;
 
 }

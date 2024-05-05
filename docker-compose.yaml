@@ -49,11 +49,21 @@ services:
       - '1025:1025'
     networks:
       - java-spring-boot-newinstitute-network
-
+  pgadmin4:
+    image: dpage/pgadmin4
+    container_name: java-spring-boot-newinstitute-pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - '5050:80'
+    networks:
+      - java-spring-boot-newinstitute-network
 volumes:
   postgres-data:
   redis-data:
-
+  pgadmin4:
 networks:
   java-spring-boot-newinstitute-network:
     driver: bridge
