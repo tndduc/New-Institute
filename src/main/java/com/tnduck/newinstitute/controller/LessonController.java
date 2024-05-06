@@ -10,6 +10,7 @@ import com.tnduck.newinstitute.entity.Lesson;
 import com.tnduck.newinstitute.entity.Video;
 import com.tnduck.newinstitute.service.LessonService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -21,12 +22,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 import static com.tnduck.newinstitute.util.Constants.SECURITY_SCHEME_NAME;
 
@@ -112,6 +111,24 @@ public class LessonController extends AbstractBaseController{
         try {
             VideoResponse videoResponse = lessonService.uploadVideo(request);
             return ResponseEntity.ok(videoResponse);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+   @GetMapping("/get-lessons")
+    public ResponseEntity<?> getLesson(@Parameter(name = "id", description = "Course ID", example = "00000000-0000-0000-0000-000000000001")
+                                                       @RequestParam(required = true) final UUID id) {
+        try {
+            return ResponseEntity.ok(lessonService.getLesson(id));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    @GetMapping("/get-videos")
+    public ResponseEntity<?> getVideo(@Parameter(name = "id", description = "Lesson ID", example = "00000000-0000-0000-0000-000000000001")
+                                       @RequestParam(required = true) final UUID id) {
+        try {
+            return ResponseEntity.ok(lessonService.getVideo(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

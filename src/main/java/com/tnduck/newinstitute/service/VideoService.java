@@ -34,6 +34,10 @@ public class VideoService {
 //        this.videoRepository = videoRepository;
 //    }
 
+    public  List<Video> getVideos(UUID uuidLesson) {
+        List<Video> videos = videoRepository.findByLessonId(uuidLesson);
+        return videos;
+    }
     public List<Video> create(MultipartFile[] files, Lesson lesson) {
         if (files == null || files.length == 0) {
             throw new IllegalArgumentException("File cannot be null or empty.");

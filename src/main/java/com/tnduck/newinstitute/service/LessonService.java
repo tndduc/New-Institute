@@ -2,6 +2,7 @@ package com.tnduck.newinstitute.service;
 
 import com.tnduck.newinstitute.dto.request.lesson.CreateVideoLessonRequest;
 import com.tnduck.newinstitute.dto.request.lesson.LessonRequest;
+import com.tnduck.newinstitute.dto.response.course.CourseResponse;
 import com.tnduck.newinstitute.dto.response.lesson.LessonResponse;
 import com.tnduck.newinstitute.dto.response.lesson.VideoResponse;
 import com.tnduck.newinstitute.entity.*;
@@ -12,13 +13,12 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.authenticator.SingleSignOn;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author ductn
@@ -35,6 +35,33 @@ public class LessonService {
     private final CloudinaryService cloudinaryService;
     private final VideoRepository videoRepository;
     private final UserService userService;
+    private final VideoService videoService;
+    public ResponseEntity<?> getLesson(UUID uuid) throws Exception{
+        Optional<Course> courseOptional = courseRepository.findById(uuid);
+        if (courseOptional.isEmpty()) {
+            log.error("Could not find");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found for uuid " + uuid);
+        }
+        List<Video> videos = new ArrayList<>();
+        List<Lesson> lessons = lessonRepository.findByCourse_Id(uuid);
+        List<LessonResponse> lessonResponses = new ArrayList<>();
+        for (Lesson lesson : lessons) {
+            lessonResponses.add(LessonResponse.convert(lesson,videos));
+        }
+        log.info("Got videos: " + lessons.get(0).getId());
+        return ResponseEntity.ok(lessonResponses);
+    }
+    public ResponseEntity<?> getVideo(UUID uuid) throws Exception{
+        Optional<Lesson> lessonOptional = lessonRepository.findById(uuid);
+        if (lessonOptional.isEmpty()) {
+            log.error("Could not find");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found for uuid " + uuid);
+        }
+        log.info("Got lesson: " + lessonOptional.get().getId());
+        List<Video> videos = videoService.getVideos(uuid);
+        log.info("Got videos: " + videos.get(0).getId());
+        return ResponseEntity.ok(LessonResponse.convert(lessonOptional.get(), videos));
+    }
     public Lesson createLesson(LessonRequest lessonRequest) throws Exception {
         Optional<Course> courseOptional = courseRepository.findById(UUID.fromString(lessonRequest.getIdCourse()));
         User teacher = userService.getUser();
