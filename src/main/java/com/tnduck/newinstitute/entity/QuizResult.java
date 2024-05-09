@@ -4,32 +4,24 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
-import java.util.List;
-
-/**
- * @author ductn
- * @project The new institute
- * @created 31/01/2024 - 11:37 PM
- */
 @Entity
-@Table(name = "questions")
+@Table(name = "quiz_results")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Question extends AbstractBaseEntity{
-    @Column(name = "content")
-    private String content;
-    @Column(name = "description")
-    private String description;
-    @Column(name = "level")
-    private int level;
+public class QuizResult extends AbstractBaseEntity{
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "quiz_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Quiz quiz;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private User user;
 
-
+    @Column(nullable = false)
+    private int score;
 }

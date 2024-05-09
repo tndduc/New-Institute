@@ -28,6 +28,7 @@ public class LessonRequest {
             example = "Nextjs Zero to Hero"
     )
     private String title;
+
     @Schema(
             name = "content",
             description = "Content of course",
@@ -36,13 +37,21 @@ public class LessonRequest {
             example = "Become a Web Development Pro with these valuable skills. Find the right instructor for you. Choose from many topics, skill levels, and languages. Download To Your Phone. Courses in 75 Languages. Stay Updated with AI. Learn ChatGPT. ChatGPT AI Course."
     )
     private String content;
+
     @Schema(
             name = "idCourse",
             description = "idCourse of course",
-            type = "String",
+            type = "int",
             requiredMode = Schema.RequiredMode.REQUIRED,
             example = ""
     )
     private String idCourse;
 
+//    @Schema(
+//            name = "ordinal_number",
+//            description = "ordinal number",
+//            type = "int",
+//            example = "1"
+//    )
+//    private int ordinalNumber;
 }

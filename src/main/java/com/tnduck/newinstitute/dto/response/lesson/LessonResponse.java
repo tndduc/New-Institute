@@ -3,8 +3,7 @@ package com.tnduck.newinstitute.dto.response.lesson;
 
 import com.tnduck.newinstitute.dto.response.AbstractBaseResponse;
 import com.tnduck.newinstitute.dto.response.course.CourseResponse;
-import com.tnduck.newinstitute.dto.response.course.tag.TagResponse;
-import com.tnduck.newinstitute.entity.Course;
+import com.tnduck.newinstitute.dto.response.video.VideoResponse;
 import com.tnduck.newinstitute.entity.Lesson;
 import com.tnduck.newinstitute.entity.Video;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -17,6 +16,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @Getter
 @Setter
 @SuperBuilder
@@ -54,14 +54,21 @@ public class LessonResponse extends AbstractBaseResponse {
             example = ""
     )
     private String idCourse;
-
+    @Schema(
+            name = "ordinal_number",
+            description = "ordinal number",
+            type = "int",
+            example = "1"
+    )
+    private int ordinalNumber;
     @ArraySchema(
             schema = @Schema(
                     description = "List of video"
             )
     )
     private List<VideoResponse> videos;
-    public static LessonResponse convert(Lesson lesson, List<Video> videos){
+
+    public static LessonResponse convert(Lesson lesson, List<Video> videos) {
         List<VideoResponse> videoResponses = new ArrayList<>();
         for (Video video : videos) {
             videoResponses.add(VideoResponse.convert(video));
@@ -69,11 +76,12 @@ public class LessonResponse extends AbstractBaseResponse {
 
         CourseResponse courseResponse = CourseResponse.convert(lesson.getCourse());
         return LessonResponse.builder()
-               .id(lesson.getId().toString())
-               .title(lesson.getTitle())
-               .content(lesson.getContent())
-               .idCourse(courseResponse.getId())
-               .videos(videoResponses)
-               .build();
+                .id(lesson.getId().toString())
+                .title(lesson.getTitle())
+                .content(lesson.getContent())
+                .idCourse(courseResponse.getId())
+                .videos(videoResponses)
+                .ordinalNumber(lesson.getOrdinalNumber())
+                .build();
     }
 }

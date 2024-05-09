@@ -38,7 +38,16 @@ public class CloudinaryService {
             throw new RuntimeException("Upload fail");
         }
     }
-
+    public void delete(String publicId) throws IOException {
+        // Thực hiện xóa tệp từ Cloudinary bằng publicId
+        try {
+            Map result = cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
+            log.info("Deleted from Cloudinary: {}", result.toString());
+        } catch (IOException e) {
+            log.error("Error deleting from Cloudinary: ", e);
+            throw e;
+        }
+    }
     private boolean isImage(MultipartFile file) {
         log.info("Checking");
         // Kiểm tra phần mở rộng của file để xác định loại file

@@ -1,6 +1,6 @@
 package com.tnduck.newinstitute.repository;
 
-import com.tnduck.newinstitute.entity.Score;
+import com.tnduck.newinstitute.entity.QuizResult;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
@@ -10,5 +10,5 @@ import java.util.UUID;
  * @project The new institute
  * @created 31/01/2024 - 11:37 PM
  */
-public interface ScoreRepository extends JpaRepository<Score, UUID> {
+public interface QuizResultRepository extends JpaRepository<QuizResult, UUID> {
 }

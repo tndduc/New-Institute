@@ -1,22 +1,11 @@
-package com.tnduck.newinstitute.dto.response.lesson;
+package com.tnduck.newinstitute.dto.response.video;
 
-import com.tnduck.newinstitute.entity.File;
-import com.tnduck.newinstitute.entity.Lesson;
 import com.tnduck.newinstitute.entity.Video;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
-import java.math.BigDecimal;
-import java.util.List;
 import java.util.UUID;
 
 @Getter

@@ -1,4 +1,4 @@
-package com.tnduck.newinstitute.dto.request.lesson;
+package com.tnduck.newinstitute.dto.request.video;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;

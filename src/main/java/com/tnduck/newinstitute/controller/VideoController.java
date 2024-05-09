@@ -1,12 +1,11 @@
 package com.tnduck.newinstitute.controller;
 
-import com.tnduck.newinstitute.dto.request.lesson.LessonRequest;
+import com.tnduck.newinstitute.dto.request.video.CreateVideoLessonRequest;
 import com.tnduck.newinstitute.dto.response.DetailedErrorResponse;
 import com.tnduck.newinstitute.dto.response.SuccessResponse;
-import com.tnduck.newinstitute.dto.response.lesson.LessonResponse;
-import com.tnduck.newinstitute.entity.Lesson;
-import com.tnduck.newinstitute.entity.Video;
+import com.tnduck.newinstitute.dto.response.video.VideoResponse;
 import com.tnduck.newinstitute.service.LessonService;
+import com.tnduck.newinstitute.service.VideoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -22,7 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 import static com.tnduck.newinstitute.util.Constants.SECURITY_SCHEME_NAME;
@@ -33,12 +31,13 @@ import static com.tnduck.newinstitute.util.Constants.SECURITY_SCHEME_NAME;
  * @created 03/03/2024 - 8:02 PM
  */
 @RestController
-@RequestMapping("/lesson")
+@RequestMapping("/video")
 @RequiredArgsConstructor
 @Slf4j
-@Tag(name = "004. Lesson", description = "Lesson API")
-public class LessonController extends AbstractBaseController{
+@Tag(name = "005. Video", description = "Video API")
+public class VideoController extends AbstractBaseController{
     private final LessonService lessonService;
+    private final VideoService videoService;
 
     @PreAuthorize("hasAuthority('TEACHER')")
     @RequestMapping(
@@ -46,12 +45,12 @@ public class LessonController extends AbstractBaseController{
             method = RequestMethod.POST,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(
-            summary = "Create a new Lesson",
+            summary = "Create a new course",
             security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
     )
-    public ResponseEntity<?> createLesson (@ModelAttribute final LessonRequest request) {
+    public ResponseEntity<?> uploadVideo(@ModelAttribute final CreateVideoLessonRequest request) {
         try {
-            return lessonService.createLesson(request);
+            return ResponseEntity.ok(videoService.uploadVideo(request));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -64,42 +63,23 @@ public class LessonController extends AbstractBaseController{
             summary = "delete a lesson",
             security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
     )
-    public ResponseEntity<?> deleteLesson(@RequestParam(required = true) final String id) {
+    public ResponseEntity<?> deleteVideo(@RequestParam(required = true) final String id) {
         try {
 
-            return ResponseEntity.ok(lessonService.deleteLesson(id));
+            return ResponseEntity.ok(videoService.deleteVideo(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    @PreAuthorize("hasAuthority('TEACHER')")
-    @RequestMapping(
-            path = "/update",
-            method = RequestMethod.POST)
-    @Operation(
-            summary = "Update a new Lesson",
-            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
-    )
-    public ResponseEntity<?> updateLesson (@RequestParam(required = true) final String id,
-                                           @RequestParam(required = false) final String title,
-                                           @RequestParam(required = false) final String content) {
+    @GetMapping("/get-videos-by-id-lesson")
+    public ResponseEntity<?> getVideo(@Parameter(name = "id", description = "Lesson ID", example = "00000000-0000-0000-0000-000000000001")
+                                      @RequestParam(required = true) final UUID id) {
         try {
-            return lessonService.updateLesson(id, title, content);
+            return ResponseEntity.ok(videoService.getVideo(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-   @GetMapping("/get-lessons")
-    public ResponseEntity<?> getLesson(@Parameter(name = "id", description = "Course ID", example = "00000000-0000-0000-0000-000000000001")
-                                                       @RequestParam(required = true) final UUID id) {
-        try {
-            return ResponseEntity.ok(lessonService.getLesson(id));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-
 
 
 }

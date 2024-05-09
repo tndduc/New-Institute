@@ -20,12 +20,17 @@ import org.hibernate.annotations.OnDeleteAction;
 public class Video extends AbstractBaseEntity{
     @Column(name = "title", nullable = true)
     private String title;
+    @Column(name = "ordinal_number")
+    private int ordinalNumber;
     @Column(name = "duration", nullable = true)
     private String duration;
+    @Column(name = "public_id")
+    private String publicId;
     @Column(name = "url", nullable = false)
     private String url;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "lesson_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Lesson lesson;
+
 }

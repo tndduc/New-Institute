@@ -22,6 +22,8 @@ import org.hibernate.annotations.OnDeleteAction;
 public class Lesson extends AbstractBaseEntity{
     @Column(name = "title", nullable = false, length = 50)
     private String title;
+    @Column(name = "ordinal_number")
+    private int ordinalNumber;
     @Column(name = "content")
     private String content;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
