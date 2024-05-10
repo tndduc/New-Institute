@@ -1,11 +1,13 @@
 package com.tnduck.newinstitute.controller;
 
 import com.tnduck.newinstitute.dto.request.course.CreateCourseRequest;
+import com.tnduck.newinstitute.dto.request.quiz.CreateQuizRequest;
 import com.tnduck.newinstitute.entity.File;
 import com.tnduck.newinstitute.service.CloudinaryService;
 import com.tnduck.newinstitute.service.FileService;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/cloudinary")
 @RequiredArgsConstructor
+@Slf4j
 public class Test {
     private final FileService fileService;
     @RequestMapping(
@@ -44,13 +47,15 @@ public class Test {
         String data = request.getName();
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
-//    @RequestMapping(
-//            path = "/cloud",
-//            method = RequestMethod.POST,
-//            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    public ResponseEntity<Map> uploadImage(@RequestParam("image")MultipartFile file){
-//        File data = this.fileService.createFile(file);
-//        return new ResponseEntity<>(data, HttpStatus.OK);
-//    }
+    @RequestMapping(
+            path = "/quiz",
+            method = RequestMethod.POST
+            )
+    public ResponseEntity<?> uploadImage(@ModelAttribute final CreateQuizRequest createQuizRequest){
+        log.info("getDescription : ",createQuizRequest.getDescription());
+        log.info("t :",createQuizRequest.getTitle());
+        log.info("l :",createQuizRequest.getIdLesson());
+        return new ResponseEntity<>(createQuizRequest, HttpStatus.OK);
+    }
 
 }

@@ -21,8 +21,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class Enrollment extends AbstractBaseEntity{
 
-    @Column(name = "progress")
-    private BigDecimal progress;
+    @Column(name = "status")
+    private String status;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "student_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -31,4 +31,5 @@ public class Enrollment extends AbstractBaseEntity{
     @JoinColumn(name = "course_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Course course;
+
 }

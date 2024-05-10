@@ -59,7 +59,7 @@ public class LessonController extends AbstractBaseController{
     @PreAuthorize("hasAuthority('TEACHER')")
     @RequestMapping(
             path = "/delete",
-            method = RequestMethod.POST)
+            method = RequestMethod.DELETE)
     @Operation(
             summary = "delete a lesson",
             security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)

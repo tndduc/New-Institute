@@ -84,4 +84,13 @@ public class LessonResponse extends AbstractBaseResponse {
                 .ordinalNumber(lesson.getOrdinalNumber())
                 .build();
     }
+    public static LessonResponse convert(Lesson lesson) {
+        return LessonResponse.builder()
+                .id(lesson.getId().toString())
+                .title(lesson.getTitle())
+                .content(lesson.getContent())
+                .idCourse(lesson.getCourse().getId().toString())
+                .ordinalNumber(lesson.getOrdinalNumber())
+                .build();
+    }
 }

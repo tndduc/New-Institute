@@ -82,25 +82,7 @@ public class CourseController extends AbstractBaseController {
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(
             summary = "Create a new course",
-            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME),
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Successful operation",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = SuccessResponse.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "422",
-                            description = "Validation failed",
-                            content = @Content(
-                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = DetailedErrorResponse.class)
-                            )
-                    )
-            }
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
     )
     public ResponseEntity<CourseResponse> createCourse(@ModelAttribute final CreateCourseRequest request) {
         try {
@@ -117,25 +99,7 @@ public class CourseController extends AbstractBaseController {
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(
             summary = "Update a new course",
-            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME),
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Successful operation",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = SuccessResponse.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "422",
-                            description = "Validation failed",
-                            content = @Content(
-                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = DetailedErrorResponse.class)
-                            )
-                    )
-            }
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
     )
     public ResponseEntity<CourseResponse> updateCourse(
             @Parameter(name = "id", description = "Course ID", example = "00000000-0000-0000-0000-000000000001")

@@ -60,6 +60,8 @@ public class WebSecurityConfig {
                                 "/course/**",
                                 "/lesson/**",
                                 "/video/**",
+                                "/quiz/**",
+                                "/question/**",
                                 "/api-docs/**",
                                 "/swagger-ui/**",
                                 "/webjars/**",

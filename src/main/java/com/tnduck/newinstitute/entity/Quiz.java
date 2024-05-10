@@ -16,6 +16,8 @@ import java.util.List;
 public class Quiz extends AbstractBaseEntity{
     @Column(nullable = false)
     private String title;
+    @Column(nullable = false)
+    private String description;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "lesson_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
