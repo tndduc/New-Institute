@@ -59,6 +59,7 @@ public class WebSecurityConfig {
                                 "/assets/**",
                                 "/course/**",
                                 "/lesson/**",
+                                "/unit/**",
                                 "/video/**",
                                 "/quiz/**",
                                 "/question/**",

@@ -19,9 +19,9 @@ public class Quiz extends AbstractBaseEntity{
     @Column(nullable = false)
     private String description;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "lesson_id", nullable = false)
+    @JoinColumn(name = "unit_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Lesson lesson;
+    private Unit unit;
     @Column(nullable = false)
     private boolean isFinalExam;
 }

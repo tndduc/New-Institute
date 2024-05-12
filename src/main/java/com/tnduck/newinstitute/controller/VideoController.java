@@ -34,7 +34,7 @@ import static com.tnduck.newinstitute.util.Constants.SECURITY_SCHEME_NAME;
 @RequestMapping("/video")
 @RequiredArgsConstructor
 @Slf4j
-@Tag(name = "005. Video", description = "Video API")
+@Tag(name = "006. Video", description = "Video API")
 public class VideoController extends AbstractBaseController{
     private final LessonService lessonService;
     private final VideoService videoService;
@@ -50,7 +50,7 @@ public class VideoController extends AbstractBaseController{
     )
     public ResponseEntity<?> uploadVideo(@ModelAttribute final CreateVideoLessonRequest request) {
         try {
-            return ResponseEntity.ok(videoService.uploadVideo(request));
+            return videoService.uploadVideo(request);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -66,16 +66,16 @@ public class VideoController extends AbstractBaseController{
     public ResponseEntity<?> deleteVideo(@RequestParam(required = true) final String id) {
         try {
 
-            return ResponseEntity.ok(videoService.deleteVideo(id));
+            return videoService.deleteVideo(id);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    @GetMapping("/get-videos-by-id-lesson")
-    public ResponseEntity<?> getVideo(@Parameter(name = "id", description = "Lesson ID", example = "00000000-0000-0000-0000-000000000001")
+    @GetMapping("/get-videos-by-id-unit")
+    public ResponseEntity<?> getVideo(@Parameter(name = "id", description = "Unit ID", example = "00000000-0000-0000-0000-000000000001")
                                       @RequestParam(required = true) final UUID id) {
         try {
-            return ResponseEntity.ok(videoService.getVideo(id));
+            return videoService.getVideoFromUnit(id);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

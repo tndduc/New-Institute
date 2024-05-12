@@ -1,10 +1,16 @@
 package com.tnduck.newinstitute.controller;
 
-import com.tnduck.newinstitute.dto.request.quiz.CreateQuizRequest;
-import com.tnduck.newinstitute.dto.request.quiz.UpdateQuizRequest;
-import com.tnduck.newinstitute.service.QuizService;
+import com.tnduck.newinstitute.dto.request.lesson.LessonRequest;
+import com.tnduck.newinstitute.dto.request.unit.CreateUnitRequest;
+import com.tnduck.newinstitute.dto.request.unit.UpdateUnitRequest;
+import com.tnduck.newinstitute.dto.response.auth.TokenResponse;
+import com.tnduck.newinstitute.service.LessonService;
+import com.tnduck.newinstitute.service.UnitService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -20,50 +26,51 @@ import java.util.UUID;
 import static com.tnduck.newinstitute.util.Constants.SECURITY_SCHEME_NAME;
 
 @RestController
-@RequestMapping("/quiz")
+@RequestMapping("/unit")
 @RequiredArgsConstructor
 @Slf4j
-@Tag(name = "007. Quiz", description = "Quiz API")
-public class QuizController  extends AbstractBaseController {
-    private final QuizService quizService;
+@Tag(name = "005. Unit", description = "Unit API")
+public class UnitController  extends AbstractBaseController{
+    private final UnitService unitService;
+
     @PreAuthorize("hasAuthority('TEACHER')")
     @RequestMapping(
             path = "/create",
             method = RequestMethod.POST,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(
-            summary = "create a quiz",
+            summary = "Create a new Unit",
             security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
     )
-    public ResponseEntity<?> createQuiz(@ModelAttribute final CreateQuizRequest createQuizRequest) {
+    public ResponseEntity<?> createUnit (@ModelAttribute final CreateUnitRequest request) {
         try {
-            return quizService.createQuiz(createQuizRequest);
+            return unitService.createUnit(request);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/get-units")
+    public ResponseEntity<?> getUnit(@Parameter(name = "id", description = "Lesson ID", example = "00000000-0000-0000-0000-000000000001")
+                                       @RequestParam(required = true) final UUID id) {
+        try {
+            return unitService.getUnitByIdLesson(id);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
     @PreAuthorize("hasAuthority('TEACHER')")
     @RequestMapping(
-            path = "/updateQuiz",
-            method = RequestMethod.PUT,
+            path = "/update",
+            method = RequestMethod.POST,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(
-            summary = "create a quiz",
+            summary = "update a new Unit",
             security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
     )
-    public ResponseEntity<?> updateQuiz(@ModelAttribute final UpdateQuizRequest updateQuizRequest) {
+    public ResponseEntity<?> updateLesson (@ModelAttribute final UpdateUnitRequest request) {
         try {
-            return quizService.updateQuiz(updateQuizRequest);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    @GetMapping("/getListQuizByIdUnit")
-    public ResponseEntity<?> getListQuizByIdLesson(@RequestParam(required = true) final String id) {
-        try {
-
-            return quizService.getQuizByFromIDUnit(UUID.fromString(id));
+            return unitService.updateUnit(request);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -73,23 +80,15 @@ public class QuizController  extends AbstractBaseController {
             path = "/delete",
             method = RequestMethod.DELETE)
     @Operation(
-            summary = "delete a quiz",
+            summary = "delete a unit",
             security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
     )
-    public ResponseEntity<?> deleteLesson(@RequestParam(required = true) final String id) {
+    public ResponseEntity<?> deleteUnit(@RequestParam(required = true) final String id) {
         try {
 
-            return quizService.deleteQuiz(UUID.fromString(id));
+            return unitService.deleteUnit(UUID.fromString(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    //    @PreAuthorize("hasAnyAuthority('TEACHER', 'ADMIN', 'USER')")
-//    @RequestMapping(
-//            path = "/getListQuizByIdLesson",
-//            method = RequestMethod.POST)
-//    @Operation(
-//            summary = "delete a lesson",
-//            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
-//    )
 }

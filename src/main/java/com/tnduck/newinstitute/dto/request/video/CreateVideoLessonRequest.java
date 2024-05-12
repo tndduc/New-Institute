@@ -12,12 +12,12 @@ import org.springframework.web.multipart.MultipartFile;
 @SuperBuilder
 public class CreateVideoLessonRequest {
     @Schema(
-            name = "idLesson",
-            description = "id of video",
+            name = "idUnit",
+            description = "id of unit",
             type = "String",
             example = "0"
     )
-    private String idLesson;
+    private String idUnit;
     @Schema(
             name = "file",
             description = "File of course",

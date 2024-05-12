@@ -3,11 +3,10 @@ package com.tnduck.newinstitute.service;
 import com.tnduck.newinstitute.dto.request.video.CreateVideoLessonRequest;
 import com.tnduck.newinstitute.dto.request.lesson.LessonRequest;
 import com.tnduck.newinstitute.dto.response.lesson.LessonResponse;
+import com.tnduck.newinstitute.dto.response.unit.UnitResponse;
 import com.tnduck.newinstitute.dto.response.video.VideoResponse;
 import com.tnduck.newinstitute.entity.*;
-import com.tnduck.newinstitute.repository.CourseRepository;
-import com.tnduck.newinstitute.repository.LessonRepository;
-import com.tnduck.newinstitute.repository.VideoRepository;
+import com.tnduck.newinstitute.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,28 +33,49 @@ public class LessonService {
     private final VideoRepository videoRepository;
     private final UserService userService;
     private final VideoService videoService;
-    public ResponseEntity<?> getLesson(UUID uuid) throws Exception{
+    private final QuizRepository quizRepository;
+    private final UnitService unitService;
+    private final UnitRepository unitRepository;
+    /**
+     * Retrieves a list of lessons for a given course.
+     *
+     * @param uuid the unique identifier of the course
+     * @return a {@link ResponseEntity} containing a list of {@link LessonResponse} objects representing the lessons in the specified course
+     * @throws Exception if an error occurs during the retrieval process
+     */
+    public ResponseEntity<?> getLessonByIdCourse(UUID uuid) throws Exception{
         Optional<Course> courseOptional = courseRepository.findById(uuid);
         if (courseOptional.isEmpty()) {
-            log.error("Could not find");
+            log.error("Could not find course with uuid " + uuid);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found for uuid " + uuid);
         }
-        List<Video> videos = new ArrayList<>();
         List<Lesson> lessons = lessonRepository.findByCourse_Id(uuid);
         List<LessonResponse> lessonResponses = new ArrayList<>();
         for (Lesson lesson : lessons) {
-            lessonResponses.add(LessonResponse.convert(lesson,videos));
+            // get the list of unit by id lesson
+            List<UnitResponse> unitResponses = unitService.getUnitAndAssociatedContent(lesson.getId());
+            // add the units to the list
+            lessonResponses.add(LessonResponse.convert(lesson,unitResponses));
         }
-        log.info("Got videos: " + lessons.get(0).getId());
         return ResponseEntity.ok(lessonResponses);
     }
-
+    /**
+     * Creates a new lesson for a given course.
+     *
+     * @param lessonRequest the request containing the details of the new lesson
+     * @return a {@link ResponseEntity} containing the created lesson's details if successful, or an error message if the operation fails
+     * @throws Exception if an error occurs during the creation process
+     */
     public ResponseEntity<?> createLesson(LessonRequest lessonRequest) {
         try {
             Optional<Course> courseOptional = courseRepository.findById(UUID.fromString(lessonRequest.getIdCourse()));
+            if (courseOptional.isEmpty()) {
+                log.error("Could not find course with uuid " + UUID.fromString(lessonRequest.getIdCourse()));
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found for uuid " + UUID.fromString(lessonRequest.getIdCourse()));
+            }
             User teacher = userService.getUser();
-            if (teacher == null || courseOptional.isEmpty() || !teacher.getId().equals(courseOptional.get().getUser().getId())) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access or invalid course");
+            if (teacher == null || !teacher.getId().equals(courseOptional.get().getUser().getId())) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access");
             }
 
             Course course = courseOptional.get();
@@ -74,12 +94,20 @@ public class LessonService {
                     build();
             Lesson lessonSave = lessonRepository.save(lesson);
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(LessonResponse.convert(lessonSave, Collections.emptyList()));
+            return ResponseEntity.status(HttpStatus.CREATED).body(LessonResponse.convert(lessonSave));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-
+    /**
+     * Updates the details of a lesson.
+     *
+     * @param lessonId the unique identifier of the lesson to be updated
+     * @param title the new title for the lesson (optional)
+     * @param content the new content for the lesson (optional)
+     * @return a {@link ResponseEntity} containing the updated lesson's details if successful, or an error message if the operation fails
+     * @throws Exception if an error occurs during the update process
+     */
     public ResponseEntity<?> updateLesson(String lessonId, String title, String content) {
         try {
             Optional<Lesson> lessonOptional = lessonRepository.findById(UUID.fromString(lessonId));
@@ -107,35 +135,55 @@ public class LessonService {
             }
             Lesson updatedLesson = lessonRepository.save(existingLesson);
 
-            return ResponseEntity.ok(LessonResponse.convert(updatedLesson, Collections.emptyList()));
+            return ResponseEntity.ok(LessonResponse.convert(updatedLesson));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-    public ResponseEntity<?> deleteLesson(String lessonId) {
-        try {
-            Optional<Lesson> lessonOptional = lessonRepository.findById(UUID.fromString(lessonId));
-            if (lessonOptional.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Lesson not found");
-            }
-            User teacher = userService.getUser();
-            Lesson existingLesson = lessonOptional.get();
-            if (!teacher.getId().equals(existingLesson.getCourse().getUser().getId())) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access");
-            }
-
-            List<Video> videos = videoRepository.findByLessonId(existingLesson.getId());
-            for (Video video : videos) {
-                videoService.deleteVideo(video.getId().toString());
-            }
-
+    /**
+ * Deletes a lesson by its unique identifier.
+ *
+ * @param lessonId the unique identifier of the lesson to be deleted
+ * @return a {@link ResponseEntity} containing a success message if the lesson is successfully deleted, or an error message if the operation fails
+ * @throws Exception if an error occurs during the deletion process
+ */
+public ResponseEntity<?> deleteLesson(String lessonId) throws Exception {
+    try {
+        Optional<Lesson> lessonOptional = lessonRepository.findById(UUID.fromString(lessonId));
+        if (lessonOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Lesson not found");
+        }
+        User teacher = userService.getUser();
+        Lesson existingLesson = lessonOptional.get();
+        if (!teacher.getId().equals(existingLesson.getCourse().getUser().getId())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access");
+        }
+        List<Unit> units = unitRepository.findByLessonId(existingLesson.getId());
+        if (units.isEmpty()) {
             lessonRepository.delete(existingLesson);
-
             return ResponseEntity.ok("Lesson deleted successfully");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
+        for (Unit unit : units) {
+            Optional<Video> video = videoRepository.findByUnitId(unit.getId());
+            if(video.isPresent()) {
+                videoService.deleteVideo(video.get().getId().toString());
+            }
+        }
+        for (Unit unit : units) {
+            Optional<Quiz> quizOptional = quizRepository.findByUnitId(unit.getId());
+            if (quizOptional.isPresent()) {
+                quizRepository.delete(quizOptional.get());
+            }
+        }
+        for (Unit unit: units) {
+            unitRepository.delete(unit);
+        }
+        lessonRepository.delete(existingLesson);
+        return ResponseEntity.ok("Lesson deleted successfully");
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
+}
 
 
 }

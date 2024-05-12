@@ -3,6 +3,7 @@ package com.tnduck.newinstitute.controller;
 import com.tnduck.newinstitute.dto.request.lesson.LessonRequest;
 import com.tnduck.newinstitute.dto.response.DetailedErrorResponse;
 import com.tnduck.newinstitute.dto.response.SuccessResponse;
+import com.tnduck.newinstitute.dto.response.auth.TokenResponse;
 import com.tnduck.newinstitute.dto.response.lesson.LessonResponse;
 import com.tnduck.newinstitute.entity.Lesson;
 import com.tnduck.newinstitute.entity.Video;
@@ -67,7 +68,7 @@ public class LessonController extends AbstractBaseController{
     public ResponseEntity<?> deleteLesson(@RequestParam(required = true) final String id) {
         try {
 
-            return ResponseEntity.ok(lessonService.deleteLesson(id));
+            return lessonService.deleteLesson(id);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -90,10 +91,22 @@ public class LessonController extends AbstractBaseController{
         }
     }
    @GetMapping("/get-lessons")
+   @Operation(
+           summary = "Login endpoint",
+           responses = {
+                   @ApiResponse(
+                           responseCode = "200",
+                           description = "Successful operation",
+                           content = @Content(
+                                   mediaType = "application/json",
+                                   schema = @Schema(implementation = TokenResponse.class)
+                           )
+                   )
+           })
     public ResponseEntity<?> getLesson(@Parameter(name = "id", description = "Course ID", example = "00000000-0000-0000-0000-000000000001")
                                                        @RequestParam(required = true) final UUID id) {
         try {
-            return ResponseEntity.ok(lessonService.getLesson(id));
+            return lessonService.getLessonByIdCourse(id);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

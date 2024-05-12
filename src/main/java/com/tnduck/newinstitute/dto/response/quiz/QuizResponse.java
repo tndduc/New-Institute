@@ -44,13 +44,12 @@ public class QuizResponse {
     )
     private String description;
     @Schema(
-            name = "idLesson",
-            description = "id Lesson of course",
+            name = "idUnit",
+            description = "id of unit",
             type = "String",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            example = ""
+            example = "0"
     )
-    private String idLesson;
+    private String idUnit;
     @Schema(
             name = "isFinalExam",
             description = "isFinalExam?",
@@ -72,7 +71,7 @@ public class QuizResponse {
                 .id(quiz.getId().toString())
                 .title(quiz.getTitle())
                 .description(quiz.getDescription())
-                .idLesson(quiz.getLesson().getId().toString())
+                .idUnit(quiz.getUnit().getId().toString())
                 .isFinalExam(quiz.isFinalExam())
                 .questionResponses(questionResponseList)
                 .build();
@@ -82,7 +81,7 @@ public class QuizResponse {
                 .id(quiz.getId().toString())
                 .title(quiz.getTitle())
                 .description(quiz.getDescription())
-                .idLesson(quiz.getLesson().getId().toString())
+                .idUnit(quiz.getUnit().getId().toString())
                 .isFinalExam(quiz.isFinalExam())
                 .build();
     }

@@ -40,12 +40,20 @@ public class VideoResponse {
             example = "0"
     )
     private String url;
-    public static VideoResponse convert(Video videos) {
+    @Schema(
+            name = "idUnit",
+            description = "id of unit",
+            type = "String",
+            example = "0"
+    )
+    private String idUnit;
+    public static VideoResponse convert(Video video) {
         return VideoResponse.builder()
-                .id(videos.getId())
-                .title(videos.getTitle())
-                .duration(videos.getDuration())
-                .url(videos.getUrl())
+                .id(video.getId())
+                .title(video.getTitle())
+                .idUnit(video.getUnit().getId().toString())
+                .duration(video.getDuration())
+                .url(video.getUrl())
                 .build();
     }
 }

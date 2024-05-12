@@ -3,8 +3,11 @@ package com.tnduck.newinstitute.dto.response.lesson;
 
 import com.tnduck.newinstitute.dto.response.AbstractBaseResponse;
 import com.tnduck.newinstitute.dto.response.course.CourseResponse;
+import com.tnduck.newinstitute.dto.response.quiz.QuizResponse;
+import com.tnduck.newinstitute.dto.response.unit.UnitResponse;
 import com.tnduck.newinstitute.dto.response.video.VideoResponse;
 import com.tnduck.newinstitute.entity.Lesson;
+import com.tnduck.newinstitute.entity.Quiz;
 import com.tnduck.newinstitute.entity.Video;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -63,16 +66,12 @@ public class LessonResponse extends AbstractBaseResponse {
     private int ordinalNumber;
     @ArraySchema(
             schema = @Schema(
-                    description = "List of video"
+                    description = "List of unit"
             )
     )
-    private List<VideoResponse> videos;
+    private List<UnitResponse> units;
 
-    public static LessonResponse convert(Lesson lesson, List<Video> videos) {
-        List<VideoResponse> videoResponses = new ArrayList<>();
-        for (Video video : videos) {
-            videoResponses.add(VideoResponse.convert(video));
-        }
+    public static LessonResponse convert(Lesson lesson, List<UnitResponse> unitResponse) {
 
         CourseResponse courseResponse = CourseResponse.convert(lesson.getCourse());
         return LessonResponse.builder()
@@ -80,7 +79,7 @@ public class LessonResponse extends AbstractBaseResponse {
                 .title(lesson.getTitle())
                 .content(lesson.getContent())
                 .idCourse(courseResponse.getId())
-                .videos(videoResponses)
+                .units(unitResponse)
                 .ordinalNumber(lesson.getOrdinalNumber())
                 .build();
     }

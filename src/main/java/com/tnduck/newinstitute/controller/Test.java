@@ -27,35 +27,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Slf4j
 public class Test {
-    private final FileService fileService;
-    @RequestMapping(
-            path = "/upload",
-            method = RequestMethod.POST,
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> uploadImage(@RequestParam(value = "file", required = false) MultipartFile file,@ModelAttribute CreateCourseRequest request){
 
-        if (file != null && !file.isEmpty()) {
-            System.out.println("File name : "+file.getName());
-            System.out.println("Type : " + file.getContentType());
-            System.out.println("Name : " + file.getOriginalFilename());
-            System.out.println("Size : " + file.getSize());
-
-            File data = this.fileService.createFile(file);
-            return new ResponseEntity<>(data, HttpStatus.OK);
-        }
-
-        String data = request.getName();
-        return new ResponseEntity<>(data, HttpStatus.OK);
-    }
-    @RequestMapping(
-            path = "/quiz",
-            method = RequestMethod.POST
-            )
-    public ResponseEntity<?> uploadImage(@ModelAttribute final CreateQuizRequest createQuizRequest){
-        log.info("getDescription : ",createQuizRequest.getDescription());
-        log.info("t :",createQuizRequest.getTitle());
-        log.info("l :",createQuizRequest.getIdLesson());
-        return new ResponseEntity<>(createQuizRequest, HttpStatus.OK);
-    }
 
 }

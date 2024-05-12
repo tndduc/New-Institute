@@ -2,10 +2,13 @@ package com.tnduck.newinstitute.service;
 
 import com.tnduck.newinstitute.dto.request.video.CreateVideoLessonRequest;
 import com.tnduck.newinstitute.dto.response.lesson.LessonResponse;
+import com.tnduck.newinstitute.dto.response.unit.UnitResponse;
 import com.tnduck.newinstitute.dto.response.video.VideoResponse;
 import com.tnduck.newinstitute.entity.*;
+import com.tnduck.newinstitute.exception.NotFoundException;
 import com.tnduck.newinstitute.repository.CourseRepository;
 import com.tnduck.newinstitute.repository.LessonRepository;
+import com.tnduck.newinstitute.repository.UnitRepository;
 import com.tnduck.newinstitute.repository.VideoRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -33,43 +36,57 @@ public class VideoService {
     private final UserService userService;
     private final CourseService courseService;
     private final CourseRepository courseRepository;
+    private final UnitRepository unitRepository;
     // Constructor injection for dependencies but i have @RequiredArgsConstructor
 //    public VideoService(CloudinaryService cloudinaryService, VideoRepository videoRepository) {
 //        this.cloudinaryService = cloudinaryService;
 //        this.videoRepository = videoRepository;
 //    }
 
-    public ResponseEntity<?> getVideo(UUID uuid) throws Exception {
-        Optional<Lesson> lessonOptional = lessonRepository.findById(uuid);
-        if (lessonOptional.isEmpty()) {
-            log.error("Could not find");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found for uuid " + uuid);
+    public ResponseEntity<?> getVideoFromUnit(UUID uuid){
+        try {
+            UnitResponse unitResponse = getVideoByIdUnit(uuid);
+            if (unitResponse == null) {
+                log.error("Could not find Unit with uuid " + uuid);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found unit for uuid " + uuid);
+            }
+            return ResponseEntity.ok(unitResponse);
+        } catch (NotFoundException e) {
+            log.error("Error occurred while getting video by id: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
         }
-        log.info("Got lesson: " + lessonOptional.get().getId());
-        List<Video> videos = getVideos(uuid);
-        log.info("Got videos: " + videos.get(0).getId());
-        return ResponseEntity.ok(LessonResponse.convert(lessonOptional.get(), videos));
+    }
+    public UnitResponse getVideoByIdUnit(UUID uuid) {
+        try {
+            Optional<Unit> unitOptional = unitRepository.findById(uuid);
+            if (unitOptional.isEmpty()) {
+                log.error("Could not find Unit with uuid " + uuid);
+                throw new NotFoundException("Not found unit for uuid " + uuid);
+            }
+            log.info("Got lesson: " + unitOptional.get().getId());
+            Video video = getVideo(uuid);
+            log.info("Got videos: " + video.getId());
+            return UnitResponse.convert(unitOptional.get(), video);
+        } catch (NotFoundException e) {
+            log.error("Error occurred while getting video by id: " + e.getMessage());
+            return null;
+        }
     }
 
     public ResponseEntity<?> uploadVideo(CreateVideoLessonRequest videoLessonRequest) throws Exception {
-        Optional<Lesson> lessonOptional = lessonRepository.findById(UUID.fromString(videoLessonRequest.getIdLesson()));
-        if (lessonOptional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Lesson not found");
+        Optional<Unit> unitOptional = unitRepository.findById(UUID.fromString(videoLessonRequest.getIdUnit()));
+        if (unitOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Unit not found");
         }
-        Lesson lesson = lessonOptional.get();
-
-        Optional<Course> courseOptional = courseRepository.findById(lesson.getCourse().getId());
+        Unit unit = unitOptional.get();
+        Optional<Course> courseOptional = courseRepository.findById(unit.getLesson().getCourse().getId());
         User teacher = userService.getUser();
         if (teacher == null || courseOptional.isEmpty() || !teacher.getId().equals(courseOptional.get().getUser().getId())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access or invalid course");
         }
-
-        // Fetch all videos for the lesson
-        List<Video> lessonVideos = videoRepository.findByLessonId(lesson.getId());
-
-        // Calculate the ordinal number for the new video
-        int ordinalNumber = lessonVideos.isEmpty() ? 1 : lessonVideos.get(lessonVideos.size() - 1).getOrdinalNumber() + 1;
-
+        if (unit.getType().equals("quiz")){
+            return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Type must be quiz");
+        }
         MultipartFile file = videoLessonRequest.getFile();
         if (file == null || file.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File cannot be null or empty.");
@@ -90,20 +107,19 @@ public class VideoService {
 
         // Create and persist a new Video entity
         Video video = Video.builder()
-                .lesson(lesson)
+                .unit(unit)
                 .url(url)
                 .publicId(publicId)
                 .title(videoLessonRequest.getTitle())
-                .ordinalNumber(ordinalNumber) // Set the ordinal number
                 .build();
         Video videoSave = videoRepository.save(video);
         VideoResponse videoResponse = VideoResponse.convert(videoSave);
         return ResponseEntity.ok(videoResponse);
     }
 
-    public List<Video> getVideos(UUID uuidLesson) {
-        List<Video> videos = videoRepository.findByLessonId(uuidLesson);
-        return videos;
+    public Video getVideo(UUID uuidUnit) {
+        Optional<Video> video = videoRepository.findByUnitId(uuidUnit);
+        return video.get();
     }
 
 //    public List<Video> create(MultipartFile[] files, Lesson lesson) {

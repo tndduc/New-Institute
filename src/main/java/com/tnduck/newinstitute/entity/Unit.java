@@ -5,32 +5,24 @@ import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-/**
- * @author ductn
- * @project The new institute
- * @created 31/01/2024 - 10:50 PM
- */
 @Entity
-@Table(name = "videos")
+@Table(name = "units")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Video extends AbstractBaseEntity{
+public class Unit extends AbstractBaseEntity{
     @Column(name = "title", nullable = true)
     private String title;
     @Column(name = "ordinal_number")
     private int ordinalNumber;
     @Column(name = "duration", nullable = true)
     private String duration;
-    @Column(name = "public_id")
-    private String publicId;
-    @Column(name = "url", nullable = false)
-    private String url;
+    @Column(name = "type", nullable = false)
+    private String type;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "unit_id", nullable = false)
+    @JoinColumn(name = "lesson_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Unit unit;
-
+    private Lesson lesson;
 }

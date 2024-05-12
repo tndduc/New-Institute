@@ -34,13 +34,13 @@ public class CreateQuizRequest {
     private String description;
 
     @Schema(
-            name = "idLesson",
-            description = "id Lesson of course",
+            name = "idUnit",
+            description = "id Unit of course",
             type = "String",
             requiredMode = Schema.RequiredMode.REQUIRED,
             example = ""
     )
-    private String idLesson;
+    private String idUnit;
     @NotBlank(message = "{not_blank}")
     @Schema(
             name = "isFinalExam",
