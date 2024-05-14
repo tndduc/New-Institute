@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -33,16 +34,14 @@ import static com.tnduck.newinstitute.util.Constants.SECURITY_SCHEME_NAME;
 public class UnitController  extends AbstractBaseController{
     private final UnitService unitService;
 
+    @PostMapping("/create")
     @PreAuthorize("hasAuthority('TEACHER')")
-    @RequestMapping(
-            path = "/create",
-            method = RequestMethod.POST,
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(
             summary = "Create a new Unit",
             security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
     )
-    public ResponseEntity<?> createUnit (@ModelAttribute final CreateUnitRequest request) {
+    public ResponseEntity<?> createUnit ( @Parameter(description = "Request body to create Unit", required = true)
+                                              @RequestBody @Valid CreateUnitRequest request) {
         try {
             return unitService.createUnit(request);
         } catch (Exception e) {
@@ -59,16 +58,14 @@ public class UnitController  extends AbstractBaseController{
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+    @PostMapping("/update")
     @PreAuthorize("hasAuthority('TEACHER')")
-    @RequestMapping(
-            path = "/update",
-            method = RequestMethod.POST,
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(
-            summary = "update a new Unit",
+            summary = "Update a new Unit",
             security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
     )
-    public ResponseEntity<?> updateLesson (@ModelAttribute final UpdateUnitRequest request) {
+    public ResponseEntity<?> updateUnit ( @Parameter(description = "Request body to update Unit", required = true)
+                                              @RequestBody @Valid  UpdateUnitRequest request) {
         try {
             return unitService.updateUnit(request);
         } catch (Exception e) {

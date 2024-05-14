@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,32 +27,28 @@ import static com.tnduck.newinstitute.util.Constants.SECURITY_SCHEME_NAME;
 @Tag(name = "007. Quiz", description = "Quiz API")
 public class QuizController  extends AbstractBaseController {
     private final QuizService quizService;
+    @PostMapping("/create")
     @PreAuthorize("hasAuthority('TEACHER')")
-    @RequestMapping(
-            path = "/create",
-            method = RequestMethod.POST,
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(
-            summary = "create a quiz",
+            summary = "Create a new Quiz",
             security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
     )
-    public ResponseEntity<?> createQuiz(@ModelAttribute final CreateQuizRequest createQuizRequest) {
+    public ResponseEntity<?> createQuiz( @Parameter(description = "Request body to create Quiz", required = true)
+                                             @RequestBody @Valid CreateQuizRequest createQuizRequest) {
         try {
             return quizService.createQuiz(createQuizRequest);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+    @PostMapping("/update")
     @PreAuthorize("hasAuthority('TEACHER')")
-    @RequestMapping(
-            path = "/updateQuiz",
-            method = RequestMethod.PUT,
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(
-            summary = "create a quiz",
+            summary = "Update a new Quiz",
             security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
     )
-    public ResponseEntity<?> updateQuiz(@ModelAttribute final UpdateQuizRequest updateQuizRequest) {
+    public ResponseEntity<?> updateQuiz( @Parameter(description = "Request body to update Quiz", required = true)
+                                             @RequestBody @Valid UpdateQuizRequest updateQuizRequest) {
         try {
             return quizService.updateQuiz(updateQuizRequest);
         } catch (Exception e) {

@@ -85,7 +85,11 @@ public class VideoService {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access or invalid course");
         }
         if (unit.getType().equals("quiz")){
-            return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Type must be quiz");
+            return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Unit type not supported");
+        }
+        Optional<Video> videoOptional = videoRepository.findByUnitId(unit.getId());
+        if (videoOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Video already exists");
         }
         MultipartFile file = videoLessonRequest.getFile();
         if (file == null || file.isEmpty()) {

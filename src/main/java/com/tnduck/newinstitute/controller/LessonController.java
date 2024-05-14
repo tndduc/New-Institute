@@ -1,7 +1,9 @@
 package com.tnduck.newinstitute.controller;
 
 import com.tnduck.newinstitute.dto.request.lesson.LessonRequest;
+import com.tnduck.newinstitute.dto.request.user.UpdatePasswordRequest;
 import com.tnduck.newinstitute.dto.response.DetailedErrorResponse;
+import com.tnduck.newinstitute.dto.response.ErrorResponse;
 import com.tnduck.newinstitute.dto.response.SuccessResponse;
 import com.tnduck.newinstitute.dto.response.auth.TokenResponse;
 import com.tnduck.newinstitute.dto.response.lesson.LessonResponse;
@@ -12,22 +14,23 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
-
 import static com.tnduck.newinstitute.util.Constants.SECURITY_SCHEME_NAME;
-
 /**
  * @author ductn
  * @project The new institute
@@ -40,23 +43,24 @@ import static com.tnduck.newinstitute.util.Constants.SECURITY_SCHEME_NAME;
 @Tag(name = "004. Lesson", description = "Lesson API")
 public class LessonController extends AbstractBaseController{
     private final LessonService lessonService;
-
+    @PostMapping("/create")
     @PreAuthorize("hasAuthority('TEACHER')")
-    @RequestMapping(
-            path = "/create",
-            method = RequestMethod.POST,
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(
             summary = "Create a new Lesson",
             security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
     )
-    public ResponseEntity<?> createLesson (@ModelAttribute final LessonRequest request) {
+    public ResponseEntity<?> createLesson(
+            @Parameter(description = "Request body to create Lesson", required = true)
+            @RequestBody @Valid LessonRequest request
+    )  {
         try {
             return lessonService.createLesson(request);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+
     @PreAuthorize("hasAuthority('TEACHER')")
     @RequestMapping(
             path = "/delete",
@@ -65,7 +69,7 @@ public class LessonController extends AbstractBaseController{
             summary = "delete a lesson",
             security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
     )
-    public ResponseEntity<?> deleteLesson(@RequestParam(required = true) final String id) {
+    public ResponseEntity<?> deleteLesson(@RequestBody(required = true) final String id) {
         try {
 
             return lessonService.deleteLesson(id);
@@ -75,15 +79,15 @@ public class LessonController extends AbstractBaseController{
     }
     @PreAuthorize("hasAuthority('TEACHER')")
     @RequestMapping(
-            path = "/update",
-            method = RequestMethod.POST)
+            path = "/update/{id}",
+            method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             summary = "Update a new Lesson",
             security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
     )
-    public ResponseEntity<?> updateLesson (@RequestParam(required = true) final String id,
-                                           @RequestParam(required = false) final String title,
-                                           @RequestParam(required = false) final String content) {
+    public ResponseEntity<?> updateLesson (@PathVariable("id") final String id,
+                                           @RequestBody(required = false) final String title,
+                                           @RequestBody(required = false) final String content) {
         try {
             return lessonService.updateLesson(id, title, content);
         } catch (Exception e) {
@@ -91,18 +95,6 @@ public class LessonController extends AbstractBaseController{
         }
     }
    @GetMapping("/get-lessons")
-   @Operation(
-           summary = "Login endpoint",
-           responses = {
-                   @ApiResponse(
-                           responseCode = "200",
-                           description = "Successful operation",
-                           content = @Content(
-                                   mediaType = "application/json",
-                                   schema = @Schema(implementation = TokenResponse.class)
-                           )
-                   )
-           })
     public ResponseEntity<?> getLesson(@Parameter(name = "id", description = "Course ID", example = "00000000-0000-0000-0000-000000000001")
                                                        @RequestParam(required = true) final UUID id) {
         try {

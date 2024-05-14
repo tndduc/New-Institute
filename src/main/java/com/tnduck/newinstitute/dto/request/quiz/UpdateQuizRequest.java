@@ -43,9 +43,8 @@ public class UpdateQuizRequest{
     @Schema(
             name = "isFinalExam",
             description = "isFinalExam?",
-            type = "boolean",
-            requiredMode = Schema.RequiredMode.REQUIRED,
+            type = "String",
             allowableValues = {"true", "false"}, defaultValue = "false"
     )
-    private boolean isFinalExam;
+    private String isFinalExam;
 }

@@ -95,36 +95,16 @@ public class CourseController extends AbstractBaseController {
     @PreAuthorize("hasAuthority('TEACHER')")
     @RequestMapping(
             path = "/update",
-            method = RequestMethod.POST,
+            method = RequestMethod.PUT,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(
             summary = "Update a new course",
             security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
     )
-    public ResponseEntity<CourseResponse> updateCourse(
-            @Parameter(name = "id", description = "Course ID", example = "00000000-0000-0000-0000-000000000001")
-            @RequestParam(required = true) final UUID id,
-            @RequestParam(value = "file", required = false) MultipartFile file,
-            @Parameter(name = "name", description = "Name of course", example = "Spring Boot")
-            @RequestParam(required = false) final String name,
-            @Parameter(name = "description", description = "Description", example = "Spring Boot Basics")
-            @RequestParam(required = false) final String description,
-            @Parameter(name = "price", description = "Price", example = "100.00")
-            @RequestParam(required = false) final BigDecimal price,
-            @Parameter(name = "level", description = "Level", example = "beginner")
-            @RequestParam(defaultValue = "alllevel", required = false) final String level,
-            @Parameter(name = "discount", description = "Discount", example = "10.00")
-            @RequestParam(required = false) final BigDecimal discount,
-
-            @Parameter(name = "tags", description = "Tags")
-            @RequestParam(required = false) final List<String> tags,
-            @Parameter(name = "categories", description = "Categories")
-            @RequestParam(required = false) final List<String> categories
-
+    public ResponseEntity<?> updateCourse(@ModelAttribute final UpdateCourseRequest request
     ) {
         try {
-            CourseResponse courseResponse = courseService.updateByTeacher(id, file, name, description, level, discount, price,tags,categories);
-            return ResponseEntity.ok(courseResponse);
+            return  courseService.updateByTeacher(request);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -215,6 +195,15 @@ public class CourseController extends AbstractBaseController {
         }
     }
 
+    @GetMapping("/category/get-by-name")
+    public ResponseEntity<?> getCategoriesByName( @Parameter(name = "name", description = "Name Category", example = "backend")
+                                                         @RequestParam(required = true) final String name) {
+        try {
+            return courseService.getCategoryByName(name);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
     @GetMapping("/categories/get-all")
     public ResponseEntity<List<CategoryResponse>> getAllCategories() {
         try {
@@ -239,6 +228,15 @@ public class CourseController extends AbstractBaseController {
             }
 
             return ResponseEntity.ok().body(tagResponses);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+    @GetMapping("/tags/get-by-name")
+    public ResponseEntity<?> getTagByName(@Parameter(name = "name", description = "Name Category", example = "backend")
+                                              @RequestParam(required = true) final String name) {
+        try {
+           return courseService.getTagByName(name);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }

@@ -33,14 +33,25 @@ public class QuizService {
         if (unitOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Unit not found");
         }
+        if(unitOptional.get().getType().equals("video")) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Unit type not supported");
+        }
+        Optional<Quiz> quizOptional = quizRepository.findByUnitId(unitOptional.get().getId());
+        if (quizOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Quiz already exists");
+        }
         Optional<Course> courseOptional = courseRepository.findById(unitOptional.get().getLesson().getCourse().getId());
         User teacher = userService.getUser();
         if (teacher == null || courseOptional.isEmpty() || !teacher.getId().equals(courseOptional.get().getUser().getId())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access or invalid course");
         }
+        boolean isFinal = false;
+        if (createQuizRequest.equals("true")){
+            isFinal = true;
+        }
         Quiz quiz = Quiz.builder()
                 .description(createQuizRequest.getDescription())
-                .isFinalExam(createQuizRequest.isFinalExam())
+                .isFinalExam(isFinal)
                 .title(createQuizRequest.getTitle())
                 .unit(unitOptional.get())
                 .build();
@@ -82,8 +93,14 @@ public class QuizService {
         if (updateQuizRequest.getDescription() != null) {
             quizToUpdate.setDescription(updateQuizRequest.getDescription());
         }
+        boolean isFinal = false;
+        if (updateQuizRequest.getIsFinalExam()!= null) {
+          if (updateQuizRequest.getIsFinalExam().equals("true")) {
+              isFinal = true;
+          }
+            quizToUpdate.setFinalExam(isFinal);
 
-        quizToUpdate.setFinalExam(updateQuizRequest.isFinalExam());
+        }
 
 
         // Save the updated quiz

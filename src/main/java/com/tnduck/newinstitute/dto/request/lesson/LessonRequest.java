@@ -18,8 +18,6 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder
 public class LessonRequest {
-    @NotBlank(message = "{not_blank}")
-    @Size(max = 50, message = "{max_length}")
     @Schema(
             name = "title",
             description = "Title of course",
