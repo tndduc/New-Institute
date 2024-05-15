@@ -158,6 +158,11 @@ public class VideoService {
             if (videoOptional.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Video not found");
             }
+            Optional<Course> courseOptional = courseRepository.findById(videoOptional.get().getUnit().getLesson().getCourse().getId());
+            User teacher = userService.getUser();
+            if (teacher == null || courseOptional.isEmpty() || !teacher.getId().equals(courseOptional.get().getUser().getId())) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access or invalid course");
+            }
             Video video = videoOptional.get();
             cloudinaryService.delete(video.getPublicId());
             videoRepository.delete(video);
@@ -166,7 +171,31 @@ public class VideoService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-
+    public ResponseEntity<?> updateVideo(String videoId, String title) {
+        try {
+            Optional<Video> videoOptional = videoRepository.findById(UUID.fromString(videoId));
+            if (videoOptional.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Video not found");
+            }
+            Optional<Course> courseOptional = courseRepository.findById(videoOptional.get().getUnit().getLesson().getCourse().getId());
+            User teacher = userService.getUser();
+            if (teacher == null || courseOptional.isEmpty() || !teacher.getId().equals(courseOptional.get().getUser().getId())) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access or invalid course");
+            }
+            Video video = videoOptional.get();
+            if (title.equals(video.getTitle())) {
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Title is not same as old title");
+            }
+            if (title.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Title cannot be empty");
+            }
+            video.setTitle(title);
+            videoRepository.save(video);
+            return ResponseEntity.ok(video);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 
 
 }

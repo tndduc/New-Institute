@@ -4,6 +4,7 @@ import com.tnduck.newinstitute.dto.request.course.CreateCourseRequest;
 import com.tnduck.newinstitute.dto.request.course.FilterCourseRequest;
 import com.tnduck.newinstitute.dto.request.course.UpdateCourseRequest;
 import com.tnduck.newinstitute.dto.request.course.tag.TagRequest;
+import com.tnduck.newinstitute.dto.request.lesson.LessonRequest;
 import com.tnduck.newinstitute.dto.response.DetailedErrorResponse;
 import com.tnduck.newinstitute.dto.response.SuccessResponse;
 import com.tnduck.newinstitute.dto.response.course.CourseResponse;
@@ -32,6 +33,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import jdk.jfr.Category;
 import lombok.RequiredArgsConstructor;
@@ -194,8 +196,20 @@ public class CourseController extends AbstractBaseController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // Other errors
         }
     }
-
-    @GetMapping("/category/get-by-name")
+    @GetMapping("/get-by-teacher")
+    @PreAuthorize("hasAuthority('TEACHER')")
+    @Operation(
+            summary = "Create a new Lesson",
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
+    )
+    public ResponseEntity<?> createLesson(
+    )  {
+        try {
+            return courseService.getCourseByAuthor();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
     public ResponseEntity<?> getCategoriesByName( @Parameter(name = "name", description = "Name Category", example = "backend")
                                                          @RequestParam(required = true) final String name) {
         try {

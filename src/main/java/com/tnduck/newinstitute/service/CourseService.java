@@ -59,6 +59,7 @@ public class CourseService {
 
         return CourseResponse.convert(courseSave);
     }
+
     public ResponseEntity<?> updateByTeacher(UpdateCourseRequest updateCourseRequest) throws Exception {
         User teacher = userService.getUser();
         Optional<Course> courseOptional = courseRepository.findById(updateCourseRequest.getId());
@@ -151,6 +152,11 @@ public class CourseService {
         if (tagCourses.isEmpty())return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tag not found");
         return ResponseEntity.ok(tagCourses);
     }
-
+    public ResponseEntity<?> getCourseByAuthor(){
+        User user = userService.getUser();
+        List<Course> courses = courseRepository.findByUserId(user.getId());
+        if (courses.isEmpty())return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course not found");
+        return ResponseEntity.ok(courses);
+    }
 
 }

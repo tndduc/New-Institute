@@ -30,7 +30,7 @@ import static com.tnduck.newinstitute.util.Constants.SECURITY_SCHEME_NAME;
 @RequestMapping("/choice")
 @RequiredArgsConstructor
 @Slf4j
-@Tag(name = "008. Choice", description = "Choice API")
+@Tag(name = "009. Choice", description = "Choice API")
 public class ChoiceController extends AbstractBaseController{
     private final ChoiceService choiceService;
     @PostMapping("/create")

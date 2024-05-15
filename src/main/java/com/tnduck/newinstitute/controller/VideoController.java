@@ -48,9 +48,26 @@ public class VideoController extends AbstractBaseController{
             summary = "Create a new course",
             security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
     )
-    public ResponseEntity<?> uploadVideo(@ModelAttribute final CreateVideoLessonRequest request) {
+    public ResponseEntity<?> createVideo(@ModelAttribute final CreateVideoLessonRequest request) {
         try {
             return videoService.uploadVideo(request);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PreAuthorize("hasAuthority('TEACHER')")
+    @RequestMapping(
+            path = "/update/{id}",
+            method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(
+            summary = "Update a new Lesson",
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
+    )
+    public ResponseEntity<?> updateVideoTitle (@PathVariable("id") final String id,
+                                           @RequestBody(required = false) final String title) {
+        try {
+            return videoService.updateVideo(id,title);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
