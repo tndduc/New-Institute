@@ -44,8 +44,13 @@ public class ChoiceService {
         if (teacher == null || courseOptional.isEmpty() || !teacher.getId().equals(courseOptional.get().getUser().getId())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access or invalid course");
         }
-        Choice choice = Choice.builder().question(question.get()).content(createChoiceRequest.getContent()).isCorrect(createChoiceRequest.isCorrect()).build();
-        return ResponseEntity.ok(choiceRepository.save(choice));
+        Choice choice = Choice.builder()
+                .question(question.get())
+                .content(createChoiceRequest.getContent())
+                .isCorrect(createChoiceRequest.isCorrect())
+                .build();
+
+        return ResponseEntity.ok(ChoiceResponse.convert(choiceRepository.save(choice),choice.isCorrect()));
     }
     public ResponseEntity<?> updateChoice(UpdateChoiceRequest updateChoiceRequest){
         Optional<Choice> choiceOptional = choiceRepository.findById(UUID.fromString(updateChoiceRequest.getIdChoice()));
@@ -65,9 +70,8 @@ public class ChoiceService {
         try {
             // Attempt to save the choice
             Choice choiceUpdate = choiceRepository.save(choice);
-
             // If saved successfully, return the updated choice
-            return ResponseEntity.ok(ChoiceResponse.convert(choiceUpdate));
+            return ResponseEntity.ok(ChoiceResponse.convert(choiceUpdate,choiceUpdate.isCorrect()));
         } catch (Exception e) {
             // If an exception occurs during the save operation, handle it
             // Here, you can log the exception for debugging purposes

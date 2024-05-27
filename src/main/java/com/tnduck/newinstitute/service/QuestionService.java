@@ -38,7 +38,7 @@ public class QuestionService {
      */
     public ResponseEntity<?> createQuestion(CreateQuestionRequest createQuestionRequest) {
         // Find the quiz by its unit ID
-        Optional<Quiz> quizOptional = quizRepository.findByUnitId(UUID.fromString(createQuestionRequest.getIdQuiz()));
+        Optional<Quiz> quizOptional = quizRepository.findById(UUID.fromString(createQuestionRequest.getIdQuiz()));
         if (quizOptional.isEmpty()) {
             // If the quiz is not found, return a NOT_FOUND response
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Quiz not found");

@@ -45,9 +45,10 @@ public class Course extends AbstractBaseEntity{
     @JoinColumn(name = "teacher_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
-    @Column(name = "status", nullable = false, length = 50)
-    private String status;
-
+    @Column(name = "status_teacher", nullable = false, length = 50)
+    private String statusTeacher;
+    @Column(name = "status_admin", nullable = true, length = 50)
+    private String statusAdmin;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinTable(name = "course_tags",
             joinColumns = @JoinColumn(

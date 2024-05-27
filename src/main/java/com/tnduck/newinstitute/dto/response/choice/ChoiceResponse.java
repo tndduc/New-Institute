@@ -34,10 +34,25 @@ public class ChoiceResponse {
             type = "String"
     )
     private String content;
+    @NotBlank(message = "{not_blank}")
+    @Size(max = 50, message = "{max_length}")
+    @Schema(
+            name = "content",
+            description = "content of choice",
+            type = "Boolean"
+    )
+    private Boolean is_correct;
     public static ChoiceResponse convert(Choice choice) {
         return ChoiceResponse.builder()
                 .id(choice.getId().toString())
                 .content(choice.getContent())
+                .build();
+    }
+    public static ChoiceResponse convert(Choice choice,Boolean isCorrect) {
+        return ChoiceResponse.builder()
+                .id(choice.getId().toString())
+                .content(choice.getContent())
+                .is_correct(isCorrect)
                 .build();
     }
 

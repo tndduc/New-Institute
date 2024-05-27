@@ -53,7 +53,7 @@ public class CourseService {
         List<TagCourse> tags = createOrUpdateTags(createCourseRequest.getTags());
         List<CategoryCourse> categories = createOrUpdateCategories(createCourseRequest.getCategories());
 
-        Course course = buildCourse(teacher, createCourseRequest, fileUpload, tags, categories);
+        Course course = buildCourse(teacher, createCourseRequest,"on_create","uncheck", fileUpload, tags, categories);
 
         Course courseSave = courseRepository.save(course);
 
@@ -109,7 +109,7 @@ public class CourseService {
                 .collect(Collectors.toList());
     }
 
-    private Course buildCourse(User teacher, CreateCourseRequest createCourseRequest, File fileUpload,
+    private Course buildCourse(User teacher, CreateCourseRequest createCourseRequest,String statusTeacher,String statusAdmin, File fileUpload,
                                List<TagCourse> tags, List<CategoryCourse> categories) {
         return Course.builder()
                 .user(teacher)
@@ -119,7 +119,8 @@ public class CourseService {
                 .level(createCourseRequest.getLevel())
                 .discount(createCourseRequest.getDiscount())
                 .file(fileUpload)
-                .status("unchecked")
+                .statusTeacher(statusTeacher)
+                .statusAdmin(statusAdmin)
                 .tags(tags)
                 .categories(categories)
                 .build();
@@ -132,13 +133,13 @@ public class CourseService {
 
     public CourseResponse deleteByTeacher(UUID uuid) {
         Course course = courseRepository.findById(uuid).orElseThrow(() -> new EntityNotFoundException("Could not find course"));
-        course.setStatus("delete_by_teacher");
+        course.setStatusTeacher("delete_by_teacher");
         return CourseResponse.convert(course);
     }
 
     public CourseResponse checkCourseByAdmin(UUID id) throws Exception {
         Course course = courseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Could not find course"));
-        course.setStatus("checked");
+        course.setStatusTeacher("checked");
         return CourseResponse.convert(courseRepository.save(course));
 
     }
@@ -156,7 +157,24 @@ public class CourseService {
         User user = userService.getUser();
         List<Course> courses = courseRepository.findByUserId(user.getId());
         if (courses.isEmpty())return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course not found");
-        return ResponseEntity.ok(courses);
+        List<CourseResponse> coursesResponse = new ArrayList<>();
+        for (Course c : courses){
+            coursesResponse.add(CourseResponse.convert(c));
+        }
+        return ResponseEntity.ok((coursesResponse));
     }
 
+    public ResponseEntity<?> updateStatusByTeacher(String id, String status) {
+        User teacher = userService.getUser();
+        Optional<Course> courseOptional = courseRepository.findById(UUID.fromString(id));
+        if (courseOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Question not found");
+        }
+        if (!teacher.getId().equals(courseOptional.get().getUser().getId())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access or invalid course");
+        }
+        Course course   = courseOptional.get();
+        course.setStatusTeacher(status);
+        return ResponseEntity.ok(CourseResponse.convert(courseRepository.save(course)));
+    }
 }

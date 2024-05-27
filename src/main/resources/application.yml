@@ -5,6 +5,16 @@ server:
   # CORS network error (URL scheme must be "http" or "https" for CORS request) solution.
   # Ref: https://stackoverflow.com/a/73376127
   forward-headers-strategy: framework
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  web:
+    base-path: /actuator
 
 app:
   secret: ${APP_SECRET:c04nKbDFfJ2v0XSRtNKHQQq5Km3zMSZxla7paMSUzBOI/ORhgnTC7eJrqqEZQGKm}

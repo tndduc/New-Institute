@@ -74,12 +74,19 @@ public class CourseResponse  extends AbstractBaseResponse {
     private UserResponse userResponse;
 
     @Schema(
-            name = "status",
+            name = "status_teacher",
             description = "status of course",
             type = "String",
             example = "uncheck"
     )
-    private String status;
+    private String statusTeacher;
+    @Schema(
+            name = "status_admin",
+            description = "status of course",
+            type = "String",
+            example = "uncheck"
+    )
+    private String statusAdmin;
 
     @Schema(
             name = "createdAt",
@@ -134,7 +141,8 @@ public class CourseResponse  extends AbstractBaseResponse {
                 .description(course.getDescription())
                 .file(course.getFile())
                 .userResponse(userDTO)
-                .status(course.getStatus())
+                .statusAdmin(course.getStatusAdmin())
+                .statusTeacher(course.getStatusTeacher())
                 .tags(tagResponses)
                 .categories(categoryResponses)
                 .createdAt(course.getCreatedAt())

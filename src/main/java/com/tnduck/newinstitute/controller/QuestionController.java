@@ -27,7 +27,7 @@ import static com.tnduck.newinstitute.util.Constants.SECURITY_SCHEME_NAME;
 @RequestMapping("/question")
 @RequiredArgsConstructor
 @Slf4j
-@Tag(name = "08. Question", description = "Question API")
+@Tag(name = "008. Question", description = "Question API")
 public class QuestionController  extends AbstractBaseController {
     private final QuestionService questionService;
     @PostMapping("/create")

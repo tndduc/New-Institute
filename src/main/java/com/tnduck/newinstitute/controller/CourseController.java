@@ -202,7 +202,7 @@ public class CourseController extends AbstractBaseController {
             summary = "Create a new Lesson",
             security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
     )
-    public ResponseEntity<?> createLesson(
+    public ResponseEntity<?> getByTeacher(
     )  {
         try {
             return courseService.getCourseByAuthor();
@@ -277,5 +277,23 @@ public class CourseController extends AbstractBaseController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
+    @PostMapping("/update-status-by-teacher")
+    @PreAuthorize("hasAuthority('TEACHER')")
+    @Operation(
+            summary = "Update status course by teacher",
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
+    )
+    public ResponseEntity<?> updateStatusByTeacher(
+            @Parameter(name = "id", description = "id of course")
+            @RequestParam(required = true) final String id,
+            @Parameter(name = "status", description = "status by teacher", example = "public",
+                    schema = @Schema(type = "String", allowableValues = {"on_create", "public", "private", "delete"}))
+            @RequestParam(defaultValue = "createdAt", required = false) final String status
+    )  {
+        try {
+            return courseService.updateStatusByTeacher(id, status);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
