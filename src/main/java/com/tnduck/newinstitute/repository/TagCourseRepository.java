@@ -20,6 +20,6 @@ import java.util.UUID;
 public interface TagCourseRepository extends JpaRepository<TagCourse, UUID> {
     Optional<TagCourse> findByName(String tagName);
 
-    @Query(value = "SELECT id,name FROM tags WHERE name LIKE %?1%", nativeQuery = true)
+    @Query(value = "SELECT * FROM tags WHERE name LIKE %?1%", nativeQuery = true)
     List<TagCourse> findListByName(String name);
 }

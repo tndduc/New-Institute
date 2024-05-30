@@ -148,9 +148,6 @@ public class CourseService {
     }
     public ResponseEntity<?> getCategoryByName(String name){
         List<CategoryCourse> listCategoryCourses = categoryCourseRepository.findListByName(name);
-        if (listCategoryCourses.size()==0){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Category not found");
-        }
         List<CategoryResponse> categoryCourses = new ArrayList<>();
         for (CategoryCourse categoryCourse : listCategoryCourses){
             categoryCourses.add(CategoryResponse.convert(categoryCourse));
@@ -159,9 +156,7 @@ public class CourseService {
     }
     public ResponseEntity<?> getTagByName(String name){
         List<TagCourse> listTagCourses = tagCourseRepository.findListByName(name);
-        if (listTagCourses.size()==0){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tag not found");
-        }
+
         List<TagResponse> tagResponses = new ArrayList<>();
         for (TagCourse tagResponse : listTagCourses){
             tagResponses.add(TagResponse.convert(tagResponse));
@@ -171,9 +166,6 @@ public class CourseService {
     public ResponseEntity<?> getCourseByAuthor(){
         User user = userService.getUser();
         List<Course> courses = courseRepository.findByUserId(user.getId());
-        if (courses.size() == 0){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course not found");
-        }
         List<CourseResponse> coursesResponse = new ArrayList<>();
         for (Course c : courses){
             coursesResponse.add(CourseResponse.convert(c));
@@ -187,7 +179,6 @@ public class CourseService {
         for (int i = 0; i < enrollments.size(); i++){
             courses.add(enrollments.get(i).getCourse());
         }
-        if (courses.isEmpty())return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course not found");
         List<CourseResponse> coursesResponse = new ArrayList<>();
         for (Course c : courses){
             coursesResponse.add(CourseResponse.convert(c));
