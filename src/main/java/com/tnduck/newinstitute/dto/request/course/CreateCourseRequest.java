@@ -25,7 +25,7 @@ import java.util.List;
 @SuperBuilder
 public class CreateCourseRequest {
     @NotBlank(message = "{not_blank}")
-    @Size(max = 50, message = "{max_length}")
+    @Size(max = 500, message = "{max_length}")
     @Schema(
             name = "name",
             description = "Name of course",

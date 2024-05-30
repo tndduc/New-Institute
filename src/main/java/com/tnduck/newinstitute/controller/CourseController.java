@@ -262,7 +262,7 @@ public class CourseController extends AbstractBaseController {
         }
     }
     @GetMapping("/tags/get-by-name")
-    public ResponseEntity<?> getTagByName(@Parameter(name = "name", description = "Name Category", example = "backend")
+    public ResponseEntity<?> getTagByName(@Parameter(name = "name", description = "Name tag", example = "backend")
                                               @RequestParam(required = true) final String name) {
         try {
            return courseService.getTagByName(name);
@@ -270,7 +270,15 @@ public class CourseController extends AbstractBaseController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-
+    @GetMapping("/categories/get-by-name")
+    public ResponseEntity<?> getCategoryByName(@Parameter(name = "name", description = "Name Category", example = "backend")
+                                          @RequestParam(required = true) final String name) {
+        try {
+            return courseService.getCategoryByName(name);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 
     @PreAuthorize("hasAuthority('TEACHER')")
     @DeleteMapping("/delete-by-teacher")

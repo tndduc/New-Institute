@@ -4,6 +4,8 @@ import com.tnduck.newinstitute.dto.request.course.CreateCourseRequest;
 import com.tnduck.newinstitute.dto.request.course.UpdateCourseRequest;
 import com.tnduck.newinstitute.dto.request.course.tag.TagRequest;
 import com.tnduck.newinstitute.dto.response.course.CourseResponse;
+import com.tnduck.newinstitute.dto.response.course.category.CategoryResponse;
+import com.tnduck.newinstitute.dto.response.course.tag.TagResponse;
 import com.tnduck.newinstitute.entity.*;
 import com.tnduck.newinstitute.entity.specification.CourseFilterSpecification;
 import com.tnduck.newinstitute.entity.specification.UserFilterSpecification;
@@ -145,19 +147,33 @@ public class CourseService {
 
     }
     public ResponseEntity<?> getCategoryByName(String name){
-        Optional<CategoryCourse> categoryCourses = categoryCourseRepository.findByName(name);
-        if (categoryCourses.isEmpty())return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Category not found");
-        return ResponseEntity.ok(categoryCourses);
+        List<CategoryCourse> listCategoryCourses = categoryCourseRepository.findListByName(name);
+        if (listCategoryCourses.size()==0){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Category not found");
+        }
+        List<CategoryResponse> categoryCourses = new ArrayList<>();
+        for (CategoryCourse categoryCourse : listCategoryCourses){
+            categoryCourses.add(CategoryResponse.convert(categoryCourse));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(categoryCourses);
     }
     public ResponseEntity<?> getTagByName(String name){
-        Optional<TagCourse> tagCourses = tagCourseRepository.findByName(name);
-        if (tagCourses.isEmpty())return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tag not found");
-        return ResponseEntity.ok(tagCourses);
+        List<TagCourse> listTagCourses = tagCourseRepository.findListByName(name);
+        if (listTagCourses.size()==0){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tag not found");
+        }
+        List<TagResponse> tagResponses = new ArrayList<>();
+        for (TagCourse tagResponse : listTagCourses){
+            tagResponses.add(TagResponse.convert(tagResponse));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(tagResponses);
     }
     public ResponseEntity<?> getCourseByAuthor(){
         User user = userService.getUser();
         List<Course> courses = courseRepository.findByUserId(user.getId());
-        if (courses.isEmpty())return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course not found");
+        if (courses.size() == 0){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course not found");
+        }
         List<CourseResponse> coursesResponse = new ArrayList<>();
         for (Course c : courses){
             coursesResponse.add(CourseResponse.convert(c));

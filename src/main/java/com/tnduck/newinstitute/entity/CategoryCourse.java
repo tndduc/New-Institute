@@ -21,8 +21,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoryCourse extends AbstractBaseEntity{
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Course course;
     @Column(name = "name", nullable = false, length = 500)
     private String name;
     @Column(name = "description")
