@@ -210,6 +210,20 @@ public class CourseController extends AbstractBaseController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+    @GetMapping("/get-by-user")
+    @PreAuthorize("hasAuthority('USER')")
+    @Operation(
+            summary = "Create a new Lesson",
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
+    )
+    public ResponseEntity<?> getByUser(
+    )  {
+        try {
+            return courseService.getCourseByUser();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
     public ResponseEntity<?> getCategoriesByName( @Parameter(name = "name", description = "Name Category", example = "backend")
                                                          @RequestParam(required = true) final String name) {
         try {
@@ -218,6 +232,7 @@ public class CourseController extends AbstractBaseController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
     @GetMapping("/categories/get-all")
     public ResponseEntity<List<CategoryResponse>> getAllCategories() {
         try {

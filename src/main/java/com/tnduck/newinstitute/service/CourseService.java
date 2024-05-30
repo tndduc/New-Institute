@@ -45,6 +45,7 @@ public class CourseService {
     private final FileService fileService;
     private final TagCourseRepository tagCourseRepository;
     private final CategoryCourseRepository categoryCourseRepository;
+    private final EnrollmentService enrollmentService;
 
     public CourseResponse create(CreateCourseRequest createCourseRequest) {
         User teacher = userService.getUser();
@@ -163,6 +164,21 @@ public class CourseService {
         }
         return ResponseEntity.ok((coursesResponse));
     }
+    public ResponseEntity<?> getCourseByUser(){
+        User user = userService.getUser();
+        List<Enrollment> enrollments = enrollmentService.getEnrollmentByUserId(user.getId());
+        List<Course> courses = new ArrayList<>();
+        for (int i = 0; i < enrollments.size(); i++){
+            courses.add(enrollments.get(i).getCourse());
+        }
+        if (courses.isEmpty())return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course not found");
+        List<CourseResponse> coursesResponse = new ArrayList<>();
+        for (Course c : courses){
+            coursesResponse.add(CourseResponse.convert(c));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(coursesResponse);
+    }
+
 
     public ResponseEntity<?> updateStatusByTeacher(String id, String status) {
         User teacher = userService.getUser();

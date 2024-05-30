@@ -67,6 +67,7 @@ public class WebSecurityConfig {
                                 "/swagger-ui/**",
                                 "/webjars/**",
                                 "/test/**",
+                                "/payment/**",
                                 "quiz-results/**",
                                 "/actuator/**",
                                 "/cloudinary/**"

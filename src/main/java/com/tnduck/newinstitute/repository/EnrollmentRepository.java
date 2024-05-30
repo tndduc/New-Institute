@@ -1,9 +1,12 @@
 package com.tnduck.newinstitute.repository;
 
+import com.tnduck.newinstitute.entity.Course;
 import com.tnduck.newinstitute.entity.Enrollment;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -13,4 +16,6 @@ import java.util.UUID;
  */
 @Repository
 public interface EnrollmentRepository extends JpaRepository<Enrollment, UUID> {
+    @Query(value = "SELECT * FROM enrollments WHERE student_id = ?1", nativeQuery = true)
+    List<Enrollment> getEnrollmentListByUserID(UUID userID);
 }

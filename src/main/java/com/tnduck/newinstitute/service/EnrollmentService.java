@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -40,7 +41,7 @@ public class EnrollmentService {
         if (course.getStatusAdmin().equals("ban")) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("This course have been ban by admin");
         }
-        if (!course.getStatusTeacher().equals("publish")) {
+        if (!course.getStatusTeacher().equals("public")) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("access_denied");
         }
         String statusEnrollment = String.valueOf(EnrollmentStatus.APPROVED);
@@ -56,6 +57,9 @@ public class EnrollmentService {
                 .build();
         Enrollment enrollmentSave = enrollmentRepository.save(enrollment);
         return ResponseEntity.status(HttpStatus.CREATED).body(EnrollResponse.convert(enrollmentSave));
+    }
+    public List<Enrollment> getEnrollmentByUserId(UUID userId) {
+        return enrollmentRepository.getEnrollmentListByUserID(userId);
     }
 
 }
