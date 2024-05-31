@@ -1,6 +1,7 @@
 package com.tnduck.newinstitute.controller;
 
 import com.tnduck.newinstitute.dto.request.lesson.LessonRequest;
+import com.tnduck.newinstitute.dto.request.lesson.LessonUpdateRequest;
 import com.tnduck.newinstitute.dto.request.user.UpdatePasswordRequest;
 import com.tnduck.newinstitute.dto.response.DetailedErrorResponse;
 import com.tnduck.newinstitute.dto.response.ErrorResponse;
@@ -86,10 +87,9 @@ public class LessonController extends AbstractBaseController{
             security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
     )
     public ResponseEntity<?> updateLesson (@PathVariable("id") final String id,
-                                           @RequestBody(required = false) final String title,
-                                           @RequestBody(required = false) final String content) {
+                                           @RequestBody(required = false) final LessonUpdateRequest lessonUpdateRequest) {
         try {
-            return lessonService.updateLesson(id, title, content);
+            return lessonService.updateLesson(id,lessonUpdateRequest);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

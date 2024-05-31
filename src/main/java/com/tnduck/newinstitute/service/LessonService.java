@@ -1,5 +1,6 @@
 package com.tnduck.newinstitute.service;
 
+import com.tnduck.newinstitute.dto.request.lesson.LessonUpdateRequest;
 import com.tnduck.newinstitute.dto.request.video.CreateVideoLessonRequest;
 import com.tnduck.newinstitute.dto.request.lesson.LessonRequest;
 import com.tnduck.newinstitute.dto.response.lesson.LessonResponse;
@@ -104,12 +105,11 @@ public class LessonService {
      * Updates the details of a lesson.
      *
      * @param lessonId the unique identifier of the lesson to be updated
-     * @param title    the new title for the lesson (optional)
-     * @param content  the new content for the lesson (optional)
+     * @param lessonUpdateRequest    the new title and content for the lesson (optional)
      * @return a {@link ResponseEntity} containing the updated lesson's details if successful, or an error message if the operation fails
      * @throws Exception if an error occurs during the update process
      */
-    public ResponseEntity<?> updateLesson(String lessonId, String title, String content) {
+    public ResponseEntity<?> updateLesson(String lessonId, LessonUpdateRequest lessonUpdateRequest) {
         try {
             Optional<Lesson> lessonOptional = lessonRepository.findById(UUID.fromString(lessonId));
             if (lessonOptional.isEmpty()) {
@@ -123,16 +123,16 @@ public class LessonService {
             List<Lesson> lessonsInCourse = lessonRepository.findByCourse_Id(existingLesson.getCourse().getId());
             Optional<Lesson> lessonWithSameTitle = lessonsInCourse.stream()
                     .filter(lesson -> !lesson.getId().equals(existingLesson.getId()))
-                    .filter(lesson -> lesson.getTitle().equals(title)).findAny();
+                    .filter(lesson -> lesson.getTitle().equals(lessonUpdateRequest.getTitle())).findAny();
             if (lessonWithSameTitle.isPresent()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Lesson with title '" + title + "' already exists in this course");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Lesson with title '" + lessonUpdateRequest.getTitle() + "' already exists in this course");
             }
 
-            if (title != null) {
-                existingLesson.setTitle(title);
+            if (lessonUpdateRequest.getTitle() != null) {
+                existingLesson.setTitle(lessonUpdateRequest.getTitle());
             }
-            if (content != null) {
-                existingLesson.setContent(content);
+            if (lessonUpdateRequest.getContent() != null) {
+                existingLesson.setContent(lessonUpdateRequest.getContent());
             }
             Lesson updatedLesson = lessonRepository.save(existingLesson);
 
