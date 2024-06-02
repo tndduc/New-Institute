@@ -50,7 +50,7 @@ public class VideoController extends AbstractBaseController{
     )
     public ResponseEntity<?> createVideo(@ModelAttribute final CreateVideoLessonRequest request) {
         try {
-            return videoService.uploadVideo(request);
+            return videoService.createVideo(request);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

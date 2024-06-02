@@ -29,22 +29,27 @@ public class QuizService {
     private final VideoRepository videoRepository;
     private final UnitRepository unitRepository;
     public ResponseEntity<?> createQuiz(CreateQuizRequest createQuizRequest) {
-        Optional<Unit> unitOptional = unitRepository.findById(UUID.fromString(createQuizRequest.getIdUnit()));
-        if (unitOptional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Unit not found");
+        Optional<Lesson> lessonOptional = lessonRepository.findById(UUID.fromString(createQuizRequest.getIdLesson()));
+        if (lessonOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Lesson not found");
         }
-        if(unitOptional.get().getType().equals("video")) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Unit type not supported");
-        }
-        Optional<Quiz> quizOptional = quizRepository.findByUnitId(unitOptional.get().getId());
-        if (quizOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Quiz already exists");
-        }
-        Optional<Course> courseOptional = courseRepository.findById(unitOptional.get().getLesson().getCourse().getId());
+        List<Unit> unitList = unitRepository.findByLessonId(lessonOptional.get().getId());
+        // Check if the user has access to the specified course
+        Optional<Course> courseOptional = courseRepository.findById(lessonOptional.get().getCourse().getId());
         User teacher = userService.getUser();
         if (teacher == null || courseOptional.isEmpty() || !teacher.getId().equals(courseOptional.get().getUser().getId())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access or invalid course");
         }
+        int ordinal = unitList.size()+1;
+
+        // Create a new unit with the provided details
+        Unit unit = new Unit();
+        unit.setTitle(createQuizRequest.getTitle());
+        unit.setType("quiz");
+        unit.setOrdinalNumber(ordinal);
+        unit.setLesson(lessonOptional.get());
+
+        Unit unitSave = unitRepository.save(unit);
         boolean isFinal = false;
         if (createQuizRequest.equals("true")){
             isFinal = true;
@@ -53,7 +58,7 @@ public class QuizService {
                 .description(createQuizRequest.getDescription())
                 .isFinalExam(isFinal)
                 .title(createQuizRequest.getTitle())
-                .unit(unitOptional.get())
+                .unit(unitSave)
                 .build();
         return ResponseEntity.ok(QuizResponse.convert(quizRepository.save(quiz)));
     }

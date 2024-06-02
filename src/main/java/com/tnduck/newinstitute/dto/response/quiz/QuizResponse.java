@@ -27,16 +27,7 @@ public class QuizResponse {
             type = "String"
     )
     private String id;
-    @NotBlank(message = "{not_blank}")
-    @Size(max = 50, message = "{max_length}")
-    @Schema(
-            name = "title",
-            description = "Title of course",
-            type = "String",
-            requiredMode = Schema.RequiredMode.REQUIRED,
-            example = "Nextjs Zero to Hero"
-    )
-    private String title;
+
     @Schema(
             name = "description",
             description = "description of quiz",
@@ -69,7 +60,6 @@ public class QuizResponse {
         }
         return QuizResponse.builder()
                 .id(quiz.getId().toString())
-                .title(quiz.getTitle())
                 .description(quiz.getDescription())
                 .idUnit(quiz.getUnit().getId().toString())
                 .isFinalExam(quiz.isFinalExam())
@@ -79,7 +69,6 @@ public class QuizResponse {
     public static QuizResponse convert(Quiz quiz) {
         return QuizResponse.builder()
                 .id(quiz.getId().toString())
-                .title(quiz.getTitle())
                 .description(quiz.getDescription())
                 .idUnit(quiz.getUnit().getId().toString())
                 .isFinalExam(quiz.isFinalExam())

@@ -99,7 +99,6 @@ public class UnitService {
         Unit unit = new Unit();
         unit.setTitle(request.getTitle());
         unit.setOrdinalNumber(request.getOrdinalNumber());
-        unit.setDuration(request.getDuration());
         unit.setType(request.getType());
         unit.setLesson(lessonOptional.get());
 
@@ -134,7 +133,6 @@ public class UnitService {
         // Update the unit with the provided details
         Unit unit = unitOptional.get();
         unit.setTitle(updateUnitRequest.getTitle() != null ? updateUnitRequest.getTitle() : unit.getTitle());
-        unit.setDuration(updateUnitRequest.getDuration() != null ? updateUnitRequest.getDuration() : unit.getDuration());
         unit.setType(updateUnitRequest.getType() != null ? updateUnitRequest.getType() : unit.getType());
 
         // Save the updated unit to the database

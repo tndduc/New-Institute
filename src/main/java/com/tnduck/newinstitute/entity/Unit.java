@@ -17,8 +17,6 @@ public class Unit extends AbstractBaseEntity{
     private String title;
     @Column(name = "ordinal_number")
     private int ordinalNumber;
-    @Column(name = "duration", nullable = true)
-    private String duration;
     @Column(name = "type", nullable = false)
     private String type;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

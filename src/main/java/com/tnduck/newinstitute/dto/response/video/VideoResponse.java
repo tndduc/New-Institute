@@ -20,20 +20,6 @@ public class VideoResponse {
     )
     private UUID id;
     @Schema(
-            name = "title",
-            description = "Title of video",
-            type = "String",
-            example = "0"
-    )
-    private String title;
-    @Schema(
-            name = "duration",
-            description = "duration of video",
-            type = "String",
-            example = "0"
-    )
-    private String duration;
-    @Schema(
             name = "url",
             description = "url of video",
             type = "String",
@@ -50,9 +36,7 @@ public class VideoResponse {
     public static VideoResponse convert(Video video) {
         return VideoResponse.builder()
                 .id(video.getId())
-                .title(video.getTitle())
                 .idUnit(video.getUnit().getId().toString())
-                .duration(video.getDuration())
                 .url(video.getUrl())
                 .build();
     }

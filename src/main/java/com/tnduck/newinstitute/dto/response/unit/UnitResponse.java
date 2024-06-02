@@ -72,7 +72,6 @@ public class UnitResponse {
                 .id(unit.getId())
                 .ordinalNumber(unit.getOrdinalNumber())
                 .type(unit.getType())
-                .duration(unit.getDuration())
                 .idLesson(unit.getLesson().getId().toString())
                 .build();
     }
@@ -82,7 +81,6 @@ public class UnitResponse {
                 .id(unit.getId())
                 .ordinalNumber(unit.getOrdinalNumber())
                 .type(unit.getType())
-                .duration(unit.getDuration())
                 .idLesson(unit.getLesson().getId().toString())
                 .video(videoResponse)
                 .build();
@@ -93,7 +91,6 @@ public class UnitResponse {
                 .id(unit.getId())
                 .ordinalNumber(unit.getOrdinalNumber())
                 .type(unit.getType())
-                .duration(unit.getDuration())
                 .idLesson(unit.getLesson().getId().toString())
                 .quizResponse(quizResponse)
                 .build();

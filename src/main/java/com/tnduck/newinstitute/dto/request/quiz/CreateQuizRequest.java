@@ -15,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class CreateQuizRequest {
     @NotBlank(message = "{not_blank}")
-    @Size(max = 50, message = "{max_length}")
+    @Size(max = 500, message = "{max_length}")
     @Schema(
             name = "title",
             description = "Title of course",
@@ -24,7 +24,6 @@ public class CreateQuizRequest {
             example = "Final test"
     )
     private String title;
-    @Size(max = 500, message = "{max_length}")
     @Schema(
             name = "description",
             description = "Description of course",
@@ -34,13 +33,13 @@ public class CreateQuizRequest {
     private String description;
 
     @Schema(
-            name = "idUnit",
+            name = "idLesson",
             description = "id Unit of course",
             type = "String",
             requiredMode = Schema.RequiredMode.REQUIRED,
             example = ""
     )
-    private String idUnit;
+    private String idLesson;
     @Schema(
             name = "isFinalExam",
             description = "isFinalExam?",

@@ -73,24 +73,28 @@ public class VideoService {
         }
     }
 
-    public ResponseEntity<?> uploadVideo(CreateVideoLessonRequest videoLessonRequest) throws Exception {
-        Optional<Unit> unitOptional = unitRepository.findById(UUID.fromString(videoLessonRequest.getIdUnit()));
-        if (unitOptional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Unit not found");
+    public ResponseEntity<?> createVideo(CreateVideoLessonRequest videoLessonRequest){
+        Optional<Lesson> lessonOptional = lessonRepository.findById(UUID.fromString(videoLessonRequest.getIdLesson()));
+        if (lessonOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Lesson not found");
         }
-        Unit unit = unitOptional.get();
-        Optional<Course> courseOptional = courseRepository.findById(unit.getLesson().getCourse().getId());
+        List<Unit> unitList = unitRepository.findByLessonId(lessonOptional.get().getId());
+        // Check if the user has access to the specified course
+        Optional<Course> courseOptional = courseRepository.findById(lessonOptional.get().getCourse().getId());
         User teacher = userService.getUser();
         if (teacher == null || courseOptional.isEmpty() || !teacher.getId().equals(courseOptional.get().getUser().getId())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access or invalid course");
         }
-        if (unit.getType().equals("quiz")){
-            return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("Unit type not supported");
-        }
-        Optional<Video> videoOptional = videoRepository.findByUnitId(unit.getId());
-        if (videoOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Video already exists");
-        }
+        int ordinal = unitList.size()+1;
+
+        // Create a new unit with the provided details
+        Unit unit = new Unit();
+        unit.setTitle(videoLessonRequest.getTitle());
+        unit.setType("video");
+        unit.setOrdinalNumber(ordinal);
+        unit.setLesson(lessonOptional.get());
+
+        Unit unitSave = unitRepository.save(unit);
         MultipartFile file = videoLessonRequest.getFile();
         if (file == null || file.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File cannot be null or empty.");
@@ -111,10 +115,9 @@ public class VideoService {
 
         // Create and persist a new Video entity
         Video video = Video.builder()
-                .unit(unit)
+                .unit(unitSave)
                 .url(url)
                 .publicId(publicId)
-                .title(videoLessonRequest.getTitle())
                 .build();
         Video videoSave = videoRepository.save(video);
         VideoResponse videoResponse = VideoResponse.convert(videoSave);
@@ -183,13 +186,13 @@ public class VideoService {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access or invalid course");
             }
             Video video = videoOptional.get();
-            if (title.equals(video.getTitle())) {
-                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Title is not same as old title");
-            }
+//            if (title.equals(video.getTitle())) {
+//                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Title is not same as old title");
+//            }
             if (title.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Title cannot be empty");
             }
-            video.setTitle(title);
+//            video.setTitle(title);
             videoRepository.save(video);
             return ResponseEntity.ok(video);
         } catch (Exception e) {
