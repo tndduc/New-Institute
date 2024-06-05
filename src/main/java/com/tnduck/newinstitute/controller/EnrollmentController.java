@@ -38,8 +38,8 @@ public class EnrollmentController   extends AbstractBaseController{
             security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
     )
     public ResponseEntity<?> createLesson(
-            @Parameter(description = "Request body to create Lesson", required = true)
-            @RequestBody @Valid String idCourse
+           @Parameter(name = "id", description = "Course ID", example = "00000000-0000-0000-0000-000000000001")
+            @RequestParam(required = true) final String idCourse
     )  {
         try {
             return enrollmentService.createEnroll(idCourse);
