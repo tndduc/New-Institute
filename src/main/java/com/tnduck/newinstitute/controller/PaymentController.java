@@ -1,6 +1,7 @@
 package com.tnduck.newinstitute.controller;
 
 
+import com.tnduck.newinstitute.dto.response.ResponseObject;
 import com.tnduck.newinstitute.dto.response.payment.PaymentDTO;
 import com.tnduck.newinstitute.service.PaymentService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,9 +33,10 @@ import java.util.*;
 public class PaymentController {
     private final PaymentService paymentService;
     @GetMapping("/vn-pay")
-    public ResponseEntity<PaymentDTO.VNPayResponse> pay(HttpServletRequest request) {
-        return ResponseEntity.status(HttpStatus.OK).body(paymentService.createVnPayPayment(request));
+    public ResponseObject<PaymentDTO.VNPayResponse> pay(HttpServletRequest request) {
+        return new ResponseObject<>(HttpStatus.OK, "Success", paymentService.createVnPayPayment(request));
     }
+    //http://localhost:8080/payment/vn-pay?amount=2415116&bankCode=NCB
     @GetMapping("/vn-pay-callback")
     public ResponseEntity<?> payCallbackHandler(HttpServletRequest request) {
         String status = request.getParameter("vnp_ResponseCode");

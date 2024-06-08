@@ -130,8 +130,8 @@ logging:
 payment:
   vnPay:
     url: ${PAY_URL:https://sandbox.vnpayment.vn/paymentv2/vpcpay.html}
-    tmnCode: ${TMN_CODE:58X4B4HP}
-    secretKey: ${SECRET_KEY:VRLDWNVWDNPCOEPBZUTWSEDQAGXJCNGZ}
+    tmnCode: ${TMN_CODE:F7JMGJTX}
+    secretKey: ${SECRET_KEY:LTEGKR727G77304RZ58KB4K9QOCBR3TI}
     returnUrl: ${RETURN_URL:http://localhost:8080/api/v1/payment/vn-pay-callback}
     version: ${VERSION:2.1.0}
     command: ${COMMAND:pay}

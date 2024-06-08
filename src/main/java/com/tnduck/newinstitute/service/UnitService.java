@@ -69,7 +69,6 @@ public class UnitService {
             if (unit.getType().equals("quiz")) {
                 quizOptional.ifPresent(quiz -> responseList.add(UnitResponse.convert(unit, quiz)));
             }
-            responseList.add(UnitResponse.convert(unit));
         }
         return responseList;
     }

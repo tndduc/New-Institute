@@ -12,10 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 import static com.tnduck.newinstitute.util.Constants.SECURITY_SCHEME_NAME;
 
@@ -38,7 +37,7 @@ public class EnrollmentController   extends AbstractBaseController{
             security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
     )
     public ResponseEntity<?> createLesson(
-           @Parameter(name = "id", description = "Course ID", example = "00000000-0000-0000-0000-000000000001")
+            @Parameter(name = "id", description = "Course ID", example = "00000000-0000-0000-0000-000000000001")
             @RequestParam(required = true) final String idCourse
     )  {
         try {
