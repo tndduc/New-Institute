@@ -47,6 +47,13 @@ public class UnitResponse {
     )
     private String duration;
     @Schema(
+            name = "description",
+            description = "description of unit",
+            type = "String",
+            example = "0"
+    )
+    private String description;
+    @Schema(
             name = "type",
             description = "type of unit",
             type = "String",
@@ -78,6 +85,7 @@ public class UnitResponse {
         return UnitResponse.builder()
                 .id(unit.getId())
                 .title(unit.getTitle())
+                .description(unit.getDescription())
                 .ordinalNumber(unit.getOrdinalNumber())
                 .type(unit.getType())
                 .idLesson(unit.getLesson().getId().toString())
@@ -88,6 +96,7 @@ public class UnitResponse {
         return UnitResponse.builder()
                 .id(unit.getId())
                 .title(unit.getTitle())
+                .description(unit.getDescription())
                 .ordinalNumber(unit.getOrdinalNumber())
                 .type(unit.getType())
                 .idLesson(unit.getLesson().getId().toString())
@@ -99,6 +108,7 @@ public class UnitResponse {
         return UnitResponse.builder()
                 .id(unit.getId())
                 .title(unit.getTitle())
+                .description(unit.getDescription())
                 .ordinalNumber(unit.getOrdinalNumber())
                 .type(unit.getType())
                 .idLesson(unit.getLesson().getId().toString())

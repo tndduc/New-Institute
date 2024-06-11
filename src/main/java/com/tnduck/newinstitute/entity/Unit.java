@@ -15,6 +15,8 @@ import org.hibernate.annotations.OnDeleteAction;
 public class Unit extends AbstractBaseEntity{
     @Column(name = "title", nullable = true)
     private String title;
+    @Column(name = "description")
+    private String description;
     @Column(name = "ordinal_number")
     private int ordinalNumber;
     @Column(name = "type", nullable = false)

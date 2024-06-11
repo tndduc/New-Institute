@@ -91,9 +91,9 @@ public class VideoService {
         Unit unit = new Unit();
         unit.setTitle(videoLessonRequest.getTitle());
         unit.setType("video");
+        unit.setDescription(videoLessonRequest.getDescription());
         unit.setOrdinalNumber(ordinal);
         unit.setLesson(lessonOptional.get());
-
         Unit unitSave = unitRepository.save(unit);
         MultipartFile file = videoLessonRequest.getFile();
         if (file == null || file.isEmpty()) {
