@@ -1,5 +1,6 @@
 package com.tnduck.newinstitute.controller;
 
+import com.tnduck.newinstitute.dto.request.quiz.CreateGroupQuizRequest;
 import com.tnduck.newinstitute.dto.request.quiz.CreateQuizRequest;
 import com.tnduck.newinstitute.dto.request.quiz.UpdateQuizRequest;
 import com.tnduck.newinstitute.service.QuizService;
@@ -37,6 +38,20 @@ public class QuizController  extends AbstractBaseController {
                                              @RequestBody @Valid CreateQuizRequest createQuizRequest) {
         try {
             return quizService.createQuiz(createQuizRequest);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    @PostMapping("/create-group")
+    @PreAuthorize("hasAuthority('TEACHER')")
+    @Operation(
+            summary = "Create a new group Quiz",
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
+    )
+    public ResponseEntity<?> createGroupQuiz( @Parameter(description = "Request body to create Quiz", required = true)
+                                         @RequestBody @Valid CreateGroupQuizRequest createGroupQuizRequest) {
+        try {
+            return quizService.createGroupQuiz(createGroupQuizRequest);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

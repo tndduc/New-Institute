@@ -120,8 +120,9 @@ public class VideoService {
                 .publicId(publicId)
                 .build();
         Video videoSave = videoRepository.save(video);
-        VideoResponse videoResponse = VideoResponse.convert(videoSave);
-        return ResponseEntity.ok(videoResponse);
+//        VideoResponse videoResponse = VideoResponse.convert(videoSave);
+        UnitResponse unitResponse = UnitResponse.convert(unitSave,video);
+        return ResponseEntity.ok(unitResponse);
     }
 
     public Video getVideo(UUID uuidUnit) {

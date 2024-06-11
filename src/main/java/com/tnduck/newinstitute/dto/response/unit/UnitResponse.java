@@ -26,6 +26,13 @@ public class UnitResponse {
     )
     private UUID id;
     @Schema(
+            name = "title",
+            description = "title of unit",
+            type = "String",
+            example = "0"
+    )
+    private String title;
+    @Schema(
             name = "ordinalNumber",
             description = "ordinalNumber of unit",
             type = "String",
@@ -70,6 +77,7 @@ public class UnitResponse {
     public static UnitResponse convert(Unit unit) {
         return UnitResponse.builder()
                 .id(unit.getId())
+                .title(unit.getTitle())
                 .ordinalNumber(unit.getOrdinalNumber())
                 .type(unit.getType())
                 .idLesson(unit.getLesson().getId().toString())
@@ -79,6 +87,7 @@ public class UnitResponse {
         VideoResponse videoResponse = video != null ? VideoResponse.convert(video) : null;
         return UnitResponse.builder()
                 .id(unit.getId())
+                .title(unit.getTitle())
                 .ordinalNumber(unit.getOrdinalNumber())
                 .type(unit.getType())
                 .idLesson(unit.getLesson().getId().toString())
@@ -89,6 +98,7 @@ public class UnitResponse {
         QuizResponse quizResponse = quiz != null ? QuizResponse.convert(quiz) : null;
         return UnitResponse.builder()
                 .id(unit.getId())
+                .title(unit.getTitle())
                 .ordinalNumber(unit.getOrdinalNumber())
                 .type(unit.getType())
                 .idLesson(unit.getLesson().getId().toString())
