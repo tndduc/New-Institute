@@ -5,7 +5,7 @@ package com.tnduck.newinstitute.dto.validator;
  * @project New-Institute
  * @created 20/05/2024
  */
-public enum EnrollmentStatus {
+public enum CourseStatus {
     PAYMENT_PENDING,
     APPROVED,
     REJECTED,
@@ -14,7 +14,8 @@ public enum EnrollmentStatus {
     IN_PROGRESS,
     ON_HOLD,
     OVERDUE,
-    CERTIFIED
+    CERTIFIED,
+    WAITLIST
 }
 /*
 *

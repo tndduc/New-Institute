@@ -1,12 +1,14 @@
 package com.tnduck.newinstitute.service;
 
+import com.tnduck.newinstitute.dto.response.cart.CartResponse;
 import com.tnduck.newinstitute.dto.response.enroll.EnrollResponse;
 import com.tnduck.newinstitute.dto.validator.CourseStatus;
+import com.tnduck.newinstitute.entity.Cart;
 import com.tnduck.newinstitute.entity.Course;
 import com.tnduck.newinstitute.entity.Enrollment;
 import com.tnduck.newinstitute.entity.User;
+import com.tnduck.newinstitute.repository.CartRepository;
 import com.tnduck.newinstitute.repository.CourseRepository;
-import com.tnduck.newinstitute.repository.EnrollmentRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,12 +26,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class EnrollmentService {
-    private final EnrollmentRepository enrollmentRepository;
+public class CartService {
+    private final CartRepository cartRepository;
     private final UserService userService;
     private final CourseRepository courseRepository;
-
-    public ResponseEntity<?> createEnroll(String idCourse) {
+    public ResponseEntity<?> addToCart(String idCourse) {
         User learner = userService.getUser();
         Optional<Course> courseOptional = courseRepository.findById(UUID.fromString(idCourse));
         if (courseOptional.isEmpty()) {
@@ -45,29 +46,26 @@ public class EnrollmentService {
         if (!course.getStatusTeacher().equals("public")) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("access_denied");
         }
-        String statusEnrollment = String.valueOf(CourseStatus.APPROVED);
+        String statusCourse = String.valueOf(CourseStatus.APPROVED);
         if (course.getPrice().compareTo(BigDecimal.ZERO) == 0) {
-            statusEnrollment = String.valueOf(CourseStatus.APPROVED);
+            statusCourse = String.valueOf(CourseStatus.APPROVED);
         } else {
-            statusEnrollment = String.valueOf(CourseStatus.PAYMENT_PENDING);
+            statusCourse = String.valueOf(CourseStatus.WAITLIST);
         }
-        Enrollment enrollment = Enrollment.builder()
-                .status(statusEnrollment)
+        Cart cartRaw = Cart.builder()
+                .status(statusCourse)
                 .course(course)
                 .user(learner)
                 .build();
-        Enrollment enrollmentSave = enrollmentRepository.save(enrollment);
-        return ResponseEntity.status(HttpStatus.CREATED).body(EnrollResponse.convert(enrollmentSave));
+        Cart cartSave = cartRepository.save(cartRaw);
+        return ResponseEntity.status(HttpStatus.CREATED).body(CartResponse.convert(cartSave));
     }
-    public List<Enrollment> getEnrollmentByUserId(UUID userId) {
-        return enrollmentRepository.getEnrollmentListByUserID(userId);
-    }
-    public ResponseEntity<?> getEnrollment(UUID userId) {
-        List<EnrollResponse> enrollResponses = new ArrayList<>();
-        List<Enrollment> enrollments = enrollmentRepository.getEnrollmentListByUserID(userId);
-        for (Enrollment enrollment: enrollments){
-            enrollResponses.add(EnrollResponse.convert(enrollment));
+    public ResponseEntity<?> getCart(UUID userId) {
+        List<CartResponse> cartResponses = new ArrayList<>();
+        List<Cart> carts = cartRepository.getCartListByUserID(userId);
+        for (Cart cart: carts){
+            cartResponses.add(CartResponse.convert(cart));
         }
-        return ResponseEntity.status(HttpStatus.FOUND).body(enrollResponses);
+        return ResponseEntity.status(HttpStatus.FOUND).body(cartResponses);
     }
 }

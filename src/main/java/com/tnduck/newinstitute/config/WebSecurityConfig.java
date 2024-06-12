@@ -70,6 +70,7 @@ public class WebSecurityConfig {
                                 "/payment/**",
                                 "quiz-results/**",
                                 "/actuator/**",
+                                "/cart/**",
                                 "/cloudinary/**"
                         ).permitAll()
                         .requestMatchers("/admin/**").hasAuthority(Constants.RoleEnum.ADMIN.name())
