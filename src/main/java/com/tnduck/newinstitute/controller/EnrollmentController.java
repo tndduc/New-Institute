@@ -30,7 +30,7 @@ import static com.tnduck.newinstitute.util.Constants.SECURITY_SCHEME_NAME;
 @Tag(name = "011. Enrollment", description = "Enrollment API")
 public class EnrollmentController   extends AbstractBaseController{
     private final EnrollmentService enrollmentService;
-    @PostMapping("/enroll")
+    @PostMapping("/add-to-enrollment")
     @PreAuthorize("hasAuthority('USER')")
     @Operation(
             summary = "Create a new Lesson",
@@ -46,14 +46,28 @@ public class EnrollmentController   extends AbstractBaseController{
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+    @PostMapping("/add-to-enrollment")
+    @PreAuthorize("hasAuthority('USER')")
+    @Operation(
+            summary = "Create a new Lesson",
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
+    )
+    @GetMapping("/get-by-user-id")
+    public ResponseEntity<?> getListEnroll() {
+        try {
+            return enrollmentService.getEnrollment();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 
-    @GetMapping("")
-    public ResponseEntity<?> getListEnroll(
-            @Parameter(name = "idUser", description = "User ID", example = "00000000-0000-0000-0000-000000000001")
-            @RequestParam(required = true) final String idUser
+        }
+    }
+    @DeleteMapping("/delete-by-idEnroll")
+    public ResponseEntity<?> delete(
+            @Parameter(name = "idEnroll", description = "Enroll ID", example = "00000000-0000-0000-0000-000000000001")
+            @RequestParam(required = true) final String idEnroll
     ) {
         try {
-            return enrollmentService.getEnrollment(UUID.fromString(idUser));
+            return enrollmentService.deleteEnroll(UUID.fromString(idEnroll));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 

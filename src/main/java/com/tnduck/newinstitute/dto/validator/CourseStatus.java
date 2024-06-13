@@ -15,7 +15,8 @@ public enum CourseStatus {
     ON_HOLD,
     OVERDUE,
     CERTIFIED,
-    WAITLIST
+    WAITLIST,
+    ON_CART
 }
 /*
 *

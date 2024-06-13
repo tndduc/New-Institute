@@ -68,4 +68,17 @@ public class CartService {
         }
         return ResponseEntity.status(HttpStatus.FOUND).body(cartResponses);
     }
+    public ResponseEntity<?> deleteCart(UUID cartId) {
+        Optional<Cart> cartOptional = cartRepository.findById(cartId);
+        if (cartOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cart not found");
+        }
+        Cart cart = cartOptional.get();
+        User learner = userService.getUser();
+        if (!learner.equals(cart.getUser())) { // Use .equals() for object comparison
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access");
+        }
+        cartRepository.delete(cart);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("delete_cart_success");
+    }
 }

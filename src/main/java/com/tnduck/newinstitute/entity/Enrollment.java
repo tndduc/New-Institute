@@ -20,7 +20,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Enrollment extends AbstractBaseEntity{
-
     @Column(name = "status")
     private String status;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

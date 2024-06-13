@@ -29,7 +29,7 @@ import java.util.*;
 @RequestMapping("/payment")
 @RequiredArgsConstructor
 @Slf4j
-@Tag(name = "012. payment", description = "Payment API")
+@Tag(name = "013. payment", description = "Payment API")
 public class PaymentController {
     private final PaymentService paymentService;
     @GetMapping("/vn-pay")

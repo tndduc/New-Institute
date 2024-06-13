@@ -23,7 +23,7 @@ import static com.tnduck.newinstitute.util.Constants.SECURITY_SCHEME_NAME;
 @Slf4j
 @Tag(name = "012. Cart", description = "Cart API")
 public class CartController {
-    private final CartService cartService;
+    private final EnrollmentService enrollmentService;
     @PostMapping("/add")
     @PreAuthorize("hasAuthority('USER')")
     @Operation(
@@ -31,26 +31,45 @@ public class CartController {
             security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
     )
     public ResponseEntity<?> addCart(
-            @Parameter(name = "id", description = "Course ID", example = "00000000-0000-0000-0000-000000000001")
+            @Parameter(name = "idCourse", description = "Course ID", example = "00000000-0000-0000-0000-000000000001")
             @RequestParam(required = true) final String idCourse
     )  {
         try {
-            return cartService.addToCart(idCourse);
+            return enrollmentService.addCart(idCourse);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    @GetMapping("")
+    @PostMapping("/add")
+    @PreAuthorize("hasAuthority('USER')")
+    @Operation(
+            summary = "Create a new Lesson",
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
+    )
+    @GetMapping("/get-by-user-id")
     public ResponseEntity<?> getListEnroll(
-            @Parameter(name = "idUser", description = "User ID", example = "00000000-0000-0000-0000-000000000001")
-            @RequestParam(required = true) final String idUser
     ) {
         try {
-            return cartService.getCart(UUID.fromString(idUser));
+            return enrollmentService.getCart();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 
         }
     }
-
+    @PreAuthorize("hasAuthority('USER')")
+    @Operation(
+            summary = "Create a new Lesson",
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
+    )
+    @DeleteMapping("/delete-by-cart-id")
+    public ResponseEntity<?> delete(
+            @Parameter(name = "idCart", description = "Cart ID", example = "00000000-0000-0000-0000-000000000001")
+            @RequestParam(required = true) final String idCart
+    ) {
+        try {
+            return enrollmentService.deleteEnroll(UUID.fromString(idCart));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
