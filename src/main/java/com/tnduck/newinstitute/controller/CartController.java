@@ -40,7 +40,7 @@ public class CartController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    @PostMapping("/add")
+
     @PreAuthorize("hasAuthority('USER')")
     @Operation(
             summary = "Create a new Lesson",
