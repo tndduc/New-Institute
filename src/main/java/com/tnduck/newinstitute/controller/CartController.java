@@ -56,12 +56,12 @@ public class CartController {
 
         }
     }
+    @DeleteMapping("/delete-by-cart-id")
     @PreAuthorize("hasAuthority('USER')")
     @Operation(
             summary = "Create a new Lesson",
             security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
     )
-    @DeleteMapping("/delete-by-cart-id")
     public ResponseEntity<?> delete(
             @Parameter(name = "idCart", description = "Cart ID", example = "00000000-0000-0000-0000-000000000001")
             @RequestParam(required = true) final String idCart

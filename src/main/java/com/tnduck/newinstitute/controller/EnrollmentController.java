@@ -46,13 +46,12 @@ public class EnrollmentController   extends AbstractBaseController{
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    @PostMapping("/add-to-enrollment")
+    @GetMapping("/get-by-user-id")
     @PreAuthorize("hasAuthority('USER')")
     @Operation(
             summary = "Create a new Lesson",
             security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
     )
-    @GetMapping("/get-by-user-id")
     public ResponseEntity<?> getListEnroll() {
         try {
             return enrollmentService.getEnrollment();
