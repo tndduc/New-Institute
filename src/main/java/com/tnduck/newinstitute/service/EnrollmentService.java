@@ -128,10 +128,10 @@ public class EnrollmentService {
         }
         List<EnrollResponse> enrollResponses = enrollments.stream()
                 .filter(enrollment ->
-                        enrollment.getStatus().equals(CourseStatus.APPROVED) ||
-                                enrollment.getStatus().equals(CourseStatus.COMPLETED) ||
-                                enrollment.getStatus().equals(CourseStatus.PAYMENT_PENDING) ||
-                                enrollment.getStatus().equals(CourseStatus.CERTIFIED))
+                        enrollment.getStatus().equals(CourseStatus.APPROVED.toString()) ||
+                                enrollment.getStatus().equals(CourseStatus.COMPLETED.toString()) ||
+                                enrollment.getStatus().equals(CourseStatus.PAYMENT_PENDING.toString()) ||
+                                enrollment.getStatus().equals(CourseStatus.CERTIFIED.toString()))
                 .map(EnrollResponse::convert)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(enrollResponses);
