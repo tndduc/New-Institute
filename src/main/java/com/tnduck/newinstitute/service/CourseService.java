@@ -172,7 +172,7 @@ public class CourseService {
         }
         return ResponseEntity.ok((coursesResponse));
     }
-    public ResponseEntity<?> getCourseByUser(){
+    public ResponseEntity<?> getCourseInEnrollByUser(){
         User user = userService.getUser();
         List<Enrollment> enrollments = enrollmentService.getEnrollmentByUserId(user.getId());
         List<Course> courses = new ArrayList<>();

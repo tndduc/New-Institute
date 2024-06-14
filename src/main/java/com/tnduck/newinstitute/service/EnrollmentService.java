@@ -142,14 +142,14 @@ public class EnrollmentService {
         List<EnrollResponse> enrollResponses = new ArrayList<>();
         List<Enrollment> enrollments = enrollmentRepository.getEnrollmentListByUserID(learner.getId());
         for (Enrollment enrollment: enrollments){
-            if (enrollment.getStatus().equals(CourseStatus.ON_CART)
-                    || enrollment.getStatus().equals(CourseStatus.PAYMENT_PENDING)
+            if (enrollment.getStatus().equals(CourseStatus.ON_CART.toString())
+                    || enrollment.getStatus().equals(CourseStatus.PAYMENT_PENDING.toString())
             ){
                 enrollResponses.add(EnrollResponse.convert(enrollment));
             }
 
         }
-        return ResponseEntity.status(HttpStatus.FOUND).body(enrollResponses);
+        return ResponseEntity.status(HttpStatus.OK).body(enrollResponses);
     }
 
 }

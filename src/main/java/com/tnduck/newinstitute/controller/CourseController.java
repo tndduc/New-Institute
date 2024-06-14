@@ -219,7 +219,7 @@ public class CourseController extends AbstractBaseController {
     public ResponseEntity<?> getByUser(
     )  {
         try {
-            return courseService.getCourseByUser();
+            return courseService.getCourseInEnrollByUser();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
