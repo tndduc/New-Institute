@@ -1,19 +1,21 @@
 package com.tnduck.newinstitute.controller;
 
 
+import com.tnduck.newinstitute.dto.request.OrderRequestDTO;
 import com.tnduck.newinstitute.dto.response.ResponseObject;
 import com.tnduck.newinstitute.dto.response.payment.PaymentDTO;
-import com.tnduck.newinstitute.service.PaymentService;
+import com.tnduck.newinstitute.service.GetPaymentStatusService;
+import com.tnduck.newinstitute.service.OrderPaymentService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -27,23 +29,25 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/payment")
-@RequiredArgsConstructor
 @Slf4j
 @Tag(name = "013. payment", description = "Payment API")
 public class PaymentController {
-    private final PaymentService paymentService;
-    @GetMapping("/vn-pay")
-    public ResponseObject<PaymentDTO.VNPayResponse> pay(HttpServletRequest request) {
-        return new ResponseObject<>(HttpStatus.OK, "Success", paymentService.createVnPayPayment(request));
+    @Autowired
+    private GetPaymentStatusService getPaymentStatusService;
+    @Autowired
+    private OrderPaymentService orderPaymentService;
+    @PostMapping("/create-order")
+    public ResponseEntity<Map<String, Object>> createOrderPayment(HttpServletRequest request, @RequestBody OrderRequestDTO orderRequestDTO) throws IOException {
+
+        Map<String, Object> result = this.orderPaymentService.createOrder(request, orderRequestDTO);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+
     }
-    //http://localhost:8080/payment/vn-pay?amount=2415116&bankCode=NCB
-    @GetMapping("/vn-pay-callback")
-    public ResponseEntity<?> payCallbackHandler(HttpServletRequest request) {
-        String status = request.getParameter("vnp_ResponseCode");
-        if (status.equals("00")) {
-            return ResponseEntity.status(HttpStatus.OK).body("Success");
-        } else {
-            return ResponseEntity.status(HttpStatus.FAILED_DEPENDENCY).body("Failure");
-        }
+    //http://localhost:8080/callback?vnp_amount=2415116&bankCode=NCB
+    @GetMapping("/callback")
+    public ResponseEntity<Map<String, Object>> doCallBack(@RequestParam Map<String, Object> callBackInfo) {
+
+        System.out.println(callBackInfo);
+        return new ResponseEntity<>(new HashMap<>(), HttpStatus.OK);
     }
 }
