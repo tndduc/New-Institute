@@ -14,9 +14,7 @@ import com.tnduck.newinstitute.dto.response.course.tag.TagResponse;
 import com.tnduck.newinstitute.dto.response.user.UserResponse;
 import com.tnduck.newinstitute.dto.response.user.UsersPaginationResponse;
 import com.tnduck.newinstitute.dto.validator.Level;
-import com.tnduck.newinstitute.entity.CategoryCourse;
-import com.tnduck.newinstitute.entity.Course;
-import com.tnduck.newinstitute.entity.TagCourse;
+import com.tnduck.newinstitute.entity.*;
 import com.tnduck.newinstitute.entity.specification.criteria.CourseCriteria;
 import com.tnduck.newinstitute.entity.specification.criteria.PaginationCriteria;
 import com.tnduck.newinstitute.exception.BadRequestException;
@@ -25,7 +23,9 @@ import com.tnduck.newinstitute.repository.CategoryCourseRepository;
 import com.tnduck.newinstitute.repository.CourseRepository;
 import com.tnduck.newinstitute.repository.TagCourseRepository;
 import com.tnduck.newinstitute.service.CourseService;
+import com.tnduck.newinstitute.service.EnrollmentService;
 import com.tnduck.newinstitute.service.MessageSourceService;
+import com.tnduck.newinstitute.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -44,6 +44,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -51,10 +52,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static com.tnduck.newinstitute.util.Constants.SECURITY_SCHEME_NAME;
 
@@ -74,6 +72,8 @@ public class CourseController extends AbstractBaseController {
     private final CourseRepository courseRepository;
     private final CategoryCourseRepository categoryCourseRepository;
     private final TagCourseRepository tagCourseRepository;
+    private final UserService userService;
+    private final EnrollmentService enrollmentService;
     private static final String[] SORT_COLUMNS = new String[]{"id", "name", "price", "status",
             "createdAt", "updatedAt"};
 
@@ -130,8 +130,8 @@ public class CourseController extends AbstractBaseController {
             @Parameter(name = "keyword", description = "Search keyword", example = "lorem")
             @RequestParam(required = false) final String keyword,
 
-            @Parameter(name = "status", description = "status", example = "unchecked")
-            @RequestParam(required = false) final String status,
+//            @Parameter(name = "status", description = "status", example = "uploaded")
+//            @RequestParam(required = false) final String status,
 
             @Parameter(name = "page", description = "Page number", example = "1")
             @RequestParam(defaultValue = "1", required = false) final Integer page,
@@ -149,7 +149,6 @@ public class CourseController extends AbstractBaseController {
     ) {
         try {
             sortColumnCheck(messageSourceService, SORT_COLUMNS, sortBy);
-
             Page<Course> courses = courseService.findAll(
                     CourseCriteria.builder()
                             .keyword(keyword)
@@ -157,7 +156,7 @@ public class CourseController extends AbstractBaseController {
                             .priceMax(priceMax)
                             .createdAtStart(createdAtStart)
                             .createdAtEnd(createdAtEnd)
-                            .status(status)
+//                            .status(status)
                             .build(),
                     PaginationCriteria.builder()
                             .page(page)
@@ -167,8 +166,26 @@ public class CourseController extends AbstractBaseController {
                             .columns(SORT_COLUMNS)
                             .build()
             );
+//            List<CourseResponse> courseResponses = courses.stream()
+//                    .map(CourseResponse::convert)
+//                    .toList();
+            List<Course> userCourses = new ArrayList<>();
+            Optional<User> user = userService.getUserOptional();
+            if (!user.isEmpty()) {
+                List<Enrollment> enrollments = enrollmentService.getEnrollmentByUserId(user.get().getId());
+                for (Enrollment enrollment : enrollments) {
+                    userCourses.add(enrollment.getCourse());
+                }
+            }
+            List<Course> filteredCourses = new ArrayList<>();
+            for (Course course : courses.getContent()) {
+                for (Course courseUser : userCourses)
+                if ("public".equals(course.getStatusTeacher()) && !courseUser.getId().equals(course.getId())) {
+                    filteredCourses.add(course);
+                }
+            }
 
-            List<CourseResponse> courseResponses = courses.stream()
+            List<CourseResponse> courseResponses = filteredCourses.stream()
                     .map(CourseResponse::convert)
                     .toList();
 

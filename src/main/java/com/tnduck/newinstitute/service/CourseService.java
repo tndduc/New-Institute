@@ -185,7 +185,27 @@ public class CourseService {
         }
         return ResponseEntity.status(HttpStatus.OK).body(coursesResponse);
     }
-
+//        User user = userService.getUser();
+//        List<Enrollment> enrollments = enrollmentService.getEnrollmentByUserId(user.getId());
+//        List<Course> courses = new ArrayList<>();
+//        for (int i = 0; i < enrollments.size(); i++){
+//            courses.add(enrollments.get(i).getCourse());
+//        }
+//        List<Course> courses2 = courseRepository.findAll();
+//        Set<Course> coursesSet = new HashSet<>(courses);
+//        List<Course> publicCourses = new ArrayList<>();
+//        for (Course course : courses2) {
+//            if (course.getStatusTeacher().equals("public") && !coursesSet.contains(course)) {
+//                publicCourses.add(course);
+//            }
+//        }
+//
+//        List<CourseResponse> coursesResponse = new ArrayList<>();
+//        for (Course c : publicCourses){
+//            coursesResponse.add(CourseResponse.convert(c));
+//        }
+//        return ResponseEntity.status(HttpStatus.OK).body(coursesResponse);
+//    }
 
     public ResponseEntity<?> updateStatusByTeacher(String id, String status) {
         User teacher = userService.getUser();

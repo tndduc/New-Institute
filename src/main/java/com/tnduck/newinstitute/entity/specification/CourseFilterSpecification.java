@@ -64,12 +64,12 @@ public final class CourseFilterSpecification implements Specification<Course> {
                     builder.lessThanOrEqualTo(root.get("price"), criteria.getPriceMax())
             );
         }
-        if (criteria.getStatus() != null) {
-            String status = String.format("%%%s%%", criteria.getStatus().toLowerCase());
-            predicates.add(
-                    builder.like(builder.lower(root.get("status")), status)
-            );
-        }
+//        if (criteria.getStatus() != null) {
+//            String status = String.format("%%%s%%", criteria.getStatus().toLowerCase());
+//            predicates.add(
+//                    builder.like(builder.lower(root.get("status")), status)
+//            );
+//        }
         if (criteria.getKeyword() != null) {
             String q = String.format("%%%s%%", criteria.getKeyword().toLowerCase());
 

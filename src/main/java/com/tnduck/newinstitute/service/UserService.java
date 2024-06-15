@@ -36,9 +36,9 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 /**
@@ -93,7 +93,22 @@ public class UserService {
             throw new BadCredentialsException(messageSourceService.get("bad_credentials"));
         }
     }
+    public Optional<User> getUserOptional(){
+        Authentication authentication = getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return Optional.empty();
+        }
 
+        // Kiểm tra nếu principal không phải là instance của UserDetails
+        if (!(authentication.getPrincipal() instanceof UserDetails)) {
+            return Optional.empty();
+        }
+
+        // Lấy ID người dùng từ principal
+        String userId = getPrincipal(authentication).getId();
+
+        return userRepository.findById(UUID.fromString(userId));
+    }
     /**
      * Count users.
      *

@@ -29,7 +29,7 @@ public final class CourseCriteria {
 
     private BigDecimal priceMin;
 
-    private String status;
+//    private String status;
 
     private String keyword;
 }
