@@ -185,6 +185,7 @@ public class CourseService {
         }
         return ResponseEntity.status(HttpStatus.OK).body(coursesResponse);
     }
+//    public ResponseEntity<?> getCourseByUser(){
 //        User user = userService.getUser();
 //        List<Enrollment> enrollments = enrollmentService.getEnrollmentByUserId(user.getId());
 //        List<Course> courses = new ArrayList<>();

@@ -179,10 +179,15 @@ public class CourseController extends AbstractBaseController {
             }
             List<Course> filteredCourses = new ArrayList<>();
             for (Course course : courses.getContent()) {
-                for (Course courseUser : userCourses)
-                if ("public".equals(course.getStatusTeacher()) && !courseUser.getId().equals(course.getId())) {
+                if ("public".equals(course.getStatusTeacher())) {
                     filteredCourses.add(course);
                 }
+            }
+            for (Course course : filteredCourses) {
+                for (Course courseUser : userCourses)
+                    if (courseUser.getId().equals(course.getId())) {
+                        filteredCourses.remove(course);
+                    }
             }
 
             List<CourseResponse> courseResponses = filteredCourses.stream()

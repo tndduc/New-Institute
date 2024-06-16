@@ -1,12 +1,16 @@
 package com.tnduck.newinstitute.service;
 
+import com.tnduck.newinstitute.dto.request.OrderRequestDTO;
 import com.tnduck.newinstitute.dto.response.enroll.EnrollResponse;
 import com.tnduck.newinstitute.dto.validator.CourseStatus;
 import com.tnduck.newinstitute.entity.Course;
 import com.tnduck.newinstitute.entity.Enrollment;
+import com.tnduck.newinstitute.entity.Payment;
 import com.tnduck.newinstitute.entity.User;
 import com.tnduck.newinstitute.repository.CourseRepository;
 import com.tnduck.newinstitute.repository.EnrollmentRepository;
+import com.tnduck.newinstitute.repository.PaymentRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,11 +18,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,7 +31,8 @@ public class EnrollmentService {
     private final EnrollmentRepository enrollmentRepository;
     private final UserService userService;
     private final CourseRepository courseRepository;
-
+    private final OrderPaymentService orderPaymentService;
+    private final PaymentRepository paymentRepository;
     public ResponseEntity<?> createEnroll(String idCourse) {
         User learner = userService.getUser();
         Optional<Course> courseOptional = courseRepository.findById(UUID.fromString(idCourse));
@@ -152,4 +155,33 @@ public class EnrollmentService {
         return ResponseEntity.status(HttpStatus.OK).body(enrollResponses);
     }
 
+    public ResponseEntity<?> buyAll(HttpServletRequest request) throws UnsupportedEncodingException {
+        User learner = userService.getUser();
+        List<Course> courseToBuy = new ArrayList<>();
+        List<Enrollment> enrollments = enrollmentRepository.getEnrollmentListByUserID(learner.getId());
+        for (Enrollment enrollment: enrollments){
+            if (enrollment.getStatus().equals(CourseStatus.ON_CART.toString())
+                    || enrollment.getStatus().equals(CourseStatus.PAYMENT_PENDING.toString())
+            ){
+                courseToBuy.add(enrollment.getCourse());
+            }
+        }
+        Payment payment = Payment.builder()
+                .courses(courseToBuy)
+                .status(CourseStatus.PAYMENT_PENDING.toString())
+                .user(learner)
+                .build();
+        Payment paymentSave = paymentRepository.save(payment);
+        BigDecimal price = BigDecimal.ZERO;
+        for (Course c : courseToBuy) {
+            price = price.add(c.getPrice().subtract(c.getDiscount()));
+        }
+        Long amount = price.longValueExact();
+        OrderRequestDTO orderRequestDTO = OrderRequestDTO.builder()
+                .amount(amount)
+                .orderInfo(paymentSave.getId().toString())
+                .build();
+        Map<String, Object> result = orderPaymentService.createOrder(request, orderRequestDTO);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }

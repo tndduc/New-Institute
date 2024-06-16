@@ -2,10 +2,12 @@ package com.tnduck.newinstitute.controller;
 
 import com.tnduck.newinstitute.service.CartService;
 import com.tnduck.newinstitute.service.EnrollmentService;
+import com.tnduck.newinstitute.service.OrderPaymentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -24,6 +26,7 @@ import static com.tnduck.newinstitute.util.Constants.SECURITY_SCHEME_NAME;
 @Tag(name = "012. Cart", description = "Cart API")
 public class CartController {
     private final EnrollmentService enrollmentService;
+    private OrderPaymentService orderPaymentService;
     @PostMapping("/add")
     @PreAuthorize("hasAuthority('USER')")
     @Operation(
@@ -36,6 +39,20 @@ public class CartController {
     )  {
         try {
             return enrollmentService.addCart(idCourse);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    @PostMapping("/buy-all")
+    @PreAuthorize("hasAuthority('USER')")
+    @Operation(
+            summary = "Buy all in cart",
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
+    )
+    public ResponseEntity<?> buyAll(HttpServletRequest request
+    )  {
+        try {
+            return enrollmentService.buyAll(request);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

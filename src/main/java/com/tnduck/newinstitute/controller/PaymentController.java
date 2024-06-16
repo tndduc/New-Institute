@@ -46,7 +46,6 @@ public class PaymentController {
     //http://localhost:8080/callback?vnp_amount=2415116&bankCode=NCB
     @GetMapping("/callback")
     public ResponseEntity<Map<String, Object>> doCallBack(@RequestParam Map<String, Object> callBackInfo) {
-
         System.out.println(callBackInfo);
         return new ResponseEntity<>(new HashMap<>(), HttpStatus.OK);
     }
