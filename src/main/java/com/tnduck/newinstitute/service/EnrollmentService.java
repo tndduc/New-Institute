@@ -184,4 +184,21 @@ public class EnrollmentService {
         Map<String, Object> result = orderPaymentService.createOrder(request, orderRequestDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    public void confirmPayment(Map<String, Object> callBackInfo) {
+        String orderInfo = (String) callBackInfo.get("vnp_OrderInfo");
+        UUID orderId = UUID.fromString(orderInfo);
+        Optional<Payment> payment = paymentRepository.findById(orderId);
+        payment.get().setStatus(CourseStatus.APPROVED.toString());
+        paymentRepository.save(payment.get());
+        List<Course> courses = payment.get().getCourses();
+        for (Course course : courses) {
+            Enrollment enrollment = Enrollment.builder()
+                   .status(CourseStatus.APPROVED.toString())
+                   .course(course)
+                   .user(payment.get().getUser())
+                   .build();
+            enrollmentRepository.save(enrollment);
+        }
+    }
 }

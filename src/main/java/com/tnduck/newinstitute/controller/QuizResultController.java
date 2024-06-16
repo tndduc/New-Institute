@@ -33,11 +33,11 @@ import static com.tnduck.newinstitute.util.Constants.SECURITY_SCHEME_NAME;
 public class QuizResultController extends AbstractBaseController{
     private final QuizResultService quizResultService;
     @PostMapping("/submit")
-//    @PreAuthorize("hasAuthority('USER')")
-//    @Operation(
-//            summary = "Submit Quiz Results",
-//            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
-//    )
+    @PreAuthorize("hasAuthority('USER')")
+    @Operation(
+            summary = "Submit Quiz Results",
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
+    )
     public ResponseEntity<?> createLesson(
             @Parameter(description = "Request body to submit quiz results", required = true)
             @RequestBody @Valid QuizResultRequest request

@@ -4,10 +4,12 @@ package com.tnduck.newinstitute.controller;
 import com.tnduck.newinstitute.dto.request.OrderRequestDTO;
 import com.tnduck.newinstitute.dto.response.ResponseObject;
 import com.tnduck.newinstitute.dto.response.payment.PaymentDTO;
+import com.tnduck.newinstitute.service.EnrollmentService;
 import com.tnduck.newinstitute.service.GetPaymentStatusService;
 import com.tnduck.newinstitute.service.OrderPaymentService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,9 @@ public class PaymentController {
     private GetPaymentStatusService getPaymentStatusService;
     @Autowired
     private OrderPaymentService orderPaymentService;
+
+    @Autowired
+    private EnrollmentService enrollmentService;
     @PostMapping("/create-order")
     public ResponseEntity<Map<String, Object>> createOrderPayment(HttpServletRequest request, @RequestBody OrderRequestDTO orderRequestDTO) throws IOException {
 
@@ -45,8 +50,10 @@ public class PaymentController {
     }
     //http://localhost:8080/callback?vnp_amount=2415116&bankCode=NCB
     @GetMapping("/callback")
-    public ResponseEntity<Map<String, Object>> doCallBack(@RequestParam Map<String, Object> callBackInfo) {
+    public ResponseEntity<Map<String, Object>> doCallBack(@RequestParam Map<String, Object> callBackInfo, HttpServletResponse response) throws IOException{
         System.out.println(callBackInfo);
+        this.enrollmentService.confirmPayment(callBackInfo);
+        response.sendRedirect("https://www.facebook.com/");
         return new ResponseEntity<>(new HashMap<>(), HttpStatus.OK);
     }
 }
