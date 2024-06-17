@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -18,4 +19,6 @@ import java.util.UUID;
 public interface EnrollmentRepository extends JpaRepository<Enrollment, UUID> {
     @Query(value = "SELECT * FROM enrollments WHERE student_id = ?1", nativeQuery = true)
     List<Enrollment> getEnrollmentListByUserID(UUID userID);
+    @Query(value = "SELECT * FROM enrollments WHERE student_id = ?1 AND course_id = ?2", nativeQuery = true)
+    Optional<Enrollment> getEnrollmentListByUserIDAndIDCourse(UUID userID,UUID courseID);
 }

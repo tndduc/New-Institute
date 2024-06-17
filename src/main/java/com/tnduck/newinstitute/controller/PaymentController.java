@@ -50,10 +50,11 @@ public class PaymentController {
     }
     //http://localhost:8080/callback?vnp_amount=2415116&bankCode=NCB
     @GetMapping("/callback")
-    public ResponseEntity<Map<String, Object>> doCallBack(@RequestParam Map<String, Object> callBackInfo, HttpServletResponse response) throws IOException{
+    public ResponseEntity<Map<String, Object>> doCallBack(@RequestParam Map<String, Object> callBackInfo,
+                                                          HttpServletResponse response) throws IOException{
         System.out.println(callBackInfo);
         this.enrollmentService.confirmPayment(callBackInfo);
-        response.sendRedirect("https://www.facebook.com/");
+        response.sendRedirect("http://localhost:3000/");
         return new ResponseEntity<>(new HashMap<>(), HttpStatus.OK);
     }
 }

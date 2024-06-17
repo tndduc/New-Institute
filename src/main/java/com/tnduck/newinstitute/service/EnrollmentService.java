@@ -192,13 +192,48 @@ public class EnrollmentService {
         payment.get().setStatus(CourseStatus.APPROVED.toString());
         paymentRepository.save(payment.get());
         List<Course> courses = payment.get().getCourses();
+        User user = payment.get().getUser();
+        List<Enrollment> enrollments = new ArrayList<>();
         for (Course course : courses) {
-            Enrollment enrollment = Enrollment.builder()
-                   .status(CourseStatus.APPROVED.toString())
-                   .course(course)
-                   .user(payment.get().getUser())
-                   .build();
-            enrollmentRepository.save(enrollment);
+            Optional<Enrollment> enrollment = enrollmentRepository.getEnrollmentListByUserIDAndIDCourse(user.getId(), course.getId());
+            if (!enrollment.isPresent()){
+                Enrollment enrollmentAdd = Enrollment.builder()
+                        .status(CourseStatus.APPROVED.toString())
+                        .course(course)
+                        .user(payment.get().getUser())
+                        .build();
+                enrollmentRepository.save(enrollmentAdd);
+            }else {
+                Enrollment enrollmentSave = enrollment.get();
+                enrollmentSave.setStatus(CourseStatus.APPROVED.toString());
+                enrollmentRepository.save(enrollmentSave);
+            }
         }
+    }
+
+    public ResponseEntity<?> buyOne(HttpServletRequest request, String idCourse) throws UnsupportedEncodingException {
+        User learner = userService.getUser();
+        Optional<Course> courseToBuy = courseRepository.findById(UUID.fromString(idCourse));
+        if (!courseToBuy.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course not found");
+        }
+        Course course = courseToBuy.get();
+        List<Course> courses = new ArrayList<>();
+        courses.add(course);
+        Payment payment = Payment.builder()
+                .courses(courses)
+                .status(CourseStatus.PAYMENT_PENDING.toString())
+                .user(learner)
+                .build();
+        Payment paymentSave = paymentRepository.save(payment);
+        BigDecimal price = BigDecimal.ZERO;
+        price = price.add(course.getPrice().subtract(course.getDiscount()));
+        Long amount = price.longValueExact();
+        OrderRequestDTO orderRequestDTO = OrderRequestDTO.builder()
+                .amount(amount)
+                .orderInfo(paymentSave.getId().toString())
+                .build();
+        Map<String, Object> result = orderPaymentService.createOrder(request, orderRequestDTO);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

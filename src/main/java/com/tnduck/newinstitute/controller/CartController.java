@@ -57,6 +57,22 @@ public class CartController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+    @PostMapping("/buy-one")
+    @PreAuthorize("hasAuthority('USER')")
+    @Operation(
+            summary = "Buy one course by id course",
+            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
+    )
+    public ResponseEntity<?> buyOne(HttpServletRequest request,
+                                    @Parameter(name = "idCourse", description = "Course ID", example = "00000000-0000-0000-0000-000000000001")
+                                    @RequestParam(required = true) final String idCourse
+    ) {
+        try {
+            return enrollmentService.buyOne(request,idCourse);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
     @PreAuthorize("hasAuthority('USER')")
     @Operation(
