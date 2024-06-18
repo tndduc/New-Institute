@@ -29,8 +29,10 @@ import java.util.UUID;
 public class Course extends AbstractBaseEntity{
     @Column(name = "name", nullable = false, length = 50)
     private String name;
-    @Column(name = "description", nullable = false, length = 500)
+    @Column(name = "description")
     private String description;
+    @Column(name = "description_short")
+    private String descriptionShort;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "file_id",nullable = true)
     @OnDelete(action = OnDeleteAction.CASCADE)

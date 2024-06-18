@@ -31,13 +31,13 @@ public class UpdateUnitRequest {
             example = "Final test"
     )
     private String title;
-//    @Schema(
-//            name = "ordinalNumber",
-//            description = "ordinalNumber",
-//            type = "int",
-//            example = "1"
-//    )
-//    private int ordinalNumber;
+    @Schema(
+            name = "isPreview",
+            description = "isPreview?",
+            type = "Boolean",
+            allowableValues = {"true", "false"}, defaultValue = "false"
+    )
+    private String isPreview;
     @Schema(
             name = "duration",
             description = "duration of Unit",

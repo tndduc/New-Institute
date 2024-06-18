@@ -1,7 +1,6 @@
 package com.tnduck.newinstitute.controller;
 
 import com.tnduck.newinstitute.dto.request.course.CreateCourseRequest;
-import com.tnduck.newinstitute.dto.request.course.FilterCourseRequest;
 import com.tnduck.newinstitute.dto.request.course.UpdateCourseRequest;
 import com.tnduck.newinstitute.dto.request.course.tag.TagRequest;
 import com.tnduck.newinstitute.dto.request.lesson.LessonRequest;

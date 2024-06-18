@@ -100,7 +100,6 @@ public class UnitService {
         unit.setOrdinalNumber(request.getOrdinalNumber());
         unit.setType(request.getType());
         unit.setLesson(lessonOptional.get());
-
         // Save the new unit to the database
         Unit unitSave = unitRepository.save(unit);
 
@@ -128,12 +127,15 @@ public class UnitService {
         if (teacher == null || courseOptional.isEmpty() || !teacher.getId().equals(courseOptional.get().getUser().getId())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access or invalid course");
         }
-
+        Boolean isPreviewAvailable = false;
+        if (updateUnitRequest.getIsPreview().equals("true")){
+            isPreviewAvailable = true;
+        }
         // Update the unit with the provided details
         Unit unit = unitOptional.get();
         unit.setTitle(updateUnitRequest.getTitle() != null ? updateUnitRequest.getTitle() : unit.getTitle());
         unit.setType(updateUnitRequest.getType() != null ? updateUnitRequest.getType() : unit.getType());
-
+        unit.setIsPreview(isPreviewAvailable);
         // Save the updated unit to the database
         Unit unitSave = unitRepository.save(unit);
 

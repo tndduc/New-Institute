@@ -86,11 +86,15 @@ public class VideoService {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access or invalid course");
         }
         int ordinal = unitList.size()+1;
-
+        Boolean isPreviewAvailable = false;
+        if (videoLessonRequest.getIsPreview().equals("true")){
+            isPreviewAvailable = true;
+        }
         // Create a new unit with the provided details
         Unit unit = new Unit();
         unit.setTitle(videoLessonRequest.getTitle());
         unit.setType("video");
+        unit.setIsPreview(isPreviewAvailable);
         unit.setDescription(videoLessonRequest.getDescription());
         unit.setOrdinalNumber(ordinal);
         unit.setLesson(lessonOptional.get());

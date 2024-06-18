@@ -34,6 +34,15 @@ public class CreateGroupQuizRequest {
     private String description;
 
     @Schema(
+            minimum = "0",
+            name = "time",
+            description = "time of quiz, set time = 0 if you want to do quiz without time limit",
+            type = "int",
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            example = "60"
+    )
+    private int time;
+    @Schema(
             name = "idLesson",
             description = "id Unit of course",
             type = "String",
@@ -44,7 +53,7 @@ public class CreateGroupQuizRequest {
     @Schema(
             name = "isFinalExam",
             description = "isFinalExam?",
-            type = "String",
+            type = "Boolean",
             allowableValues = {"true", "false"}, defaultValue = "false"
     )
     private String isFinalExam;

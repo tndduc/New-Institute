@@ -1,5 +1,6 @@
 package com.tnduck.newinstitute.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -21,6 +22,8 @@ public class Unit extends AbstractBaseEntity{
     private int ordinalNumber;
     @Column(name = "type", nullable = false)
     private String type;
+    @Column(name = "isPreview")
+    private Boolean isPreview;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "lesson_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)

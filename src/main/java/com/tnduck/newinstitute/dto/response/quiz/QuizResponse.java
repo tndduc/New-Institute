@@ -35,6 +35,18 @@ public class QuizResponse {
     )
     private String description;
     @Schema(
+            name = "time",
+            description = "time of quiz - minutes",
+            type = "String"
+    )
+    private int time;
+    @Schema(
+            name = "isHaveTime",
+            description = "isHaveTime?",
+            type = "boolean"
+    )
+    private boolean isHaveTime;
+    @Schema(
             name = "idUnit",
             description = "id of unit",
             type = "String",
@@ -63,6 +75,8 @@ public class QuizResponse {
                 .description(quiz.getDescription())
                 .idUnit(quiz.getUnit().getId().toString())
                 .isFinalExam(quiz.isFinalExam())
+                .isHaveTime(quiz.isHaveTime())
+                .time(quiz.getTime())
                 .questionResponses(questionResponseList)
                 .build();
     }
@@ -72,6 +86,8 @@ public class QuizResponse {
                 .description(quiz.getDescription())
                 .idUnit(quiz.getUnit().getId().toString())
                 .isFinalExam(quiz.isFinalExam())
+                .isHaveTime(quiz.isHaveTime())
+                .time(quiz.getTime())
                 .build();
     }
 

@@ -31,7 +31,13 @@ public class CreateQuizRequest {
             example = "Final test description : do not use docs"
     )
     private String description;
-
+    @Schema(
+            name = "isPreview",
+            description = "isPreview?",
+            type = "Boolean",
+            allowableValues = {"true", "false"}, defaultValue = "false"
+    )
+    private String isPreview;
     @Schema(
             name = "idLesson",
             description = "id Unit of course",

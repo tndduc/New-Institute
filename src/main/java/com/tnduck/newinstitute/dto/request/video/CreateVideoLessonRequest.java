@@ -31,7 +31,13 @@ public class CreateVideoLessonRequest {
             example = "0"
     )
     private String title;
-
+    @Schema(
+            name = "isPreview",
+            description = "isPreview?",
+            type = "Boolean",
+            allowableValues = {"true", "false"}, defaultValue = "false"
+    )
+    private String isPreview;
     @Schema(
             name = "description",
             description = "Description of video",

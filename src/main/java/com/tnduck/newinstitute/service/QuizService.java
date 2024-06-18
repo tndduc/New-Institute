@@ -46,11 +46,15 @@ public class QuizService {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access or invalid course");
         }
         int ordinal = unitList.size() + 1;
-
+        Boolean isPreviewAvailable = false;
+        if (createQuizRequest.getIsPreview().equals("true")){
+            isPreviewAvailable = true;
+        }
         // Create a new unit with the provided details
         Unit unit = new Unit();
         unit.setTitle(createQuizRequest.getTitle());
         unit.setType("quiz");
+        unit.setIsPreview(isPreviewAvailable);
         unit.setOrdinalNumber(ordinal);
         unit.setLesson(lessonOptional.get());
 
@@ -159,12 +163,20 @@ public class QuizService {
         if (createGroupQuizRequest.equals("true")) {
             isFinal = true;
         }
-
+        boolean isHaveTime = false;
+        if(createGroupQuizRequest.getTime()>0){
+            isHaveTime = true;
+        }
+        if (createGroupQuizRequest.getTime()==0){
+            isHaveTime = false;
+        }
         Quiz quiz = Quiz.builder()
                 .description(createGroupQuizRequest.getDescription())
                 .isFinalExam(isFinal)
                 .title(createGroupQuizRequest.getTitle())
                 .unit(unitSave)
+                .isHaveTime(isHaveTime)
+                .time(createGroupQuizRequest.getTime())
                 .build();
         Quiz quizSave = quizRepository.save(quiz);
         List<Choice> choiceList = new ArrayList<>();

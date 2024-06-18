@@ -56,6 +56,14 @@ public class UpdateCourseRequest{
     )
     private String description;
     @NotBlank(message = "{not_blank}")
+    @Schema(
+            name = "descriptionShort",
+            description = "Description of course",
+            type = "String",
+            example = "Become a Web Development Pro with these valuable skills. Find the right instructor for you. Choose from many topics, skill levels, and languages. Download To Your Phone. Courses in 75 Languages. Stay Updated with AI. Learn ChatGPT. ChatGPT AI Course."
+    )
+    private String descriptionShort;
+    @NotBlank(message = "{not_blank}")
     @Size(max = 50, message = "{max_length}")
     @Schema(
             name = "level",

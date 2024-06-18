@@ -34,20 +34,20 @@ import static com.tnduck.newinstitute.util.Constants.SECURITY_SCHEME_NAME;
 public class UnitController  extends AbstractBaseController{
     private final UnitService unitService;
 
-    @PostMapping("/create")
-    @PreAuthorize("hasAuthority('TEACHER')")
-    @Operation(
-            summary = "Create a new Unit",
-            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
-    )
-    public ResponseEntity<?> createUnit ( @Parameter(description = "Request body to create Unit", required = true)
-                                              @RequestBody @Valid CreateUnitRequest request) {
-        try {
-            return unitService.createUnit(request);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
+//    @PostMapping("/create")
+//    @PreAuthorize("hasAuthority('TEACHER')")
+//    @Operation(
+//            summary = "Create a new Unit",
+//            security = @SecurityRequirement(name = SECURITY_SCHEME_NAME)
+//    )
+//    public ResponseEntity<?> createUnit ( @Parameter(description = "Request body to create Unit", required = true)
+//                                              @RequestBody @Valid CreateUnitRequest request) {
+//        try {
+//            return unitService.createUnit(request);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
+//    }
 
     @GetMapping("/get-units")
     public ResponseEntity<?> getUnit(@Parameter(name = "id", description = "Lesson ID", example = "00000000-0000-0000-0000-000000000001")

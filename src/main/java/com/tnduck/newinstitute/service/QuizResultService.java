@@ -37,7 +37,6 @@ public class QuizResultService {
     public ResponseEntity<?> submit(QuizResultRequest request) {
         Optional<Quiz> quizOptional = quizRepository.findById(UUID.fromString(request.getQuizId()));
         if (quizOptional.isEmpty()) {
-            // If the quiz is not found, return a NOT_FOUND response
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Quiz not found");
         }
         User learner = userService.getUser();
@@ -45,7 +44,6 @@ public class QuizResultService {
         List<Question> questionList = questionRepository.findListByIdQuiz(quizOptional.get().getId());
         List<AnswerResultResponse> AnswerResultsFromDB = new ArrayList<>();
 
-        // Collect correct answers from database
         for (Question question : questionList) {
             List<Choice> choices = choiceRepository.findListByIdQuestion(question.getId());
             AnswerResultsFromDB.addAll(AnswerResultResponse.convert(choices, true));
@@ -79,11 +77,6 @@ public class QuizResultService {
                 finalAnswer.add(finalAnswerResponse);
             }
         }
-
-        // Now you have both correct answers (correctAnswerResultsFromDB) and user answers (userAnswers) with isTrue set for correct matches
-        // You can proceed with your logic to calculate score or provide feedback to the user based on these lists.
-
-        // Your logic here based on correctAnswerResultsFromDB and userAnswers
 
         return ResponseEntity.ok("Submitted successfully"); // Or any other relevant response
     }

@@ -62,6 +62,7 @@ public class WebSecurityConfig {
                                 "/unit/**",
                                 "/video/**",
                                 "/quiz/**",
+                                "/study-progress/**",
                                 "/question/**",
                                 "/api-docs/**",
                                 "/swagger-ui/**",

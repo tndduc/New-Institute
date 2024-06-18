@@ -40,7 +40,13 @@ public class CourseResponse  extends AbstractBaseResponse {
             example = "Belo welcome to my channel, this channel gonna teach u how to be a lover"
     )
     private String description;
-
+    @Schema(
+            name = "descriptionShort",
+            description = "Description short for the course",
+            type = "String",
+            example = "Belo welcome to my channel, this channel gonna teach u how to be a lover"
+    )
+    private String descriptionShort;
     @Schema(
             name = "name",
             description = "name for the course",
@@ -139,6 +145,7 @@ public class CourseResponse  extends AbstractBaseResponse {
                 .name(course.getName())
                 .price(course.getPrice())
                 .description(course.getDescription())
+                .descriptionShort(course.getDescriptionShort())
                 .file(course.getFile())
                 .userResponse(userDTO)
                 .statusAdmin(course.getStatusAdmin())
