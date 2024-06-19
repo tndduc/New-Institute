@@ -51,7 +51,6 @@ public class CreateCourseRequest {
     )
     private String descriptionShort;
     @NotBlank(message = "{not_blank}")
-    @Size(max = 50, message = "{max_length}")
     @Schema(
             name = "level",
             description = "Level of course",
