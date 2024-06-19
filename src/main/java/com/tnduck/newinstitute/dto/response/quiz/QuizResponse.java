@@ -68,7 +68,11 @@ public class QuizResponse {
     public static QuizResponse convert(Quiz quiz, List<Question> questions,List<Choice> choices) {
         List<QuestionResponse> questionResponseList = new ArrayList<>();
         for (Question question : questions) {
-            questionResponseList.add(QuestionResponse.convert(question,choices));
+            for (Choice choice :choices) {
+                if (question.getId().equals(choice.getQuestion().getId())) {
+                    questionResponseList.add(QuestionResponse.convert(question,choices));
+                }
+            }
         }
         return QuizResponse.builder()
                 .id(quiz.getId().toString())

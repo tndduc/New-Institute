@@ -31,4 +31,11 @@ public class QuestionResultResponse{
             type = "List<AnswerResult"
             )
     List<AnswerResultResponse> answerResults;
+
+    public static QuestionResultResponse convert(String questionId, List<AnswerResultResponse> answerResults) {
+        return QuestionResultResponse.builder()
+               .questionId(questionId)
+               .answerResults(answerResults)
+               .build();
+    }
 }

@@ -91,7 +91,17 @@ public class QuizService {
         if (quiz.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Quiz not found");
         }
-        return ResponseEntity.ok(QuizResponse.convert(quiz.get()));
+        List<Question> questions = questionRepository.findListByIdQuiz(quiz.get().getId());
+        List<Choice> choices = new ArrayList<>();
+        for (Question question : questions) {
+            choices = choiceRepository.findListByIdQuestion(question.getId());
+            for (Choice choice : choices) {
+                choice.setQuestion(question);
+            }
+            question.setQuiz(quiz.get());
+        }
+
+        return ResponseEntity.ok(QuizResponse.convert(quiz.get(),questions,choices));
     }
 
     public ResponseEntity<?> updateQuiz(UpdateQuizRequest updateQuizRequest) {
