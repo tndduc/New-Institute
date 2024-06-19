@@ -2,14 +2,8 @@ package com.tnduck.newinstitute.service;
 
 import com.tnduck.newinstitute.dto.request.quizResult.QuizResultRequest;
 import com.tnduck.newinstitute.dto.response.quizResult.AnswerResultResponse;
-import com.tnduck.newinstitute.entity.Choice;
-import com.tnduck.newinstitute.entity.Question;
-import com.tnduck.newinstitute.entity.Quiz;
-import com.tnduck.newinstitute.entity.User;
-import com.tnduck.newinstitute.repository.ChoiceRepository;
-import com.tnduck.newinstitute.repository.CourseRepository;
-import com.tnduck.newinstitute.repository.QuestionRepository;
-import com.tnduck.newinstitute.repository.QuizRepository;
+import com.tnduck.newinstitute.entity.*;
+import com.tnduck.newinstitute.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +22,7 @@ import java.util.stream.Collectors;
 @Transactional
 @Slf4j
 public class QuizResultService {
+    private final QuizResultRepository quizResultRepository;
     private final QuizRepository quizRepository;
     private final UserService userService;
     private final QuestionRepository questionRepository;
@@ -61,9 +56,13 @@ public class QuizResultService {
                         .answerId(answerResultRequest.getAnswerId())
                         .build())
                 .collect(Collectors.toList());
-
+        List<Choice> choices = new ArrayList<>();
         // Iterate through user answers and set isTrue based on comparison with correct answers
         for (AnswerResultResponse userAnswer : userAnswers) {
+            Optional<Choice> choice = choiceRepository.findById(UUID.fromString(userAnswer.getAnswerId()));
+            if (choice.isPresent()) {
+                choices.add(choice.get());
+            }
             for (AnswerResultResponse correctAnswer : correctAnswerResultsFromDB) {
                 if (userAnswer.getAnswerId().equals(correctAnswer.getAnswerId())) {
                     userAnswer.setIsTrue(true);
@@ -77,8 +76,23 @@ public class QuizResultService {
                 finalAnswer.add(finalAnswerResponse);
             }
         }
-
-        return ResponseEntity.ok("Submitted successfully"); // Or any other relevant response
+        QuizResult quizResult = QuizResult.builder()
+                .quiz(quizOptional.get())
+                .score(finalAnswer.size())
+                .user(learner)
+                .choices(choices)
+                .build();
+        QuizResult quizResultSave = quizResultRepository.save(quizResult);
+        return ResponseEntity.ok(finalAnswer.size()); // Or any other relevant response
     }
-
+    public ResponseEntity<?> getQuizResultByIDQuiz(String idQuiz) {
+        Optional<Quiz> quizOptional = quizRepository.findById(UUID.fromString(idQuiz));
+        if (quizOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Quiz not found");
+        }
+        User user = userService.getUser();
+        QuizResult quizResult = quizResultRepository.findByUser_IdAndQuiz_Id(user.getId(), quizOptional.get().getId());
+        List<AnswerResultResponse> answerResultResponses = AnswerResultResponse.convert(quizResult.getChoices(),true);
+        return ResponseEntity.ok(answerResultResponses);
+    }
 }

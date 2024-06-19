@@ -66,6 +66,7 @@ public class QuizService {
         Quiz quiz = Quiz.builder()
                 .description(createQuizRequest.getDescription())
                 .isFinalExam(isFinal)
+                .time(createQuizRequest.getTime())
                 .title(createQuizRequest.getTitle())
                 .unit(unitSave)
                 .build();

@@ -24,6 +24,16 @@ public class CreateQuizRequest {
             example = "Final test"
     )
     private String title;
+    @NotBlank(message = "{not_blank}")
+    @Size(max = 500, message = "{max_length}")
+    @Schema(
+            name = "time",
+            description = "time of quiz",
+            type = "time",
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            example = "Final test"
+    )
+    private int time;
     @Schema(
             name = "description",
             description = "Description of course",

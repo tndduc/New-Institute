@@ -13,4 +13,5 @@ import java.util.UUID;
  */
 @Repository
 public interface QuizResultRepository extends JpaRepository<QuizResult, UUID> {
+    QuizResult findByUser_IdAndQuiz_Id(UUID userId, UUID quizId);
 }
