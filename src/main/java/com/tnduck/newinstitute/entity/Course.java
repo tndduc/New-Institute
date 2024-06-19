@@ -27,10 +27,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Course extends AbstractBaseEntity{
-<<<<<<< HEAD
-=======
     @Column(name = "name", nullable = false)
->>>>>>> aaf44cf99515207b0205f2f5bef7c4deb2eb3db8
     private String name;
     @Column(name = "description")
     private String description;
@@ -42,10 +39,7 @@ public class Course extends AbstractBaseEntity{
     private File file;
     @Column(name = "price", nullable = false)
     private BigDecimal price;
-<<<<<<< HEAD
-=======
     @Column(name = "level", nullable = false)
->>>>>>> aaf44cf99515207b0205f2f5bef7c4deb2eb3db8
     private String level;
     @Column(name = "discount")
     private BigDecimal discount;
