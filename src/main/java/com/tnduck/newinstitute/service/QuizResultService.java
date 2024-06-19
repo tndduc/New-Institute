@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +23,8 @@ import java.util.stream.Collectors;
 @Transactional
 @Slf4j
 public class QuizResultService {
+    private final CertificateRepository certificateRepository;
+    private final UnitRepository unitRepository;
     private final QuizResultRepository quizResultRepository;
     private final QuizRepository quizRepository;
     private final UserService userService;
@@ -76,6 +79,9 @@ public class QuizResultService {
                 finalAnswer.add(finalAnswerResponse);
             }
         }
+        Course course = quizOptional.get().getUnit().getLesson().getCourse();
+
+
         QuizResult quizResult = QuizResult.builder()
                 .quiz(quizOptional.get())
                 .score(finalAnswer.size())
@@ -83,6 +89,19 @@ public class QuizResultService {
                 .choices(choices)
                 .build();
         QuizResult quizResultSave = quizResultRepository.save(quizResult);
+        if(finalAnswer.size() > correctAnswerResultsFromDB.size() /2.0){
+            String score = finalAnswer.size() + "/" + correctAnswerResultsFromDB.size();
+                    log.warn("User answers size is greater than 50% of correct answers size.");
+            Certificate certificate = Certificate.builder()
+                    .expiryDate(LocalDateTime.now().plusYears(1))
+                    .issueDate(LocalDateTime.now())
+                    .course(course)
+                    .user(learner)
+                    .quizResult(quizResultSave)
+                    .score(score)
+                    .build();
+            Certificate certificateSave = certificateRepository.save(certificate);
+        }
         return ResponseEntity.ok(finalAnswer.size()); // Or any other relevant response
     }
     public ResponseEntity<?> getQuizResultByIDQuiz(String idQuiz) {

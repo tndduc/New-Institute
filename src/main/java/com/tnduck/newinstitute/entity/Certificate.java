@@ -20,10 +20,16 @@ public class Certificate extends AbstractBaseEntity{
     @JoinColumn(name = "quizResult_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private QuizResult quizResult;
-
-    @Column(nullable = false)
-    private String title;
-
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "course_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Course course;
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "student_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private User user;
+    @Column
+    private String score;
     @Column(nullable = false)
     private LocalDateTime issueDate;
 
