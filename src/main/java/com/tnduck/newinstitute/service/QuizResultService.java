@@ -89,18 +89,20 @@ public class QuizResultService {
                 .choices(choices)
                 .build();
         QuizResult quizResultSave = quizResultRepository.save(quizResult);
-        if(finalAnswer.size() > correctAnswerResultsFromDB.size() /2.0){
-            String score = finalAnswer.size() + "/" + correctAnswerResultsFromDB.size();
-                    log.warn("User answers size is greater than 50% of correct answers size.");
-            Certificate certificate = Certificate.builder()
-                    .expiryDate(LocalDateTime.now().plusYears(1))
-                    .issueDate(LocalDateTime.now())
-                    .course(course)
-                    .user(learner)
-                    .quizResult(quizResultSave)
-                    .score(score)
-                    .build();
-            Certificate certificateSave = certificateRepository.save(certificate);
+        if (quizOptional.get().isFinalExam()){
+            if(finalAnswer.size() > correctAnswerResultsFromDB.size() /2.0){
+                String score = finalAnswer.size() + "/" + correctAnswerResultsFromDB.size();
+                log.warn("User answers size is greater than 50% of correct answers size.");
+                Certificate certificate = Certificate.builder()
+                        .expiryDate(LocalDateTime.now().plusYears(1))
+                        .issueDate(LocalDateTime.now())
+                        .course(course)
+                        .user(learner)
+                        .quizResult(quizResultSave)
+                        .score(score)
+                        .build();
+                Certificate certificateSave = certificateRepository.save(certificate);
+            }
         }
         return ResponseEntity.ok(finalAnswer.size()); // Or any other relevant response
     }
