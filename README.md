@@ -26,7 +26,7 @@ This project is a Spring-based application designed for selling courses online. 
 - Course Management: Allows administrators to create, update, and delete courses.
 - User Authentication: Provides secure authentication mechanisms for users.
 - Enrollment: Enables users to enroll in courses they are interested in.
-- Payment Integration: Integrates payment gateways for course purchases.
+- Payment Integration: Integrates payment gateways for course purchases with sandbox VNPay.
 - Search Functionality: Allows users to search for courses based on different criteria.
 - Unit Testing: Ensures code quality and reliability through comprehensive unit tests.
 - RESTful API: Facilitates communication between the frontend and backend components.
@@ -67,4 +67,4 @@ Contributions are welcome! If you find any issues or have suggestions for improv
 
 License
 This project is licensed under the MIT License.
-
+This project make by ductn aka Tran Ngoc Duc aka  🦆🦆🦆 Email : tnd.duc@gmail.com
