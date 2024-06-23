@@ -171,7 +171,7 @@ public class QuizService {
 
         Unit unitSave = unitRepository.save(unit);
         boolean isFinal = false;
-        if (createGroupQuizRequest.equals("true")) {
+        if (createGroupQuizRequest.getIsFinalExam().equals("true")) {
             isFinal = true;
         }
         boolean isHaveTime = false;

@@ -25,14 +25,22 @@ import static com.tnduck.newinstitute.util.Constants.SECURITY_SCHEME_NAME;
 public class CertificateController {
     private final CertificateService certificateService;
 
-    @PostMapping("/add")
-
-    public ResponseEntity<?> addCart(
+    @PostMapping("/get-by-id")
+    public ResponseEntity<?> get(
             @Parameter(name = "idUser", description = "User ID", example = "00000000-0000-0000-0000-000000000001")
             @RequestParam(required = true) final String idUser
     )  {
         try {
             return certificateService.getByIdUser(idUser);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    @PostMapping("/get")
+    public ResponseEntity<?> getByAuthor(
+    )  {
+        try {
+            return certificateService.getByAuthor();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

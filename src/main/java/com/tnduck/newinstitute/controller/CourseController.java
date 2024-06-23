@@ -165,33 +165,33 @@ public class CourseController extends AbstractBaseController {
                             .columns(SORT_COLUMNS)
                             .build()
             );
-//            List<CourseResponse> courseResponses = courses.stream()
-//                    .map(CourseResponse::convert)
-//                    .toList();
-            List<Course> userCourses = new ArrayList<>();
-            Optional<User> user = userService.getUserOptional();
-            if (!user.isEmpty()) {
-                List<Enrollment> enrollments = enrollmentService.getEnrollmentByUserId(user.get().getId());
-                for (Enrollment enrollment : enrollments) {
-                    userCourses.add(enrollment.getCourse());
-                }
-            }
-            List<Course> filteredCourses = new ArrayList<>();
-            for (Course course : courses.getContent()) {
-                if ("public".equals(course.getStatusTeacher())) {
-                    filteredCourses.add(course);
-                }
-            }
-            for (Course course : filteredCourses) {
-                for (Course courseUser : userCourses)
-                    if (courseUser.getId().equals(course.getId())) {
-                        filteredCourses.remove(course);
-                    }
-            }
-
-            List<CourseResponse> courseResponses = filteredCourses.stream()
+            List<CourseResponse> courseResponses = courses.stream()
                     .map(CourseResponse::convert)
                     .toList();
+//            List<Course> userCourses = new ArrayList<>();
+//            Optional<User> user = userService.getUserOptional();
+//            if (!user.isEmpty()) {
+//                List<Enrollment> enrollments = enrollmentService.getEnrollmentByUserId(user.get().getId());
+//                for (Enrollment enrollment : enrollments) {
+//                    userCourses.add(enrollment.getCourse());
+//                }
+//            }
+//            List<Course> filteredCourses = new ArrayList<>();
+//            for (Course course : courses.getContent()) {
+//                if ("public".equals(course.getStatusTeacher())) {
+//                    filteredCourses.add(course);
+//                }
+//            }
+//            for (Course course : filteredCourses) {
+//                for (Course courseUser : userCourses)
+//                    if (courseUser.getId().equals(course.getId())) {
+//                        filteredCourses.remove(course);
+//                    }
+//            }
+//
+//            List<CourseResponse> courseResponses = filteredCourses.stream()
+//                    .map(CourseResponse::convert)
+//                    .toList();
 
             return ResponseEntity.ok(new CoursesPaginationResponse(courses, courseResponses));
         } catch (Exception e) {

@@ -2,6 +2,7 @@ package com.tnduck.newinstitute.service;
 
 import com.tnduck.newinstitute.dto.request.quizResult.QuizResultRequest;
 import com.tnduck.newinstitute.dto.response.quizResult.AnswerResultResponse;
+import com.tnduck.newinstitute.dto.response.quizResult.BaseQuizResultResponse;
 import com.tnduck.newinstitute.entity.*;
 import com.tnduck.newinstitute.repository.*;
 import jakarta.transaction.Transactional;
@@ -89,9 +90,14 @@ public class QuizResultService {
                 .choices(choices)
                 .build();
         QuizResult quizResultSave = quizResultRepository.save(quizResult);
+        Boolean isFinal = false;
+        Boolean isPass = true;
+        String score = finalAnswer.size() + "/" + correctAnswerResultsFromDB.size();
         if (quizOptional.get().isFinalExam()){
+            isFinal = true;
+            isPass = false;
             if(finalAnswer.size() > correctAnswerResultsFromDB.size() /2.0){
-                String score = finalAnswer.size() + "/" + correctAnswerResultsFromDB.size();
+                isPass = true;
                 log.warn("User answers size is greater than 50% of correct answers size.");
                 Certificate certificate = Certificate.builder()
                         .expiryDate(LocalDateTime.now().plusYears(1))
@@ -102,9 +108,32 @@ public class QuizResultService {
                         .score(score)
                         .build();
                 Certificate certificateSave = certificateRepository.save(certificate);
+                BaseQuizResultResponse baseQuizResultResponse = BaseQuizResultResponse.builder()
+                        .idUser(learner.getId().toString())
+                        .idCourse(course.getId().toString())
+                        .isPass(isPass)
+                        .score(score)
+                        .isFinal(isFinal)
+                        .build();
+                return ResponseEntity.ok(baseQuizResultResponse);
             }
-        }
-        return ResponseEntity.ok(finalAnswer.size()); // Or any other relevant response
+            BaseQuizResultResponse baseQuizResultResponse = BaseQuizResultResponse.builder()
+                    .isPass(isPass)
+                    .idUser(learner.getId().toString())
+                    .idCourse(course.getId().toString())
+                    .score(score)
+                    .isFinal(isFinal)
+                    .build();
+            return ResponseEntity.ok(baseQuizResultResponse);
+        } BaseQuizResultResponse baseQuizResultResponse = BaseQuizResultResponse.builder()
+                .isPass(isPass)
+                .idUser(learner.getId().toString())
+                .idCourse(course.getId().toString())
+                .score(score)
+                .isFinal(isFinal)
+                .build();
+
+        return ResponseEntity.ok(baseQuizResultResponse); // Or any other relevant response
     }
     public ResponseEntity<?> getQuizResultByIDQuiz(String idQuiz) {
         Optional<Quiz> quizOptional = quizRepository.findById(UUID.fromString(idQuiz));
