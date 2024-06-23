@@ -65,6 +65,6 @@ To run the unit tests, execute the following command:
 Contributing
 Contributions are welcome! If you find any issues or have suggestions for improvements, feel free to open an issue or create a pull request.
 
-License
-This project is licensed under the MIT License.
-This project make by ductn aka Tran Ngoc Duc aka  🦆🦆🦆 Email : tnd.duc@gmail.com
+##License
+- This project is licensed under the MIT License.
+- This project make by ductn aka Tran Ngoc Duc aka  🦆🦆🦆 Email : tnd.duc@gmail.com
