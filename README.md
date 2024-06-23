@@ -16,7 +16,7 @@ This project is a Spring-based application designed for selling courses online. 
 - RESTful API: Communication protocol for seamless interaction between client and server.
 - Docker: Containerization platform for packaging applications and their dependencies.
 ## Setup Instructions
-- Clone the Repository: git clone https://github.com/yourusername/spring-course-selling.git
+- Clone the Repository: git clone https://github.com/tndduc/New-Institute.git
 - Configure PostgreSQL: Set up a PostgreSQL database and update the application.properties file with your database credentials.
 - Build and Run: Use Maven or Gradle to build the project and run the Spring Boot application.
 + For Maven: mvn clean install && mvn spring-boot:run
@@ -33,6 +33,27 @@ Run Docker Container:
 ```
 docker run -p 8080:8080 java-spring-boot-newinstitute-network
 ```
+## DataBase : 
+![DB](https://github.com/tndduc/New-Institute/blob/main/image4github/Untitled.png?raw=true)
+## API : 
+### 001. Auth
+![Auth Controller](https://raw.githubusercontent.com/tndduc/New-Institute/main/image4github/controller/Screenshot%20from%202024-06-23%2009-45-30.png)
+### 002. Account
+![Auth Controller](https://raw.githubusercontent.com/tndduc/New-Institute/main/image4github/controller/Screenshot%20from%202024-06-23%2009-46-41.png)
+### 003. Course
+![Auth Controller](https://github.com/tndduc/New-Institute/blob/main/image4github/controller/Screenshot%20from%202024-06-23%2009-48-12.png?raw=true)
+### 004. Lesson,005. Unit
+![Auth Controller](https://github.com/tndduc/New-Institute/blob/main/image4github/controller/Screenshot%20from%202024-06-23%2009-48-20.png?raw=true)
+### 006. Video,007. Quiz
+![Auth Controller](https://github.com/tndduc/New-Institute/blob/main/image4github/controller/Screenshot%20from%202024-06-23%2009-48-26.png?raw=true)
+### 008. Question,009. Choice
+![Auth Controller](https://github.com/tndduc/New-Institute/blob/main/image4github/controller/Screenshot%20from%202024-06-23%2009-48-30.png?raw=true)
+### 010. Quiz Results,011. Enrollment,012. Cart
+![Auth Controller](https://raw.githubusercontent.com/tndduc/New-Institute/main/image4github/controller/Screenshot%20from%202024-06-23%2009-46-41.png)
+### 013. payment,014. Study Progress,015. CertificateController
+![Auth Controller](https://github.com/tndduc/New-Institute/blob/main/image4github/controller/Screenshot%20from%202024-06-23%2009-48-50.png?raw=true)
+
+
 ## Testing
 To run the unit tests, execute the following command:
 
